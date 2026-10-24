@@ -1,0 +1,1481 @@
+/* Santioni-derived editorial surfaces: hard ink, monumental lettering, paper. */
+.services-page,
+.about-page,
+.reader-page {
+  --line: rgba(18, 18, 18, 0.22);
+  color: #121212;
+  background: #f5f3e9;
+  background-image: none;
+  padding-top: 145px;
+  padding-left: 7%;
+  padding-right: 7%;
+}
+.services-page .eyebrow,
+.about-page .eyebrow,
+.reader-page .eyebrow,
+.guide-dialog .eyebrow {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #121212;
+}
+.services-page .page-intro {
+  text-align: center;
+  min-height: 68vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0 50px;
+  padding-bottom: 50px;
+}
+.services-page .page-intro .eyebrow {
+  margin-bottom: 34px;
+}
+.services-page .page-intro h1,
+.about-layout h1,
+.reader-title h1 {
+  font-family: "Bodoni Moda", "Times New Roman", serif;
+  font-weight: 700;
+  font-size: clamp(70px, 9.8vw, 150px);
+  line-height: 0.9;
+  letter-spacing: -0.065em;
+  text-transform: uppercase;
+  color: #121212;
+}
+.services-page .page-intro h1 em,
+.about-layout h1 em,
+.reader-title h1 em {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: inherit;
+  color: inherit;
+}
+.services-page .page-intro p {
+  font-size: 15px;
+  line-height: 1.55;
+  color: #353535;
+  max-width: 490px;
+  margin-top: 30px;
+}
+.service-detail {
+  grid-template-columns: 1fr;
+  gap: 24px;
+  padding: 58px 0 88px;
+  min-height: 77vh;
+  border-color: #121212;
+  position: relative;
+  scroll-margin-top: 85px;
+}
+.service-detail:before,
+.service-detail:after {
+  content: "✦";
+  position: absolute;
+  top: -9px;
+  background: #f5f3e9;
+  line-height: 1;
+  font-size: 18px;
+  color: #c82924;
+}
+.service-detail:before {
+  left: -4px;
+}
+.service-detail:after {
+  right: -4px;
+}
+.service-detail > .mono {
+  color: #c82924;
+  font:
+    700 11px/1.3 "DM Sans",
+    sans-serif;
+  text-align: center;
+  padding: 0;
+  letter-spacing: 0.005em;
+}
+.service-detail > div {
+  max-width: 930px;
+  width: 100%;
+  margin: 0 auto;
+}
+.service-detail h2 {
+  font-family: "Bodoni Moda", "Times New Roman", serif;
+  text-transform: uppercase;
+  font-size: clamp(47px, 6.3vw, 92px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  text-align: center;
+}
+.service-lead {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  margin: 28px auto 45px;
+  max-width: 480px;
+}
+.service-detail-columns {
+  max-width: 800px;
+  margin: 0 auto;
+  gap: 70px;
+  border-top: 1px solid #b7b7b0;
+  padding-top: 26px;
+}
+.service-detail-columns .eyebrow {
+  font-size: 12px;
+}
+.service-detail ul {
+  margin-top: 20px;
+}
+.service-detail li {
+  font-size: 14px;
+  color: #242424;
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+.service-detail li:before {
+  color: #c82924;
+}
+.service-detail-columns p {
+  font-size: 14px;
+  color: #383838;
+  line-height: 1.6;
+}
+.service-detail-actions {
+  justify-content: center;
+  margin-top: 42px;
+  gap: 30px;
+}
+.service-detail-actions .button,
+.about-contact .button,
+.reader-commission .button,
+.original-source {
+  background: #121212;
+  color: #f5f3e9;
+  border: 2px solid #121212;
+  font:
+    700 12px/1.25 "DM Sans",
+    sans-serif;
+  text-transform: uppercase;
+  border-radius: 0;
+  letter-spacing: 0.005em;
+  min-height: 49px;
+}
+.service-detail-actions .button:hover,
+.about-contact .button:hover,
+.reader-commission .button:hover,
+.original-source:hover {
+  color: #c82924;
+  background: #f5f3e9;
+  border-color: #c82924;
+}
+.service-detail-actions .text-link {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.working-notes {
+  border-color: #121212;
+  padding: 70px 0 35px;
+  gap: 35px 60px;
+}
+.working-notes .eyebrow {
+  color: #c82924;
+}
+.working-notes h2 {
+  font-family: "Bodoni Moda", serif;
+  text-transform: uppercase;
+  font-size: clamp(40px, 4.3vw, 65px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+.working-notes h2 em {
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: normal;
+}
+.working-notes p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Behind the signal is a chapter, rather than a business-profile card. */
+.about-layout {
+  display: block;
+}
+.about-layout > div:first-child {
+  text-align: center;
+}
+.about-layout > div:first-child > .eyebrow {
+  justify-content: center;
+  margin: 25px 0 36px;
+}
+.about-layout h1 {
+  margin-bottom: 40px;
+}
+.about-layout .about-intro {
+  font-family: "Bodoni Moda", serif;
+  font-weight: 700;
+  font-size: clamp(29px, 3.3vw, 45px);
+  text-transform: uppercase;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: #121212;
+  margin: 0 auto 34px;
+  max-width: 650px;
+}
+.about-layout p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+  margin: 0 auto 18px;
+  max-width: 630px;
+}
+.about-art {
+  width: 100%;
+  max-width: 950px;
+  aspect-ratio: 1.9;
+  background: #f5f3e9;
+  margin: 30px auto 20px;
+  border-bottom: 1px solid #121212;
+}
+.about-art .receiver-art {
+  filter: grayscale(1) invert(1) contrast(1.35);
+  width: 70%;
+  max-width: 720px;
+  transform: scale(1.2);
+}
+.about-art > .mono {
+  bottom: 20px;
+  color: #121212;
+  font:
+    700 10px/1.3 "DM Sans",
+    sans-serif;
+}
+.about-art-orbit {
+  border-color: #121212;
+  opacity: 0.14;
+  width: 45%;
+  height: 86%;
+}
+.about-art-orbit:before,
+.about-art-orbit:after {
+  border-color: #121212;
+}
+.about-principles {
+  margin-top: 52px;
+  border-color: #121212;
+}
+.about-principles > .eyebrow {
+  color: #c82924;
+  padding: 28px 0;
+}
+.about-principles > div {
+  border-color: #b9b9b0;
+  grid-template-columns: 60px 1fr 1fr;
+  padding: 38px 0;
+  gap: 35px;
+}
+.about-principles > div > .mono {
+  color: #c82924;
+  font:
+    700 12px "DM Sans",
+    sans-serif;
+}
+.about-principles h3 {
+  font-family: "Bodoni Moda", serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 35px;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.about-principles p {
+  color: #333;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.about-contact {
+  background: transparent;
+  border-top: 1px solid #121212;
+  margin-top: 50px;
+  padding: 80px 15px 25px;
+}
+.about-contact .eyebrow {
+  color: #c82924;
+}
+.about-contact h2 {
+  font-family: "Bodoni Moda", serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(45px, 5.2vw, 78px);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  max-width: 900px;
+  margin: 32px 0;
+}
+.about-contact h2 em {
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: normal;
+}
+.about-contact > a {
+  border-color: #121212;
+  font:
+    400 22px/1.5 "DM Sans",
+    sans-serif;
+  margin-bottom: 30px;
+}
+.about-contact > a:hover {
+  color: #c82924;
+}
+
+/* The reading page keeps real prose readable beneath the cinematic title. */
+.reader-page {
+  padding-top: 104px;
+  padding-bottom: 65px;
+}
+.reader-toolbar {
+  border-color: #121212;
+  padding: 20px 0;
+  text-transform: uppercase;
+  font:
+    700 11px/1.3 "DM Sans",
+    sans-serif;
+}
+.reader-toolbar > a:hover,
+.reader-toolbar > button:hover {
+  color: #c82924;
+}
+.annotation-toggle {
+  font-size: 10px;
+}
+.toggle-track {
+  border-color: #121212;
+  background: #deded5;
+}
+.toggle-track:after {
+  background: #121212;
+}
+.annotation-toggle input:checked + .toggle-track {
+  background: #121212;
+  border-color: #121212;
+}
+.annotation-toggle input:checked + .toggle-track:after {
+  background: #f5f3e9;
+}
+.annotation-toggle input:focus-visible + .toggle-track {
+  outline-color: #c82924;
+}
+.reader-progress {
+  background: #c82924;
+}
+.reader-header {
+  padding-top: 45px;
+  border-color: #121212;
+}
+.reader-header > .eyebrow {
+  justify-content: center;
+  color: #c82924;
+}
+.reader-title {
+  grid-template-columns: 1fr;
+  gap: 20px;
+  text-align: center;
+  margin: 38px 0 30px;
+}
+.reader-title h1 {
+  font-size: clamp(64px, 8.6vw, 132px);
+  overflow-wrap: anywhere;
+}
+.reader-title h1 em {
+  display: block;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 400;
+  text-transform: none;
+  font-size: 18px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  max-width: 650px;
+  margin: 28px auto 0;
+}
+.reader-title p {
+  color: #424242;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 640px;
+  margin: 20px auto;
+}
+.reader-meta {
+  justify-content: center;
+  color: #121212;
+  font:
+    700 10px/1.4 "DM Sans",
+    sans-serif;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.reader-meta .status i {
+  border-color: #121212;
+}
+.reader-meta .status i.published {
+  background: #c82924;
+}
+.reader-title > .receiver-art {
+  max-width: 560px;
+  width: 100%;
+  aspect-ratio: 1.9;
+  height: auto;
+  margin: 0 auto;
+  justify-self: center;
+  filter: grayscale(1) invert(1) contrast(1.35);
+  background: transparent;
+}
+.source-disclosure {
+  border: 1px solid #121212;
+  background: transparent;
+  padding: 18px 22px;
+  gap: 25px;
+}
+.source-disclosure > .mono {
+  color: #c82924;
+  font:
+    700 10px/1.5 "DM Sans",
+    sans-serif;
+}
+.source-disclosure > p {
+  color: #3c3c3c;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.reader-body {
+  padding-top: 60px;
+  gap: 40px;
+  grid-template-columns: 18% minmax(0, 1fr) 15%;
+}
+.reader-outline,
+.reader-side {
+  top: 105px;
+}
+.reader-outline > .eyebrow,
+.reader-side > .eyebrow {
+  font-size: 10px;
+  line-height: 1.4;
+}
+.reader-outline > a {
+  color: #535353;
+  font-size: 11px;
+  line-height: 1.45;
+  margin-bottom: 18px;
+}
+.reader-outline > a > .mono {
+  color: #c82924;
+  font:
+    700 10px "DM Sans",
+    sans-serif;
+}
+.reader-outline > a:hover {
+  color: #121212;
+}
+.reader-outline-footer {
+  color: #666;
+  border-color: #b9b9b0;
+  font:
+    700 9px/1.6 "DM Sans",
+    sans-serif;
+  letter-spacing: 0;
+}
+.reader-copy h2 {
+  font-family: "Bodoni Moda", serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+.chapter-number {
+  font:
+    700 11px "DM Sans",
+    sans-serif;
+  color: #c82924;
+}
+.reader-copy > section > p {
+  font-size: 21px;
+  color: #252525;
+  line-height: 1.75;
+}
+.inline-note {
+  background: #eae8df;
+  border-color: #c82924;
+  padding: 18px 22px;
+}
+.inline-note > .mono {
+  color: #c82924;
+  font:
+    700 10px/1.4 "DM Sans",
+    sans-serif;
+  letter-spacing: 0;
+}
+.inline-note > p {
+  color: #333;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.reader-side dt {
+  color: #c82924;
+  font:
+    700 10px "DM Sans",
+    sans-serif;
+}
+.reader-side dd {
+  color: #333;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.reader-side > p {
+  color: #121212;
+  font:
+    700 20px/1.15 "Bodoni Moda",
+    serif;
+  text-transform: uppercase;
+  border-color: #b9b9b0;
+  font-style: normal;
+  letter-spacing: -0.025em;
+}
+.reader-endmark {
+  color: #c82924;
+}
+.reader-commission {
+  background: #121212;
+  color: #f5f3e9;
+  padding: 42px;
+}
+.reader-commission .eyebrow {
+  color: #f5f3e9;
+  font-size: 10px;
+}
+.reader-commission h2 {
+  text-transform: uppercase;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  margin: 24px 0 30px;
+}
+.reader-commission h2 em {
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: normal;
+}
+.reader-commission .button {
+  background: #f5f3e9;
+  color: #121212;
+  border-color: #f5f3e9;
+}
+.reader-commission .button:hover {
+  color: #c82924;
+  border-color: #c82924;
+  background: #f5f3e9;
+}
+.next-transmission {
+  border-color: #121212;
+  padding-top: 35px;
+}
+.next-transmission > .mono {
+  color: #121212;
+  font:
+    700 11px "DM Sans",
+    sans-serif;
+  letter-spacing: 0;
+}
+.next-transmission > a {
+  font:
+    700 32px/1.1 "Bodoni Moda",
+    serif;
+  text-transform: uppercase;
+  letter-spacing: -0.035em;
+}
+.next-transmission > a:hover {
+  color: #c82924;
+}
+.frequency-game {
+  background: #1d1d1d;
+  color: #f5f3e9;
+  border: 2px solid #121212;
+  padding: 32px;
+}
+.frequency-game > .mono,
+.frequency-game > label,
+.frequency-game > p {
+  color: #f5f3e9;
+  font-family: "DM Sans", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0;
+}
+.signal-number {
+  font:
+    700 70px/1 "Bodoni Moda",
+    serif;
+  color: #f5f3e9;
+  letter-spacing: -0.04em;
+}
+.signal-number.locked {
+  color: #ee514b;
+}
+.wave-bars > i {
+  background: #f5f3e9;
+}
+.frequency-game > input {
+  accent-color: #c82924;
+}
+
+/* Small semantic controls follow the same hand-inked white-plaque grammar. */
+.contact-dialog,
+.guide-dialog {
+  background: #f5f3e9;
+  color: #121212;
+  border: 3px solid #121212;
+  border-radius: 0;
+  box-shadow:
+    0 0 0 2px #f5f3e9,
+    0 26px 100px #0008;
+}
+.contact-dialog::backdrop,
+.guide-dialog::backdrop {
+  background: #121212c9;
+  backdrop-filter: blur(5px);
+}
+.contact-inner {
+  padding: 35px 40px 28px;
+}
+.contact-topline > span {
+  font:
+    700 11px/1.3 "DM Sans",
+    sans-serif;
+  letter-spacing: 0.005em;
+  color: #121212;
+}
+.contact-topline > span svg {
+  color: #c82924;
+}
+.contact-close,
+.guide-heading .icon-button {
+  color: #121212;
+  border: 2px solid #121212;
+  border-radius: 50%;
+}
+.contact-close:hover,
+.guide-heading .icon-button:hover {
+  background: transparent;
+  color: #c82924;
+  border-color: #c82924;
+}
+.contact-dialog h2,
+.guide-heading h2 {
+  font-family: "Bodoni Moda", serif;
+  font-size: 46px;
+  text-transform: uppercase;
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  max-width: 540px;
+}
+.contact-dialog h2 em,
+.guide-heading h2 em {
+  font-family: inherit;
+  font-style: normal;
+  color: #121212;
+  font-weight: inherit;
+}
+.contact-intro {
+  color: #3d3d3d;
+  font-size: 14px;
+}
+.contact-field {
+  color: #121212;
+  font-size: 12px;
+  font-weight: 600;
+}
+.contact-field > span:not(.contact-optional) {
+  color: #c82924;
+}
+.contact-optional {
+  color: #666;
+}
+.contact-field input,
+.contact-field select,
+.contact-field textarea {
+  background: transparent;
+  border-bottom: 1px solid #121212;
+  color: #121212;
+}
+.contact-field input::placeholder,
+.contact-field textarea::placeholder {
+  color: #737373;
+}
+.contact-field input:hover,
+.contact-field select:hover,
+.contact-field textarea:hover {
+  background: #eeece3;
+  border-color: #121212;
+}
+.contact-field input:focus,
+.contact-field select:focus,
+.contact-field textarea:focus {
+  outline: 2px solid #c82924;
+  border-color: #121212;
+}
+.contact-submit {
+  border: 2px solid #121212;
+  background: #121212;
+  color: #f5f3e9;
+  text-transform: uppercase;
+  font:
+    700 12px/1.3 "DM Sans",
+    sans-serif;
+}
+.contact-submit:hover {
+  color: #c82924;
+  border-color: #c82924;
+  background: #f5f3e9;
+}
+.contact-send-note,
+.contact-privacy {
+  color: #555;
+}
+.contact-status {
+  color: #121212;
+  background: #eae8df;
+  border-color: #c82924;
+}
+.contact-direct {
+  border-color: #121212;
+}
+.contact-direct-label {
+  color: #555;
+  font:
+    700 10px/1.3 "DM Sans",
+    sans-serif;
+  letter-spacing: 0;
+}
+.contact-direct a {
+  color: #121212;
+  font:
+    400 17px/1.4 "DM Sans",
+    sans-serif;
+  text-decoration-color: #121212;
+}
+.contact-direct a:hover {
+  color: #c82924;
+  text-decoration-color: #c82924;
+}
+.contact-copy {
+  color: #121212;
+  border: 1px solid #121212;
+  font-weight: 600;
+}
+.contact-copy:hover {
+  color: #c82924;
+  border-color: #c82924;
+  background: transparent;
+}
+.contact-privacy button {
+  color: #121212;
+}
+.contact-dialog button:focus-visible,
+.contact-dialog a:focus-visible {
+  outline-color: #c82924;
+}
+.guide-inner {
+  padding: 32px 35px;
+}
+.guide-heading .eyebrow {
+  color: #c82924;
+  font-size: 10px;
+}
+.guide-dialog .search-field {
+  background: transparent;
+  border: 1px solid #121212;
+}
+.guide-dialog .search-field > svg {
+  color: #121212;
+}
+.guide-dialog .search-field input {
+  color: #121212;
+  font-size: 13px;
+}
+.guide-dialog .search-field input::placeholder {
+  color: #666;
+}
+.guide-dialog .search-field:focus-within {
+  outline-color: #c82924;
+}
+.guide-results > button {
+  border-color: #aaa9a1;
+  padding: 20px 8px;
+}
+.guide-results > button:hover {
+  background: #e6e4dc;
+}
+.guide-results > button > .mono {
+  color: #c82924;
+  font:
+    700 10px/1.3 "DM Sans",
+    sans-serif;
+}
+.guide-results strong {
+  font:
+    700 25px/1.1 "Bodoni Moda",
+    serif;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+}
+.guide-results > button > div > span {
+  color: #555;
+  font-size: 11px;
+}
+.guide-empty {
+  color: #444;
+}
+.guide-footer {
+  border-color: #121212;
+  color: #121212;
+  font:
+    700 9px/1.4 "DM Sans",
+    sans-serif;
+  letter-spacing: 0;
+}
+.guide-footer a:hover {
+  color: #c82924;
+}
+
+/* The final chapter switches the entire signal to vermilion. */
+.contact-banner {
+  background: #c82924;
+  border: 0;
+  color: #f5f3e9;
+  padding: 110px 5% 100px;
+}
+.contact-banner:before {
+  opacity: 0.06;
+}
+.contact-banner > .eyebrow {
+  font:
+    700 11px/1.3 "DM Sans",
+    sans-serif;
+  letter-spacing: 0.005em;
+  color: #f5f3e9;
+}
+.contact-banner h2 {
+  font:
+    700 clamp(55px, 7vw, 105px)/0.92 "Bodoni Moda",
+    serif;
+  text-transform: uppercase;
+  letter-spacing: -0.06em;
+  margin: 40px auto;
+  max-width: 1100px;
+}
+.contact-banner h2 em {
+  font-family: inherit;
+  font-weight: inherit;
+  font-style: normal;
+  color: #f5f3e9;
+}
+.contact-banner > .button {
+  background: #f5f3e9;
+  color: #121212;
+  border: 2px solid #121212;
+  text-transform: uppercase;
+  font:
+    700 12px/1.3 "DM Sans",
+    sans-serif;
+}
+.contact-banner > .button:hover {
+  color: #c82924;
+  background: #f5f3e9;
+}
+.contact-banner > a {
+  color: #f5f3e9;
+  font-size: 13px;
+  margin-top: 24px;
+}
+.contact-banner-orbit {
+  opacity: 0.035;
+  color: #121212;
+  font-variant-emoji: text;
+}
+.site-footer {
+  background: #121212;
+  color: #f5f3e9;
+  padding: 65px 4% 0;
+  grid-template-columns: 1fr 1fr;
+  gap: 55px;
+}
+.site-footer > div:nth-child(2) {
+  display: none;
+}
+.site-footer > .brand {
+  align-self: start;
+}
+.footer-links {
+  align-items: flex-end;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  gap: 20px;
+}
+.footer-links a {
+  gap: 50px;
+}
+.footer-links a:hover {
+  color: #e75a51;
+}
+.footer-bottom {
+  color: #c7c7c7;
+  border-color: #f5f3e94d;
+  font:
+    500 10px/1.4 "DM Sans",
+    sans-serif;
+  letter-spacing: 0;
+  padding: 23px 0;
+}
+.footer-bottom > button {
+  color: #f5f3e9;
+  font: inherit;
+}
+.footer-bottom > button:hover {
+  color: #e75a51;
+}
+
+@media (max-width: 1000px) {
+  .services-page,
+  .about-page,
+  .reader-page {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+  .service-detail {
+    min-height: 70vh;
+  }
+  .reader-body {
+    gap: 27px;
+    grid-template-columns: 18% minmax(0, 1fr);
+  }
+  .reader-side {
+    display: none;
+  }
+  .about-principles > div {
+    gap: 24px;
+    grid-template-columns: 40px 1fr 1fr;
+  }
+  .about-principles h3 {
+    font-size: 30px;
+  }
+}
+@media (max-width: 800px) {
+  .services-page,
+  .about-page {
+    padding-top: 125px;
+    padding-bottom: 60px;
+  }
+  .services-page .page-intro {
+    min-height: 55vh;
+    padding-bottom: 35px;
+    margin-bottom: 25px;
+  }
+  .services-page .page-intro h1,
+  .about-layout h1 {
+    font-size: clamp(64px, 13vw, 105px);
+    line-height: 0.92;
+  }
+  .services-page .page-intro .eyebrow {
+    font-size: 10px;
+    margin-bottom: 30px;
+  }
+  .services-page .page-intro p {
+    font-size: 14px;
+    margin-top: 25px;
+  }
+  .service-detail {
+    padding: 42px 0 55px;
+    gap: 25px;
+    min-height: 0;
+  }
+  .service-detail h2 {
+    font-size: clamp(43px, 8vw, 62px);
+  }
+  .service-detail > .mono {
+    font-size: 10px;
+  }
+  .service-lead {
+    margin-top: 24px;
+    margin-bottom: 32px;
+    font-size: 15px;
+  }
+  .service-detail-columns {
+    gap: 30px;
+  }
+  .service-detail li,
+  .service-detail-columns p {
+    font-size: 13px;
+  }
+  .service-detail-columns .eyebrow {
+    font-size: 10px;
+  }
+  .service-detail-actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin-top: 30px;
+  }
+  .service-detail-actions .button {
+    font-size: 11px;
+  }
+  .service-detail-actions .text-link {
+    font-size: 10px;
+  }
+  .working-notes {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-top: 48px;
+  }
+  .working-notes h2 {
+    font-size: 45px;
+  }
+  .working-notes p {
+    font-size: 14px;
+  }
+  .about-layout > div:first-child > .eyebrow {
+    font-size: 10px;
+    margin-top: 0;
+  }
+  .about-layout .about-intro {
+    font-size: 32px;
+    max-width: 400px;
+  }
+  .about-layout p {
+    font-size: 14px;
+    max-width: 520px;
+  }
+  .about-art {
+    aspect-ratio: 1.4;
+    margin-top: 30px;
+  }
+  .about-art .receiver-art {
+    width: 100%;
+  }
+  .about-art > .mono {
+    font-size: 9px;
+    bottom: 15px;
+  }
+  .about-art-orbit {
+    width: 65%;
+    height: 88%;
+  }
+  .about-principles > .eyebrow {
+    font-size: 10px;
+    padding: 25px 0;
+  }
+  .about-principles > div {
+    grid-template-columns: 28px 1fr;
+    gap: 16px;
+    padding: 30px 0;
+  }
+  .about-principles p {
+    grid-column: 2;
+    font-size: 13px;
+  }
+  .about-principles h3 {
+    font-size: 31px;
+  }
+  .about-principles > div > .mono {
+    font-size: 11px;
+  }
+  .about-contact {
+    padding: 55px 0 5px;
+    margin-top: 40px;
+  }
+  .about-contact h2 {
+    font-size: clamp(42px, 7.5vw, 62px);
+    margin: 30px 0;
+  }
+  .about-contact > a {
+    font-size: 20px;
+    gap: 15px;
+  }
+  .about-contact > .eyebrow {
+    font-size: 9px;
+  }
+  .reader-page {
+    padding-top: 102px;
+    padding-bottom: 45px;
+  }
+  .reader-toolbar {
+    font-size: 10px;
+    gap: 12px;
+  }
+  .annotation-toggle {
+    font-size: 9px;
+    gap: 7px;
+  }
+  .reader-header {
+    padding-top: 32px;
+  }
+  .reader-header > .eyebrow {
+    font-size: 10px;
+  }
+  .reader-title {
+    margin-top: 32px;
+    gap: 18px;
+  }
+  .reader-title h1 {
+    font-size: clamp(50px, 10.3vw, 82px);
+    line-height: 0.97;
+  }
+  .reader-title h1 em {
+    font-size: 16px;
+    line-height: 1.45;
+    margin-top: 24px;
+  }
+  .reader-title p {
+    font-size: 13px;
+  }
+  .reader-meta {
+    font-size: 9px;
+    gap: 15px;
+  }
+  .reader-title > .receiver-art {
+    max-width: 450px;
+    aspect-ratio: 1.8;
+  }
+  .source-disclosure {
+    padding: 16px 18px;
+    gap: 10px;
+  }
+  .source-disclosure > .mono {
+    font-size: 10px;
+  }
+  .source-disclosure > p {
+    font-size: 11px;
+  }
+  .reader-body {
+    display: flex;
+    padding-top: 35px;
+    gap: 30px;
+  }
+  .reader-outline {
+    position: static;
+    padding-bottom: 18px;
+    border-color: #121212;
+  }
+  .reader-outline > .eyebrow {
+    font-size: 9px;
+    margin-bottom: 15px;
+  }
+  .reader-outline > a {
+    font-size: 10px;
+    margin-right: 15px;
+    margin-bottom: 13px;
+  }
+  .reader-outline > a > .mono {
+    font-size: 9px;
+  }
+  .reader-copy h2 {
+    font-size: 35px;
+  }
+  .reader-copy > section > p {
+    font-size: 20px;
+  }
+  .inline-note {
+    padding: 16px 18px;
+  }
+  .inline-note > .mono {
+    font-size: 9px;
+  }
+  .inline-note > p {
+    font-size: 12px;
+  }
+  .reader-commission {
+    padding: 32px 25px;
+  }
+  .reader-commission h2 {
+    font-size: 40px;
+  }
+  .reader-commission .eyebrow {
+    font-size: 9px;
+  }
+  .next-transmission > .mono {
+    font-size: 9px;
+  }
+  .next-transmission > a {
+    font-size: 25px;
+    gap: 15px;
+  }
+  .contact-banner {
+    padding: 75px 6% 70px;
+  }
+  .contact-banner h2 {
+    font-size: clamp(50px, 9vw, 76px);
+    line-height: 0.96;
+    margin: 32px auto;
+  }
+  .contact-banner > .eyebrow {
+    font-size: 9px;
+    max-width: 300px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .contact-banner > .button {
+    font-size: 11px;
+  }
+  .contact-banner > a {
+    font-size: 12px;
+  }
+  .site-footer {
+    padding: 45px 6% 0;
+    gap: 35px;
+  }
+  .footer-links {
+    font-size: 10px;
+    gap: 18px;
+  }
+  .footer-links a {
+    gap: 20px;
+  }
+  .footer-bottom {
+    font-size: 8px;
+    padding: 20px 0;
+  }
+}
+@media (max-width: 560px) {
+  .services-page,
+  .about-page {
+    padding-top: 115px;
+  }
+  .services-page .page-intro {
+    min-height: 48vh;
+  }
+  .services-page .page-intro h1,
+  .about-layout h1 {
+    font-size: 62px;
+  }
+  .services-page .page-intro .eyebrow {
+    font-size: 8px;
+    line-height: 1.5;
+  }
+  .service-detail h2 {
+    font-size: 45px;
+  }
+  .service-detail-columns {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .service-detail-columns p {
+    max-width: none;
+  }
+  .service-detail-columns .eyebrow {
+    font-size: 11px;
+  }
+  .service-detail-actions .text-link {
+    text-align: center;
+  }
+  .working-notes h2 {
+    font-size: 41px;
+  }
+  .about-layout > div:first-child > .eyebrow {
+    font-size: 9px;
+  }
+  .about-layout h1 {
+    font-size: 64px;
+  }
+  .about-layout .about-intro {
+    font-size: 29px;
+  }
+  .about-art {
+    aspect-ratio: 1.15;
+  }
+  .about-principles h3 {
+    font-size: 27px;
+  }
+  .about-contact h2 {
+    font-size: 40px;
+  }
+  .about-contact > a {
+    font-size: 18px;
+    gap: 10px;
+  }
+  .reader-toolbar {
+    font-size: 8px;
+    gap: 8px;
+  }
+  .annotation-toggle {
+    font-size: 8px;
+  }
+  .reader-title h1 {
+    font-size: 53px;
+  }
+  .reader-title h1 em {
+    font-size: 15px;
+  }
+  .reader-header > .eyebrow {
+    font-size: 9px;
+  }
+  .reader-meta {
+    font-size: 8px;
+  }
+  .reader-copy h2 {
+    font-size: 32px;
+  }
+  .reader-copy > section > p {
+    font-size: 19px;
+  }
+  .reader-commission h2 {
+    font-size: 36px;
+  }
+  .reader-commission .button {
+    font-size: 10px;
+    gap: 20px;
+  }
+  .next-transmission {
+    gap: 15px;
+  }
+  .next-transmission > .mono {
+    font-size: 8px;
+  }
+  .next-transmission > a {
+    font-size: 21px;
+    gap: 10px;
+  }
+  .frequency-game {
+    padding: 25px 20px;
+  }
+  .frequency-game > .mono,
+  .frequency-game > label {
+    font-size: 9px;
+  }
+  .contact-inner {
+    padding: 25px 22px;
+  }
+  .contact-topline {
+    margin-bottom: 26px;
+    gap: 10px;
+  }
+  .contact-topline > span {
+    font-size: 9px;
+    line-height: 1.4;
+    gap: 8px;
+  }
+  .contact-dialog h2 {
+    font-size: 34px;
+    line-height: 1;
+  }
+  .contact-intro {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .contact-field {
+    font-size: 11px;
+  }
+  .contact-optional {
+    font-size: 9px;
+  }
+  .contact-field-row {
+    gap: 14px;
+  }
+  .contact-field input,
+  .contact-field select,
+  .contact-field textarea {
+    font-size: 12px;
+  }
+  .contact-compose-row {
+    gap: 12px;
+  }
+  .contact-submit {
+    min-height: 48px;
+    font-size: 11px;
+  }
+  .contact-direct a {
+    font-size: 15px;
+  }
+  .contact-direct-label {
+    font-size: 8px;
+  }
+  .contact-copy {
+    font-size: 10px;
+  }
+  .contact-privacy {
+    font-size: 9px;
+  }
+  .guide-inner {
+    padding: 26px 20px;
+  }
+  .guide-heading h2 {
+    font-size: 37px;
+  }
+  .guide-heading .eyebrow {
+    font-size: 8px;
+  }
+  .guide-results > button {
+    gap: 13px;
+    padding: 18px 3px;
+  }
+  .guide-results > button > .mono {
+    font-size: 8px;
+  }
+  .guide-results strong {
+    font-size: 22px;
+  }
+  .guide-results > button > div > span {
+    font-size: 10px;
+  }
+  .guide-footer {
+    font-size: 8px;
+  }
+  .contact-banner h2 {
+    font-size: 49px;
+  }
+  .contact-banner > .eyebrow {
+    font-size: 8px;
+  }
+  .site-footer {
+    gap: 30px 20px;
+  }
+  .footer-links {
+    font-size: 9px;
+  }
+  .footer-links a {
+    gap: 12px;
+  }
+}
+@media (max-width: 380px) {
+  .services-page .page-intro h1,
+  .about-layout h1 {
+    font-size: 56px;
+  }
+  .service-detail h2 {
+    font-size: 40px;
+  }
+  .contact-dialog h2 {
+    font-size: 31px;
+  }
+  .contact-direct a {
+    font-size: 14px;
+  }
+  .reader-title h1 {
+    font-size: 47px;
+  }
+  .reader-toolbar {
+    font-size: 7px;
+  }
+  .annotation-toggle {
+    font-size: 7px;
+  }
+  .reader-commission h2 {
+    font-size: 33px;
+  }
+  .contact-banner h2 {
+    font-size: 44px;
+  }
+}
