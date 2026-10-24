@@ -20,6 +20,7 @@ import {
   type Transmission,
 } from "../data/transmissions";
 import "./reference-archive.css";
+import { TreatmentIndex } from "./ProjectTreatment";
 
 function storedView(): "grid" | "list" {
   try {
@@ -485,6 +486,7 @@ export default function ReferenceArchive({
             </button>
           </div>
         )}
+        <TreatmentIndex />
         <details className="signal-vault">
           <summary>
             <div>

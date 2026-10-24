@@ -44,3 +44,9 @@ The supplied document is a product/design brief, not evidence of completed deliv
 Before presenting this as a complete commercial archive, supply permission-cleared article excerpts and client artifacts, confirm credits, and promote entries in `src/data/transmissions.ts` only when supporting content is available. No rankings, traffic, revenue, customer outcomes, or client endorsements are fabricated.
 
 See [reference study](docs/reference-study.md), [visual map](docs/reference-visual-map.md), [content readiness](docs/content-readiness.md), and [validation](docs/validation.md).
+
+## Project worlds and motion bible
+
+Open **Index → World & motion** for the browsable `/design-system` guide. The catalogue also includes a complete nineteen-channel presentation index. Each `/work/<slug>/treatment` route contains a proposed story kernel, three illustrated chapters, an interactive motif, director notes, six clearly labelled content slots, references, next-channel navigation, and a relevant inquiry action. Unreleased project routes now open their presentation shell without being promoted to verified work.
+
+Edit `src/data/treatments.json` to change a project's proposed identity, story, motif, accent, chapters, assets, or reference. Supply exact work and provenance separately in `src/data/transmissions.ts`. [The network bible](docs/network-bible.md) documents each project's scene sequence, motion direction, planned exact-work module, mobile behavior, and reference. Working prototypes and future asset-dependent choreography remain explicitly distinguished.

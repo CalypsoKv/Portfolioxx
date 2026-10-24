@@ -41,6 +41,8 @@ import ReceiverArt from "./components/ReceiverArt";
 import ContactDialog from "./components/ContactDialog";
 import CinematicHome from "./components/CinematicHome";
 import ReferenceArchive from "./components/ReferenceArchive";
+import ProjectTreatment from "./components/ProjectTreatment";
+import DesignSystem from "./components/DesignSystem";
 
 function readMemory(key: string, fallback: string) {
   try {
@@ -212,6 +214,9 @@ export default function App() {
           <NavLink to="/catalogue">
             Archive <kbd>G</kbd>
           </NavLink>
+          <NavLink className="secondary-link" to="/design-system">
+            World & motion
+          </NavLink>
           <NavLink className="secondary-link" to="/services">
             Services
           </NavLink>
@@ -233,6 +238,11 @@ export default function App() {
       </header>
       <main id="main">
         <Routes>
+          <Route path="/design-system" element={<DesignSystem />} />
+          <Route
+            path="/work/:slug/treatment"
+            element={<TreatmentRoute openContact={openContact} />}
+          />
           <Route
             path="/"
             element={
@@ -552,7 +562,9 @@ function Reader({
     window.addEventListener("scroll", scroll, { passive: true });
     return () => window.removeEventListener("scroll", scroll);
   }, []);
-  if (!item || item.status === "vault")
+  if (item?.status === "vault")
+    return <ProjectTreatment item={item} openContact={openContact} />;
+  if (!item)
     return (
       <div className="not-found">
         <span className="eyebrow">SIGNAL IN RESTORATION</span>
@@ -572,142 +584,150 @@ function Reader({
     }
   };
   return (
-    <article className="reader-page paper-section">
-      <div className="reader-toolbar">
-        <Link to="/catalogue">
-          <ArrowLeft size={15} /> Programme guide
+    <>
+      <div className="treatment-project-link">
+        <Link to={`/work/${item.slug}/treatment`}>
+          Explore the proposed story, visual identity & animation treatment{" "}
+          <Arrow />
         </Link>
-        <label className="annotation-toggle">
-          <input
-            type="checkbox"
-            checked={annotations}
-            onChange={(e) => setAnnotations(e.target.checked)}
-          />
-          <span className="toggle-track" /> Strategic notes
-        </label>
-        <button onClick={copyLink} aria-label="Copy transmission link">
-          {copied ? <Check size={16} /> : <Copy size={16} />}
-          <span>{copied ? "Copied" : "Copy link"}</span>
-        </button>
       </div>
-      <div className="reader-progress" style={{ width: `${progress}%` }} />
-      <header className="reader-header">
-        <span className="eyebrow">
-          CH. {item.id} / {item.frequency.toUpperCase()} / {item.year}
-        </span>
-        <div className="reader-title">
-          <div>
-            <h1>
-              {item.title}
-              <em>{item.subtitle}</em>
-            </h1>
-            <p>{item.summary}</p>
-            <div className="reader-meta mono">
-              <span className="status">
-                <i className={item.status} />
-                {statusLabel(item.status)}
-              </span>
-              <span>{item.reading} MIN READ</span>
+      <article className="reader-page paper-section">
+        <div className="reader-toolbar">
+          <Link to="/catalogue">
+            <ArrowLeft size={15} /> Programme guide
+          </Link>
+          <label className="annotation-toggle">
+            <input
+              type="checkbox"
+              checked={annotations}
+              onChange={(e) => setAnnotations(e.target.checked)}
+            />
+            <span className="toggle-track" /> Strategic notes
+          </label>
+          <button onClick={copyLink} aria-label="Copy transmission link">
+            {copied ? <Check size={16} /> : <Copy size={16} />}
+            <span>{copied ? "Copied" : "Copy link"}</span>
+          </button>
+        </div>
+        <div className="reader-progress" style={{ width: `${progress}%` }} />
+        <header className="reader-header">
+          <span className="eyebrow">
+            CH. {item.id} / {item.frequency.toUpperCase()} / {item.year}
+          </span>
+          <div className="reader-title">
+            <div>
+              <h1>
+                {item.title}
+                <em>{item.subtitle}</em>
+              </h1>
+              <p>{item.summary}</p>
+              <div className="reader-meta mono">
+                <span className="status">
+                  <i className={item.status} />
+                  {statusLabel(item.status)}
+                </span>
+                <span>{item.reading} MIN READ</span>
+              </div>
+            </div>
+            <ReceiverArt frequency={item.frequency} />
+          </div>
+          <div className="source-disclosure">
+            <span className="mono">SOURCE NOTE</span>
+            <p>
+              {item.status === "published"
+                ? "The supplied PRD identifies Jahan’s published byline. The text below is new portfolio commentary, not the original article."
+                : item.status === "analysis"
+                  ? "Contextual field analysis. Jahan’s contribution to the original report is unconfirmed; no authorship is claimed."
+                  : "Self-initiated concept. This is an illustrative exploration, not a claim of paid client work or a shipped product."}
+            </p>
+          </div>
+        </header>
+        <div className="reader-body">
+          <aside className="reader-outline">
+            <span className="eyebrow">IN THIS TRANSMISSION</span>
+            {item.sections?.map((section, i) => (
+              <a key={section.title} href={`#chapter-${i}`}>
+                <span className="mono">0{i + 1}</span>
+                {section.title}
+              </a>
+            ))}
+            <div className="reader-outline-footer mono">
+              {item.status === "published"
+                ? "BYLINE REPORTED / 2020"
+                : item.status === "analysis"
+                  ? "FIELD ANALYSIS"
+                  : "CONCEPT / EXPLORATION"}
+              <br />
+              FOLLOW THE SIGNAL ↗
+            </div>
+          </aside>
+          <div className="reader-copy">
+            {item.slug === "game-prototype" && <FrequencyGame />}
+            {item.sections?.map((section, i) => (
+              <section id={`chapter-${i}`} key={section.title}>
+                <span className="chapter-number mono">0{i + 1} /</span>
+                <h2>{section.title}</h2>
+                <p>{section.text}</p>
+                {annotations && section.note && (
+                  <aside className="inline-note">
+                    <span className="mono">↳ STRATEGIC NOTE 0{i + 1}</span>
+                    <p>{section.note}</p>
+                  </aside>
+                )}
+              </section>
+            ))}
+            {item.source && (
+              <a
+                className="button button-ink original-source"
+                href={item.source}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Locate original publication <ExternalLink size={16} />
+              </a>
+            )}
+            <div className="reader-endmark">✳</div>
+            <div className="reader-commission">
+              <span className="eyebrow">YOUR NEXT TRANSMISSION</span>
+              <h2>
+                Something on
+                <br />a similar <em>wavelength?</em>
+              </h2>
+              <button
+                className="button button-ink"
+                onClick={() => openContact(item.frequency)}
+              >
+                Discuss your brief <Arrow />
+              </button>
             </div>
           </div>
-          <ReceiverArt frequency={item.frequency} />
+          <aside className="reader-side">
+            <span className="eyebrow">SIGNAL INFORMATION</span>
+            <dl>
+              <dt>FREQUENCY</dt>
+              <dd>{item.frequency}</dd>
+              <dt>FORMAT</dt>
+              <dd>{item.tags.join(" / ")}</dd>
+              <dt>STATUS</dt>
+              <dd>{statusLabel(item.status)}</dd>
+            </dl>
+            <p>
+              Clear provenance.
+              <br />
+              No invented outcomes.
+            </p>
+          </aside>
         </div>
-        <div className="source-disclosure">
-          <span className="mono">SOURCE NOTE</span>
-          <p>
-            {item.status === "published"
-              ? "The supplied PRD identifies Jahan’s published byline. The text below is new portfolio commentary, not the original article."
-              : item.status === "analysis"
-                ? "Contextual field analysis. Jahan’s contribution to the original report is unconfirmed; no authorship is claimed."
-                : "Self-initiated concept. This is an illustrative exploration, not a claim of paid client work or a shipped product."}
-          </p>
+        <div className="next-transmission">
+          <span className="mono">CONTINUE RECEIVING</span>
+          <Link
+            to={`/work/${liveTransmissions[(liveTransmissions.indexOf(item) + 1) % liveTransmissions.length].slug}`}
+          >
+            Next transmission <ArrowRight />
+          </Link>
         </div>
-      </header>
-      <div className="reader-body">
-        <aside className="reader-outline">
-          <span className="eyebrow">IN THIS TRANSMISSION</span>
-          {item.sections?.map((section, i) => (
-            <a key={section.title} href={`#chapter-${i}`}>
-              <span className="mono">0{i + 1}</span>
-              {section.title}
-            </a>
-          ))}
-          <div className="reader-outline-footer mono">
-            {item.status === "published"
-              ? "BYLINE REPORTED / 2020"
-              : item.status === "analysis"
-                ? "FIELD ANALYSIS"
-                : "CONCEPT / EXPLORATION"}
-            <br />
-            FOLLOW THE SIGNAL ↗
-          </div>
-        </aside>
-        <div className="reader-copy">
-          {item.slug === "game-prototype" && <FrequencyGame />}
-          {item.sections?.map((section, i) => (
-            <section id={`chapter-${i}`} key={section.title}>
-              <span className="chapter-number mono">0{i + 1} /</span>
-              <h2>{section.title}</h2>
-              <p>{section.text}</p>
-              {annotations && section.note && (
-                <aside className="inline-note">
-                  <span className="mono">↳ STRATEGIC NOTE 0{i + 1}</span>
-                  <p>{section.note}</p>
-                </aside>
-              )}
-            </section>
-          ))}
-          {item.source && (
-            <a
-              className="button button-ink original-source"
-              href={item.source}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Locate original publication <ExternalLink size={16} />
-            </a>
-          )}
-          <div className="reader-endmark">✳</div>
-          <div className="reader-commission">
-            <span className="eyebrow">YOUR NEXT TRANSMISSION</span>
-            <h2>
-              Something on
-              <br />a similar <em>wavelength?</em>
-            </h2>
-            <button
-              className="button button-ink"
-              onClick={() => openContact(item.frequency)}
-            >
-              Discuss your brief <Arrow />
-            </button>
-          </div>
-        </div>
-        <aside className="reader-side">
-          <span className="eyebrow">SIGNAL INFORMATION</span>
-          <dl>
-            <dt>FREQUENCY</dt>
-            <dd>{item.frequency}</dd>
-            <dt>FORMAT</dt>
-            <dd>{item.tags.join(" / ")}</dd>
-            <dt>STATUS</dt>
-            <dd>{statusLabel(item.status)}</dd>
-          </dl>
-          <p>
-            Clear provenance.
-            <br />
-            No invented outcomes.
-          </p>
-        </aside>
-      </div>
-      <div className="next-transmission">
-        <span className="mono">CONTINUE RECEIVING</span>
-        <Link
-          to={`/work/${liveTransmissions[(liveTransmissions.indexOf(item) + 1) % liveTransmissions.length].slug}`}
-        >
-          Next transmission <ArrowRight />
-        </Link>
-      </div>
-    </article>
+      </article>
+    </>
   );
 }
 function FrequencyGame() {
@@ -858,5 +878,22 @@ function Guide({
         </div>
       </div>
     </dialog>
+  );
+}
+
+function TreatmentRoute({
+  openContact,
+}: {
+  openContact: (s?: string) => void;
+}) {
+  const { slug } = useParams();
+  const item = transmissions.find((t) => t.slug === slug);
+  return item ? (
+    <ProjectTreatment item={item} openContact={openContact} />
+  ) : (
+    <div className="not-found">
+      <h1>Signal not found.</h1>
+      <Link to="/catalogue">Return to archive</Link>
+    </div>
   );
 }

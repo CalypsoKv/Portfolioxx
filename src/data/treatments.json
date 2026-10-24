@@ -1,0 +1,275 @@
+[
+  {
+    "id": "000",
+    "title": "A borough becomes a constellation",
+    "story": "From isolated voices to shared civic imagination.",
+    "motif": "constellation",
+    "color": "#aebf9f",
+    "chapters": [
+      "A map with no centre",
+      "Connect the voices",
+      "A shared horizon"
+    ],
+    "assets": "Anonymous location pins; participation map; research synthesis; role/source disclosure.",
+    "reference": "The Pudding",
+    "url": "https://pudding.cool/"
+  },
+  {
+    "id": "001",
+    "title": "The first signal",
+    "story": "A personal origin story told as an archaeological dig.",
+    "motif": "strata",
+    "color": "#d6bd94",
+    "chapters": [
+      "Before the broadcast",
+      "Excavate the fragments",
+      "The first transmission"
+    ],
+    "assets": "Early notebooks; dated experiments; personal chronology; first published artifact.",
+    "reference": "Stripe Press",
+    "url": "https://press.stripe.com/"
+  },
+  {
+    "id": "002",
+    "title": "A name finds its voice",
+    "story": "Brand identity unfolds from a single phrase into a coherent world.",
+    "motif": "identity",
+    "color": "#e4bd54",
+    "chapters": [
+      "A word on an empty page",
+      "Give it a voice",
+      "Let the identity travel"
+    ],
+    "assets": "Approved brand story; logo files; voice principles; application mockups.",
+    "reference": "Pentagram",
+    "url": "https://www.pentagram.com/"
+  },
+  {
+    "id": "003",
+    "title": "From reputation to relationship",
+    "story": "Translate a product full of features into a story customers can follow.",
+    "motif": "journey",
+    "color": "#9cbcc9",
+    "chapters": [
+      "A wall of features",
+      "Find the human need",
+      "A clearer next step"
+    ],
+    "assets": "Actual positioning brief; messaging hierarchy; approved landing copy; real outcomes.",
+    "reference": "Linear",
+    "url": "https://linear.app/"
+  },
+  {
+    "id": "004",
+    "title": "Presence is not progress",
+    "story": "A lifecycle narrative moves from passive monitoring to meaningful action.",
+    "motif": "journey",
+    "color": "#aec19c",
+    "chapters": [
+      "Signals without a story",
+      "Make the journey legible",
+      "A useful next action"
+    ],
+    "assets": "Real lifecycle map; approved onboarding copy; product screenshots; attribution.",
+    "reference": "Intercom",
+    "url": "https://www.intercom.com/"
+  },
+  {
+    "id": "005",
+    "title": "A kitchen carries a world",
+    "story": "Food, memory, and a name become an intimate brand archive.",
+    "motif": "recipe",
+    "color": "#dfad78",
+    "chapters": [
+      "Open the kitchen door",
+      "Follow the recipe",
+      "Set a place at the table"
+    ],
+    "assets": "Family/brand context; approved photography; menu/copy; identity assets.",
+    "reference": "The Gourmand",
+    "url": "https://thegourmand.co.uk/"
+  },
+  {
+    "id": "006",
+    "title": "Care, without the friction",
+    "story": "A health narrative treats clarity as a form of care.",
+    "motif": "journey",
+    "color": "#aabfc1",
+    "chapters": [
+      "An unfamiliar pathway",
+      "Explain each decision",
+      "A calmer care journey"
+    ],
+    "assets": "Approved care flow; source-reviewed medical copy; anonymised interface captures.",
+    "reference": "GOV.UK Design System",
+    "url": "https://design-system.service.gov.uk/"
+  },
+  {
+    "id": "007",
+    "title": "The player needs an answer",
+    "story": "A search question becomes a navigable, spoiler-conscious guide.",
+    "motif": "editorial",
+    "color": "#d8c08d",
+    "chapters": [
+      "Where does the mission begin?",
+      "Separate trigger from action",
+      "Back to the game"
+    ],
+    "assets": "Permission-cleared original article; byline capture; annotated heading structure.",
+    "reference": "Julian Shapiro",
+    "url": "https://www.julian.com/guide/write/intro"
+  },
+  {
+    "id": "008",
+    "title": "One writer, many voices",
+    "story": "An anthology proves range without losing editorial discipline.",
+    "motif": "anthology",
+    "color": "#b9aec7",
+    "chapters": [
+      "Three very different briefs",
+      "Change the register",
+      "One editorial standard"
+    ],
+    "assets": "Three cleared client samples; brief constraints; voice differences; authorship permissions.",
+    "reference": "Readymag",
+    "url": "https://readymag.com/"
+  },
+  {
+    "id": "009",
+    "title": "Living systems, drawn together",
+    "story": "An organisational reading reveals the relationships between the parts.",
+    "motif": "constellation",
+    "color": "#b3c39c",
+    "chapters": [
+      "See the separate parts",
+      "Trace the relationships",
+      "Read the living system"
+    ],
+    "assets": "Approved research question; source corpus; systems diagram; role confirmation.",
+    "reference": "Nicky Case",
+    "url": "https://ncase.me/"
+  },
+  {
+    "id": "010",
+    "title": "A change of lens",
+    "story": "A complex thesis becomes understandable through multiple perspectives.",
+    "motif": "lens",
+    "color": "#b9aed0",
+    "chapters": [
+      "The first interpretation",
+      "Turn the lens",
+      "Hold more than one view"
+    ],
+    "assets": "Actual thesis; reading notes; approved synthesis; citations and contribution.",
+    "reference": "Explorable Explanations",
+    "url": "https://explorabl.es/"
+  },
+  {
+    "id": "011",
+    "title": "A machine needs an editor",
+    "story": "AI output passes through visible human judgement, rather than a magic box.",
+    "motif": "pipeline",
+    "color": "#dc8d68",
+    "chapters": [
+      "The raw input",
+      "Inspect the transformation",
+      "Approve the useful output"
+    ],
+    "assets": "Real architecture; example inputs/outputs; guardrails; model roles and evaluation.",
+    "reference": "Anthropic interface patterns",
+    "url": "https://www.anthropic.com/"
+  },
+  {
+    "id": "012",
+    "title": "Words become interface",
+    "story": "Show how a sentence changes when it has a job inside a screen.",
+    "motif": "interface",
+    "color": "#c2c3af",
+    "chapters": [
+      "The blank wireframe",
+      "Place the words",
+      "Make the interaction clear"
+    ],
+    "assets": "Approved wireframes; UX copy; responsive screens; revision rationale.",
+    "reference": "Vercel interface guidelines",
+    "url": "https://vercel.com/design/guidelines"
+  },
+  {
+    "id": "013",
+    "title": "An idea takes root",
+    "story": "A brand story grows from a seed into a connected digital ecosystem.",
+    "motif": "growth",
+    "color": "#b5c49a",
+    "chapters": [
+      "Plant the central idea",
+      "Grow the system",
+      "See the whole ecosystem"
+    ],
+    "assets": "Approved brand thesis; identity assets; website copy; deployed screenshots.",
+    "reference": "Awwwards collections",
+    "url": "https://www.awwwards.com/"
+  },
+  {
+    "id": "014",
+    "title": "The present, reframed",
+    "story": "A studio experiment asks what changes when the frame changes.",
+    "motif": "lens",
+    "color": "#b5bec9",
+    "chapters": ["An ordinary moment", "Change the frame", "A new reading"],
+    "assets": "Actual project context; art direction; approved outcomes; role and dates.",
+    "reference": "The Creative Independent",
+    "url": "https://thecreativeindependent.com/"
+  },
+  {
+    "id": "015",
+    "title": "A companion, not an autopilot",
+    "story": "An AI work companion exposes sources, uncertainty, and approval.",
+    "motif": "pipeline",
+    "color": "#c4b6d0",
+    "chapters": [
+      "A desk full of fragments",
+      "Ask for a useful structure",
+      "Keep a human in control"
+    ],
+    "assets": "Prototype brief; consented sample input; interaction model; failure states.",
+    "reference": "Emil Kowalski",
+    "url": "https://emilkowal.ski/"
+  },
+  {
+    "id": "016",
+    "title": "Behind the curtain",
+    "story": "Theatre is presented as a performance score, not a generic case study.",
+    "motif": "stage",
+    "color": "#c82924",
+    "chapters": [
+      "Before the house lights fall",
+      "Enter the scene",
+      "The voice beyond the curtain"
+    ],
+    "assets": "Cleared script excerpt; cast/role credits; rehearsal stills; performance evidence.",
+    "reference": "National Theatre",
+    "url": "https://www.nationaltheatre.org.uk/"
+  },
+  {
+    "id": "017",
+    "title": "Find the hidden broadcast",
+    "story": "A tiny rule becomes a playable story about attention and feedback.",
+    "motif": "game",
+    "color": "#c6bb92",
+    "chapters": ["Only static", "Learn the instrument", "Lock the signal"],
+    "assets": "Current tuning interaction; design notes; future game art; playtest findings.",
+    "reference": "Explorable Explanations",
+    "url": "https://explorabl.es/"
+  },
+  {
+    "id": "018",
+    "title": "A room for the unfinished sentence",
+    "story": "A literary anthology makes space for fiction, essays, research, and spoken work.",
+    "motif": "anthology",
+    "color": "#ceb4a2",
+    "chapters": ["Choose a shelf", "Stay with a voice", "Leave a margin note"],
+    "assets": "Cleared manuscripts; genre/date metadata; audio permission; original publication links.",
+    "reference": "The Paris Review",
+    "url": "https://www.theparisreview.org/"
+  }
+]
