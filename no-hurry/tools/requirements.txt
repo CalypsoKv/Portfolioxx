@@ -1,0 +1,11 @@
+# Python packages for the NO HURRY pipeline (tested with Python 3.13, FFmpeg 6.1 with libass + lut3d)
+numpy==2.5.3
+pillow==12.3.0
+opencv-python-headless==5.0.0.93
+scipy==1.18.1
+soundfile==0.14.0
+pyloudnorm==0.2.0
+fonttools==4.67.0
+onnxruntime==1.29.0
+kokoro-onnx==0.6.1        # draft narration only (synthetic placeholder voice)
+faster-whisper==1.2.1     # word timings for captions (works on the real recording too)

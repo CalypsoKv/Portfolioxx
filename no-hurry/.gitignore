@@ -1,0 +1,13 @@
+# Private media never goes into this (public) repository:
+# photographs, videos, voice recordings, the custom LUT, graded frames, renders, stems and QA images.
+assets/
+work/
+.venv/
+output/*.mp4
+output/*.mov
+output/stems/
+output/qa/
+*.wav
+*.m4a
+*.cube
+__pycache__/

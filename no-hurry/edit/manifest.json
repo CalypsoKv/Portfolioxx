@@ -1,0 +1,516 @@
+{
+ "format": {
+  "width": 1080,
+  "height": 1920,
+  "fps": 24
+ },
+ "tick": {
+  "start": 0.62,
+  "period": 0.72,
+  "note": "hazard relay cycle (tick on / tock off); also the score's beat grid"
+ },
+ "anchor_help": "start anchors: L05 | L05.end | L05:word | L05:word#2 | L05:word.end | @12.5 (absolute) | beat:<anchor> (first tick at/after) | beat:<anchor>~N (N ticks after that) | cut ; each may end with +/-seconds. A shot lasts until the next shot starts.",
+ "crop_help": "from/to = [cx, cy, zoom]: crop centre (0-1 of the oriented source) and zoom over the largest 9:16 window that fits. ease 0 = constant drift, 1 = ease-in-out.",
+ "shots": [
+  {
+   "id": "S01",
+   "act": 1,
+   "src": "20261004_151103.jpg",
+   "start": "@0",
+   "fade_in": [2.0, 4.6],
+   "from": [0.5, 0.52, 1.0],
+   "to": [0.56, 0.47, 1.13],
+   "note": "Establishing: the windshield, the street, a distant figure on her phone (Oct 4, 15:11:03). Slow push-in."
+  },
+  {
+   "id": "S02",
+   "act": 1,
+   "src": "20261011_142333.jpg",
+   "start": "L02-0.3",
+   "from": [0.47, 0.5, 1.0],
+   "to": [0.47, 0.47, 1.08],
+   "note": "'Hi, I am Jahan' - same POV, another day (Oct 11). She walks out of a residential gate."
+  },
+  {
+   "id": "S03",
+   "act": 1,
+   "src": "20261004_151111.jpg",
+   "start": "L03:Her-0.04",
+   "from": [0.43, 0.47, 1.07],
+   "to": [0.43, 0.48, 1.0],
+   "ease": 1,
+   "note": "'Her.' - the reveal. Sunlit smile at the open door, 8 seconds after S01 was taken. Gentle pull-back, then hold."
+  },
+  {
+   "id": "S04",
+   "act": 1,
+   "src": "black",
+   "start": "L03:Her+4.9",
+   "transition": {"dissolve": 0.8},
+   "note": "Title card NO HURRY on black (graphics.ass)."
+  },
+  {
+   "id": "S05",
+   "act": 2,
+   "src": "20261012_162415.jpg",
+   "start": "L04-0.4",
+   "transition": {"dissolve": 0.5},
+   "from": [0.58, 0.5, 1.0],
+   "to": [0.58, 0.49, 1.04],
+   "note": "Zeno's division uses the real Oct 12 approach, in order: 16:24:15 -> :16 -> :17 (-> :20 later, -> :23 withheld until the last shot)."
+  },
+  {
+   "id": "S06",
+   "act": 2,
+   "src": "20261012_162416.jpg",
+   "start": "L05:half",
+   "from": [0.6, 0.5, 1.0],
+   "to": [0.6, 0.49, 1.03],
+   "note": "Hard cut on 'half the distance'."
+  },
+  {
+   "id": "S07",
+   "act": 2,
+   "src": "20261012_162417.jpg",
+   "start": "L06:half",
+   "from": [0.6, 0.5, 1.0],
+   "to": [0.6, 0.49, 1.03],
+   "note": "Hard cut on 'half of what remains'."
+  },
+  {
+   "id": "S08",
+   "act": 2,
+   "src": "20261012_162417.jpg",
+   "start": "L07:half",
+   "from": [0.6, 0.44, 2.0],
+   "to": [0.6, 0.44, 2.04],
+   "note": "Editorial construction: a 2x punch-in on the same frame - the picture itself is halved."
+  },
+  {
+   "id": "S09",
+   "act": 2,
+   "src": "20261012_162417.jpg",
+   "start": "L08-0.05",
+   "from": [0.6, 0.46, 3.0],
+   "to": [0.6, 0.46, 3.08],
+   "note": "Halved again ('The halves never run out')."
+  },
+  {
+   "id": "S10",
+   "act": 2,
+   "src": "20261004_151104.jpg",
+   "start": "L09-0.1",
+   "from": [0.58, 0.47, 1.2],
+   "to": [0.6, 0.44, 1.38],
+   "note": "Another day: she is mid-road, still far ('always a remainder')."
+  },
+  {
+   "id": "S11",
+   "act": 2,
+   "src": "20261011_142335.jpg",
+   "start": "L09:so",
+   "from": [0.48, 0.5, 1.22],
+   "to": [0.46, 0.47, 1.4],
+   "note": "'stranded forever in the generous middle of the road' - Oct 11, mid-road."
+  },
+  {
+   "id": "S12",
+   "act": 2,
+   "src": "20260922_024033.jpg",
+   "start": "L10-0.25",
+   "from": [0.5, 0.5, 1.0],
+   "to": [0.47, 0.5, 1.06],
+   "note": "'a puzzle about motion' - the night arrival (Sep 22, 02:40), motion-blurred in the original."
+  },
+  {
+   "id": "S13",
+   "act": 2,
+   "src": "20260828_170926.jpg",
+   "start": "L11-0.15",
+   "from": [0.47, 0.5, 1.0],
+   "to": [0.49, 0.5, 1.06],
+   "note": "'a puzzle about waiting' - inside the car, she is outside the passenger window (Aug 28)."
+  },
+  {
+   "id": "S14",
+   "act": 2,
+   "src": "20261004_151103.jpg",
+   "start": "L12-0.1",
+   "from": [0.42, 0.6, 1.75],
+   "to": [0.42, 0.6, 1.8],
+   "note": "'Here is the evidence.' - the dashboard idol and the road beyond."
+  },
+  {
+   "id": "S15",
+   "act": 2,
+   "src": "20261011_142333.jpg",
+   "start": "L13-0.04",
+   "from": [0.36, 0.36, 2.3],
+   "to": [0.36, 0.36, 2.34],
+   "note": "'A gate.' - the gatehouse she walked out of."
+  },
+  {
+   "id": "S16",
+   "act": 2,
+   "src": "20261011_142333.jpg",
+   "start": "L14-0.04",
+   "from": [0.74, 0.42, 2.1],
+   "to": [0.74, 0.42, 2.16],
+   "note": "'A street.' - the same Oct 11 frame as the gate, looking down the street."
+  },
+  {
+   "id": "S17",
+   "act": 2,
+   "src": "20261004_151103.jpg",
+   "start": "L15-0.04",
+   "from": [0.56, 0.5, 2.1],
+   "to": [0.58, 0.47, 2.3],
+   "note": "'Eleven metres of tarmac.' - the road between the car and her."
+  },
+  {
+   "id": "S18",
+   "act": 2,
+   "src": "20261012_162415.jpg",
+   "start": "L16-0.04",
+   "from": [0.803, 0.94, 3.2],
+   "to": [0.803, 0.94, 3.3],
+   "note": "'The hazard lights ticking.' - the real hazard switch (Oct 12). It sits at the photo's bottom edge, so the frame extends past it into black (no stretching).",
+   "gain": 1.6,
+   "pad": true
+  },
+  {
+   "id": "S19",
+   "act": 2,
+   "src": "20261012_162416.jpg",
+   "start": "L17-0.2",
+   "from": [0.6, 0.47, 1.2],
+   "to": [0.6, 0.45, 1.3],
+   "note": "'still somewhere in the first half'."
+  },
+  {
+   "id": "S20",
+   "act": 2,
+   "src": "20261012_162420.jpg",
+   "start": "L17:which",
+   "from": [0.62, 0.42, 1.18],
+   "to": [0.62, 0.41, 1.24],
+   "note": "'...by every known law of logic, impossible' - and yet there she is at the window (Oct 12, 16:24:20)."
+  },
+  {
+   "id": "S21",
+   "act": 2,
+   "src": "20261011_142335.jpg",
+   "start": "beat:L18",
+   "from": [0.48, 0.5, 1.0],
+   "to": [0.48, 0.5, 1.0],
+   "note": "'I have watched this hundreds of times' - the same windshield view on different days, one hazard tick each."
+  },
+  {
+   "id": "S22",
+   "act": 2,
+   "src": "20261004_151103.jpg",
+   "start": "beat:L18~1",
+   "from": [0.55, 0.5, 1.0],
+   "to": [0.55, 0.5, 1.0]
+  },
+  {
+   "id": "S23",
+   "act": 2,
+   "src": "20261012_162417.jpg",
+   "start": "beat:L18~2",
+   "from": [0.58, 0.5, 1.0],
+   "to": [0.58, 0.5, 1.0]
+  },
+  {
+   "id": "S24",
+   "act": 2,
+   "src": "20261004_151104.jpg",
+   "start": "beat:L18~3",
+   "from": [0.55, 0.5, 1.0],
+   "to": [0.55, 0.5, 1.0]
+  },
+  {
+   "id": "S25",
+   "act": 2,
+   "src": "20261011_142333.jpg",
+   "start": "beat:L18~4",
+   "from": [0.47, 0.5, 1.0],
+   "to": [0.47, 0.49, 1.03]
+  },
+  {
+   "id": "S26",
+   "act": 3,
+   "src": "20261011_142333.jpg",
+   "start": "L19-1.9",
+   "transition": {"dissolve": 1.0},
+   "from": [0.47, 0.5, 1.03],
+   "to": [0.47, 0.47, 1.15],
+   "note": "Mathematicians: the Oct 11 approach in order, 14:23:33 -> :35 -> :42."
+  },
+  {
+   "id": "S27",
+   "act": 3,
+   "src": "20261011_142335.jpg",
+   "start": "L20:half#2",
+   "from": [0.47, 0.5, 1.05],
+   "to": [0.47, 0.5, 1.07],
+   "note": "'a half' (the series typography builds above)."
+  },
+  {
+   "id": "S28",
+   "act": 3,
+   "src": "20261011_142335.jpg",
+   "start": "L20:quarter",
+   "from": [0.43, 0.48, 1.6],
+   "to": [0.43, 0.48, 1.62],
+   "note": "'a quarter' - punch-in."
+  },
+  {
+   "id": "S29",
+   "act": 3,
+   "src": "20261011_142335.jpg",
+   "start": "L20:eighth",
+   "from": [0.41, 0.46, 2.4],
+   "to": [0.41, 0.46, 2.44],
+   "note": "'an eighth' - punch-in."
+  },
+  {
+   "id": "S30",
+   "act": 3,
+   "src": "20261011_142342.jpg",
+   "start": "L20:exactly",
+   "from": [0.47, 0.5, 1.0],
+   "to": [0.47, 0.5, 1.04],
+   "note": "'and the total is exactly one' - she has arrived (14:23:42), smiling to herself."
+  },
+  {
+   "id": "S31",
+   "act": 3,
+   "src": "VID-20261005-WA0000.mp4",
+   "start": "L21-0.25",
+   "src_in": 0.0,
+   "speed": 0.8,
+   "from": [0.5, 0.5, 1.0],
+   "to": [0.5, 0.5, 1.0],
+   "sync_audio": true,
+   "note": "'a finite walk' - the real walk: he carries her down a busy street at dusk (Oct 5). 30 fps shown at 24 fps = gentle 0.8x. Authentic sync sound."
+  },
+  {
+   "id": "S32",
+   "act": 3,
+   "src": "20261009_162044(0).jpg",
+   "start": "L25-0.15",
+   "from": [0.44, 0.34, 1.3],
+   "to": [0.44, 0.32, 1.45],
+   "note": "'the hair in your face at the quarter mark' - literally (Oct 9)."
+  },
+  {
+   "id": "S33",
+   "act": 3,
+   "src": "20261004_125103.jpg",
+   "start": "L25:half-smile-0.1",
+   "from": [0.52, 0.34, 1.35],
+   "to": [0.52, 0.33, 1.5],
+   "note": "'the half-smile you wear when you think nobody's watching' (Oct 4, noon)."
+  },
+  {
+   "id": "S34",
+   "act": 4,
+   "src": "20260828_170927.jpg",
+   "start": "L26-0.5",
+   "transition": {"dissolve": 0.8},
+   "from": [0.45, 0.45, 1.08],
+   "to": [0.45, 0.45, 1.0],
+   "note": "Heraclitus: arrivals from different days, different clothes."
+  },
+  {
+   "id": "S35",
+   "act": 4,
+   "src": "20261004_125057.jpg",
+   "start": "L26:same",
+   "from": [0.45, 0.5, 1.0],
+   "to": [0.45, 0.5, 1.05]
+  },
+  {
+   "id": "S36",
+   "act": 4,
+   "src": "20261009_162043.jpg",
+   "start": "L27-0.1",
+   "from": [0.5, 0.5, 1.05],
+   "to": [0.5, 0.5, 1.0]
+  },
+  {
+   "id": "M01",
+   "act": 4,
+   "src": "IMG-20260818-WA0019.jpg",
+   "start": "L28-0.05",
+   "from": [0.46, 0.5, 1.0],
+   "to": [0.46, 0.5, 1.04],
+   "note": "Montage: Navratri interleaved with ordinary days. Car selfie (Aug 18) was saved sideways; shown upright as a square insert.",
+   "rotate": 90,
+   "fit": "contain",
+   "crop_aspect": 1.0
+  },
+  {
+   "id": "M02",
+   "act": 4,
+   "src": "IMG-20261020-WA0000.jpg",
+   "start": "L28:hundred#2",
+   "from": [0.5, 0.45, 1.06],
+   "to": [0.5, 0.45, 1.0],
+   "note": "Navratri (Oct 20)."
+  },
+  {
+   "id": "M03",
+   "act": 4,
+   "src": "IMG-20260818-WA0016.jpg",
+   "start": "L28:and",
+   "from": [0.5, 0.5, 1.0],
+   "to": [0.5, 0.48, 1.06],
+   "note": "Ordinary day (Aug 18)."
+  },
+  {
+   "id": "M04",
+   "act": 4,
+   "src": "VID-20260820-WA0006.mp4",
+   "start": "beat:L28.end",
+   "src_in": 5.2,
+   "speed": 1.0,
+   "fit": "contain",
+   "crop_aspect": 0.75,
+   "from": [0.5, 0.5, 1.0],
+   "to": [0.5, 0.5, 1.0],
+   "note": "Aug 20, dancing in white at home (original audio not used: it contains playback music)."
+  },
+  {
+   "id": "M05",
+   "act": 4,
+   "src": "IMG-20261020-WA0010.jpg",
+   "start": "beat:L28.end~3",
+   "from": [0.5, 0.42, 1.08],
+   "to": [0.5, 0.42, 1.02],
+   "note": "Navratri."
+  },
+  {
+   "id": "M06",
+   "act": 4,
+   "src": "IMG-20260828-WA0037.jpg",
+   "start": "beat:L28.end~5",
+   "from": [0.5, 0.4, 1.0],
+   "to": [0.5, 0.4, 1.06],
+   "note": "Aug 28, the same maroon outfit as S34."
+  },
+  {
+   "id": "M07",
+   "act": 4,
+   "src": "IMG-20260820-WA0003.jpg",
+   "start": "beat:L28.end~7",
+   "from": [0.5, 0.4, 1.06],
+   "to": [0.5, 0.4, 1.0],
+   "note": "Aug 20, night."
+  },
+  {
+   "id": "M08",
+   "act": 4,
+   "src": "IMG-20261020-WA0012.jpg",
+   "start": "beat:L28.end~9",
+   "from": [0.5, 0.45, 1.0],
+   "to": [0.5, 0.43, 1.06],
+   "note": "Navratri."
+  },
+  {
+   "id": "M09",
+   "act": 4,
+   "src": "VID-20260820-WA0006.mp4",
+   "start": "beat:L28.end~11",
+   "src_in": 15.9,
+   "speed": 1.0,
+   "fit": "contain",
+   "crop_aspect": 0.75,
+   "from": [0.52, 0.5, 1.0],
+   "to": [0.52, 0.5, 1.0]
+  },
+  {
+   "id": "M10",
+   "act": 4,
+   "src": "20260828_170928.jpg",
+   "start": "beat:L28.end~13",
+   "from": [0.4, 0.42, 1.25],
+   "to": [0.4, 0.42, 1.18],
+   "note": "Her hand raised at the window: hello."
+  },
+  {
+   "id": "S37",
+   "act": 4,
+   "src": "20261004_151104.jpg",
+   "start": "L29-0.2",
+   "from": [0.6, 0.45, 2.2],
+   "to": [0.6, 0.44, 2.36],
+   "note": "'by standing up and walking' - her walking towards the car (Oct 4)."
+  },
+  {
+   "id": "S38",
+   "act": 4,
+   "src": "20261014_144251.jpg",
+   "start": "L30-0.1",
+   "from": [0.47, 0.48, 1.08],
+   "to": [0.47, 0.48, 1.0],
+   "note": "'You answer him every time by getting in.' (Oct 14)"
+  },
+  {
+   "id": "S39",
+   "act": 5,
+   "src": "20261004_151103.jpg",
+   "start": "L30.end+1.5",
+   "transition": {"dissolve": 1.4},
+   "from": [0.55, 0.52, 1.0],
+   "to": [0.56, 0.49, 1.1],
+   "note": "Return to the opening image: the car, the street, the waiting. Pace slows."
+  },
+  {
+   "id": "S40",
+   "act": 5,
+   "src": "20261012_162415.jpg",
+   "start": "L32:putting-0.05",
+   "from": [0.803, 0.93, 2.8],
+   "to": [0.803, 0.94, 3.0],
+   "note": "'putting the hazards on' - the switch again.",
+   "gain": 1.5,
+   "pad": true
+  },
+  {
+   "id": "S41",
+   "act": 5,
+   "src": "20261012_162417.jpg",
+   "start": "L32:while-0.1",
+   "transition": {"dissolve": 0.6},
+   "from": [0.6, 0.48, 1.08],
+   "to": [0.6, 0.45, 1.3],
+   "note": "'while she crosses the distance' - back to the Oct 12 approach Act II left unfinished."
+  },
+  {
+   "id": "S42",
+   "act": 5,
+   "src": "20261012_162420.jpg",
+   "start": "L33-0.15",
+   "from": [0.62, 0.42, 1.2],
+   "to": [0.62, 0.42, 1.2],
+   "note": "'I am here.' - static."
+  },
+  {
+   "id": "S43",
+   "act": 5,
+   "src": "20261012_162423.jpg",
+   "start": "L34-0.12",
+   "from": [0.56, 0.4, 1.2],
+   "to": [0.56, 0.41, 1.16],
+   "note": "'No hurry.' - she arrives (16:24:23), the frame Act II withheld. Hold on the ticking, then cut to black."
+  },
+  {
+   "id": "END",
+   "act": 5,
+   "src": "black",
+   "start": "cut"
+  }
+ ]
+}
