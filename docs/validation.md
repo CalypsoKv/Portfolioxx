@@ -1,30 +1,35 @@
-# Browser validation
+# Validation
 
-The reference-style redesign is covered by **12 Playwright workflow checks**, using the installed `/usr/bin/chromium` against the actual Vite app on port 5173.
+Last full run: 28 October 2026, against the Vite dev server on port 5173 with Chromium under software WebGL (SwiftShader).
 
-The full redesign run completed with 11 passing checks and one stale-selector failure after the archive title was moved from a caption into the large accessible hero heading during the run. That selector was updated to the new semantic heading; the affected carousel check then passed in its targeted rerun. No checks were skipped, disabled, or marked expected-failure. The initial blank-page failures were diagnosed as Vite's outdated dependency cache and resolved by restarting the dev server with forced dependency optimization.
+| Check | Result |
+| --- | --- |
+| `tsc` strict type-check | clean |
+| `npm run build` | passes; main chunk 516 kB (169 kB gzip), lazy `Stage` chunk 930 kB (251 kB gzip) |
+| `npm test` (7 node tests) | passing: 19-channel inventory, 8 live and 11 archive entries, status and provenance, owned roles, a composition for every channel, empty-by-default proof, asset manifest with files on disk |
+| `npm run test:e2e` (23 Playwright tests) | passing |
 
-Verified workflows:
+## What the browser suite covers
 
-- Frequency selection updates the fullscreen tuner and survives reload; the fixed Archive link routes directly to the catalogue.
-- Keyboard `G` opens the searchable programme guide; selecting a transmission navigates to it; Escape closes the dialog.
-- Archive search, frequency filter, empty-state reset, grid/schedule preference, and 14 non-clickable restoration entries.
-- The featured archive carousel changes the visible project heading, the correct reader destination, and selection through previous/next and direct pagination controls.
-- Editorial provenance disclosures, strategic note switch, and original-publication link.
-- Inquiry required-field validation, public email, encoded email subject/body, browser-tab draft restore, and clearing the draft.
-- The experiment locks its signal at 104 MHz and returns to static at another value.
-- Mobile navigation, Escape, and modal keyboard focus: background controls remain outside the modal tab sequence (Chromium may briefly focus its browser chrome/body between cycles).
-- Primary routes `/`, `/catalogue`, `/services`, `/about`, `/work/digistatement`, and `/work/game-prototype` do not overflow horizontally at 390px or 1440px widths.
-- The cinematic hero, ink artwork, and original comic-panel artwork load, and the visible Explore the work control opens the actual guide.
-- Hero title line bounds remain inside the first viewport at 1440×1000, 1280×800, and 390×844.
+- Home scroll theatre: dots move between layers, only the active layer is interactive, the featured chips retune the screen.
+- First-visit preloader and keyboard entry.
+- Programme guide: `G` opens, search, navigate, Escape closes, reopens after a navigation.
+- Catalogue: frequency filter, search, empty state and reset, Guide and Wall views, saved view, archive last.
+- All 19 channels render, state their provenance and have no horizontal overflow at 390px.
+- Placeholder slots, and `?collect=1` showing the evidence checklist.
+- Owned channels state the real role and link out; NowTheo is never called Jahan's own practice.
+- Reader provenance and the strategic-notes toggle.
+- Inquiry: required-field validation, encoded `mailto:` subject and body, session draft restored after reload. The `mailto:` navigation is intercepted; no email is sent.
+- The tuning game locks at 104 MHz and restarts.
+- Static tier and reduced motion: no canvas, no Lenis, every Home layer visible.
+- Full tier mounts exactly one canvas without page errors.
+- Primary routes fit at 390px and 1440px.
+- axe-core (WCAG 2 A and AA, 2.1 AA) finds no serious or critical violations on eight routes in the static tier. It reports on the DOM, not on the canvas.
 
-Review screenshots:
+## Not verified
 
-- `/tmp/itv-redesign-desktop.png` and `/tmp/itv-redesign-mobile.png` (full homepage).
-- `/tmp/itv-redesign-desktop-top.png`, `/tmp/itv-redesign-laptop-top.png`, `/tmp/itv-redesign-mobile-top.png` (first viewport).
-
-The email test replaces only the generated anchor's `click` method to capture the mailto URI. No email is sent and delivery is not claimed. These checks demonstrate the implemented client-side workflow; they do not establish permission for historical writing excerpts, public production deployment, mail-client availability on every device, or actual email delivery.
-
-Final integrated redesign verification: a single complete browser run passed **12/12** tests with zero failures or skips; `npm test` passed **4/4** content checks. The production build passes. Final visual review also corrected the mobile mode switch, red ornament rendering, and monochrome header contrast.
-
-Project-world expansion: **15/15 browser tests** pass, including traversal of all nineteen treatment routes, three chapters and six evidence slots per project, reference links, director notes, the native structure control, next-project navigation, the design-system guide and mobile width checks. Four content-invariant tests and the production build also pass. The remaining asset-dependent choreography is specified as proposed direction rather than claimed as finished client work.
+- **Frame rate on real hardware.** All rendering here ran on a software rasteriser. Adaptive quality is implemented but its thresholds are untuned against a real GPU.
+- **Contrast over the live canvas.** axe runs in the static tier; text over the moving screen was checked by eye in screenshots only.
+- **Screen readers.** Focus management (skip link first on load, the new heading focused after a route change) and the live-region title announcement are implemented and checked in the browser, not tried with a screen reader.
+- **Safari and Firefox.** Only Chromium was run.
+- **Production behaviour of `?tier=`.** The override is stripped from production builds by design, so the tiers are tested on the dev server.

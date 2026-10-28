@@ -1,10 +1,26 @@
 export type Frequency = "Words" | "Product" | "Research" | "Studio" | "Play";
+export type Status = "published" | "analysis" | "concept" | "owned" | "vault";
+export type Link = { label: string; url: string };
+/** Real, publicly checkable facts for work the owner runs or built. Required for every "owned" channel. */
+export type Owned = {
+  kind: "operator" | "builder";
+  roles: string[];
+  liveUrl: string;
+  links: Link[];
+  disclosure: string;
+  works?: { title: string; note: string; url: string; image?: string }[];
+  process?: { title: string; time: string; text: string }[];
+  reported?: { metric: string; value: string; source: string; date: string }[];
+  highlights?: string[];
+  quote?: { text: string; attribution: string; url: string };
+};
 export type Transmission = {
   id: string;
   slug: string;
   title: string;
   frequency: Frequency;
-  status: "published" | "analysis" | "concept" | "vault";
+  status: Status;
+  owned?: Owned;
   subtitle: string;
   tags: string[];
   year: string;
@@ -245,12 +261,65 @@ export const transmissions: Transmission[] = [
     slug: "badhuche",
     title: "Badhuche",
     frequency: "Studio",
-    status: "vault",
-    subtitle: "Brand narrative and studio practice.",
-    tags: ["Brand", "Narrative"],
-    year: "Archive",
-    reading: 0,
-    summary: "Source material in preparation.",
+    status: "owned",
+    subtitle: "Monumental sculpture and public art, from research to installation.",
+    tags: ["Sculpture", "Public art", "Studio"],
+    year: "Ongoing",
+    reading: 3,
+    summary:
+      "Badhuche Art Studio makes large-scale sculpture and public art for airports, museums and sacred spaces. Jahan owns and runs the studio.",
+    owned: {
+      kind: "operator",
+      roles: ["Owner and operator"],
+      liveUrl: "https://www.badhuche.co.in",
+      links: [
+        { label: "Studio website", url: "https://www.badhuche.co.in" },
+        { label: "All works", url: "https://www.badhuche.co.in/works" },
+        { label: "Start a commission", url: "https://www.badhuche.co.in/contact" },
+      ],
+      disclosure:
+        "Descriptions and figures come from the studio's own website, captured on 28 October 2026. Statistics are studio-reported and have not been independently audited. Work is shown with the owner's permission.",
+      works: [
+        { title: "Ayodhya Airport art", note: "Kingdom of Lord Ram", url: "https://www.badhuche.co.in/works/ayodhya-ram-darbar", image: "/work/badhuche/ayodhya.webp" },
+        { title: "GAN Airport, Maldives", note: "Airport art", url: "https://www.badhuche.co.in/works/gan-airport-maldives", image: "/work/badhuche/gan.webp" },
+        { title: "Hindu Samruddhi Mahamarg, Maharashtra", note: "Artwork along the expressway", url: "https://www.badhuche.co.in/works/Samruddhi-MahaMarg", image: "/work/badhuche/samruddhi.webp" },
+        { title: "Dehradun Airport", note: "Wall mural", url: "https://www.badhuche.co.in/works/Dehradun-airport-Art", image: "/work/badhuche/dehradun.webp" },
+        { title: "Surat Airport", note: "Culture, art and work", url: "https://www.badhuche.co.in/works/surat-airport", image: "/work/badhuche/surat.webp" },
+        { title: "Hanimaadhoo Airport, Maldives", note: "Realistic art of an airport wall", url: "https://www.badhuche.co.in/works/202", image: "/work/badhuche/hanimaadhoo.webp" },
+      ],
+      process: [
+        { title: "Design & research", time: "2–4 weeks", text: "Site visits, historical analysis and community engagement shape a cultural brief." },
+        { title: "Concept development", time: "4–6 weeks", text: "Sketches, 3D models and material studies explore several directions." },
+        { title: "Artisan collaboration", time: "8–24 weeks", text: "Bronze casters, stone carvers, textile artists and metal fabricators work in concert." },
+        { title: "Installation & unveiling", time: "2–6 weeks", text: "The work is installed at its permanent home and unveiled with stakeholders." },
+      ],
+      reported: [
+        { metric: "Monumental projects completed", value: "280+", source: "badhuche.co.in", date: "28 Oct 2026" },
+        { metric: "Countries", value: "23+", source: "badhuche.co.in", date: "28 Oct 2026" },
+        { metric: "Largest installation", value: "2,462 ft", source: "badhuche.co.in", date: "28 Oct 2026" },
+        { metric: "Heaviest bronze sculpture", value: "84 tons", source: "badhuche.co.in", date: "28 Oct 2026" },
+      ],
+      highlights: ["Airport art", "Museum design", "Bronze casting", "Sacred spaces"],
+    },
+    sections: [
+      {
+        title: "A studio for monumental work",
+        text: "Badhuche Art Studio makes large-scale sculpture and public art: airport murals, bronze casting, museum design and sacred spaces. Jahan owns and runs the studio. This channel describes the work in the studio's own words and links out to each commission on the studio's website.",
+        note: "Owned and operated. The studio's site is the source of record for every figure below.",
+      },
+      {
+        title: "How a commission moves",
+        text: "The studio publishes a four-step process: design and research, concept development, artisan collaboration, then installation and unveiling. Timelines vary by commission, from a few weeks of research to several months of fabrication.",
+      },
+      {
+        title: "Selected works",
+        text: "Six commissions are listed on the studio's homepage: Ayodhya Airport, GAN Airport in the Maldives, the Hindu Samruddhi Mahamarg in Maharashtra, Dehradun Airport, Surat Airport and Hanimaadhoo Airport in the Maldives. Each links to its page on the studio's site.",
+      },
+      {
+        title: "Source and role",
+        text: "Role: owner and operator. The figures shown here (280+ projects, 23+ countries, 2,462 ft, 84 tons) are the studio's own statements, captured on 28 October 2026 and labelled studio-reported. They are not independently audited and are not presented as outcomes of this portfolio.",
+      },
+    ],
   },
   {
     id: "003",
@@ -281,12 +350,45 @@ export const transmissions: Transmission[] = [
     slug: "urmila-ben-nu-rasodu",
     title: "Urmila Ben Nu Rasodu",
     frequency: "Studio",
-    status: "vault",
-    subtitle: "A food and culture archive.",
-    tags: ["Brand", "Archive"],
-    year: "Archive",
-    reading: 0,
-    summary: "Archive pending.",
+    status: "owned",
+    subtitle: "A neighbourhood kitchen in Indore.",
+    tags: ["Food", "Brand", "Local business"],
+    year: "Ongoing",
+    reading: 2,
+    summary:
+      "Urmila Ben Nu Rasodu serves North Indian and street food in Vijay Nagar, Indore. Jahan owns and runs it.",
+    owned: {
+      kind: "operator",
+      roles: ["Owner and operator"],
+      liveUrl: "https://www.instagram.com/urmila_ben_nu_rasoda/",
+      links: [
+        { label: "Instagram", url: "https://www.instagram.com/urmila_ben_nu_rasoda/" },
+        { label: "Zomato listing", url: "https://www.zomato.com/indore/urmila-ben-nu-rasodu-vijay-nagar" },
+        { label: "District listing", url: "https://www.district.in/dining/indore/urmila-ben-nu-rasodu-vijay-nagar" },
+      ],
+      disclosure:
+        "Described from the kitchen's public listings. Third-party ratings change, so they are linked rather than embedded here. Photographs and menu cards appear once the owner supplies them.",
+      highlights: ["North Indian", "Street food", "Dine-in", "Takeaway", "Swiggy & Zomato"],
+    },
+    sections: [
+      {
+        title: "The kitchen",
+        text: "Urmila Ben Nu Rasodu is a neighbourhood kitchen in Vijay Nagar, Indore, serving North Indian and street food. Jahan owns and runs it. This channel is the short version of the story; the kitchen's own pages carry the menu, the photographs and the daily updates.",
+        note: "Owned and operated. Menu and photographs come from the owner.",
+      },
+      {
+        title: "What is on the menu",
+        text: "Public listings describe North Indian and street food, with dine-in and takeaway. The kitchen's profile mentions dishes such as dal pakwan and dabeli alongside house pickles and snacks.",
+      },
+      {
+        title: "Where to find it",
+        text: "The kitchen is in Vijay Nagar, Indore, and takes orders through Swiggy and Zomato. Its Instagram account shows what is cooking now. Links are in the panel beside this text.",
+      },
+      {
+        title: "Source and role",
+        text: "Role: owner and operator. No sales figures or review scores are claimed on this page; those live on the listing sites and change daily.",
+      },
+    ],
   },
   {
     id: "006",
@@ -377,12 +479,49 @@ export const transmissions: Transmission[] = [
     slug: "nowtheo",
     title: "NowTheo",
     frequency: "Studio",
-    status: "vault",
-    subtitle: "Another perspective, in preparation.",
-    tags: ["Studio"],
-    year: "Archive",
-    reading: 0,
-    summary: "Source material in preparation.",
+    status: "owned",
+    subtitle: "A practice, described in its own words.",
+    tags: ["Site & brand", "Content", "Community"],
+    year: "Ongoing",
+    reading: 2,
+    summary:
+      "NowTheo is a public practice of slow, gentle, playful somatic-imaginal exploration. Jahan built its site and brand, writes and posts its content, and runs the TPOT community side.",
+    owned: {
+      kind: "builder",
+      roles: ["Site and brand", "Content", "TPOT community"],
+      liveUrl: "https://x.com/nowtheo",
+      links: [
+        { label: "@nowtheo on X", url: "https://x.com/nowtheo" },
+        { label: "Untangling Self", url: "https://untanglingself.com/" },
+      ],
+      disclosure:
+        "This portfolio describes the practice in its own public words and shows only what Jahan built and ran. It makes no therapeutic claims, shows no client material and does not speak for the practice.",
+      highlights: ["Somatic-imaginal", "Slow", "Gentle", "Playful"],
+      quote: {
+        text: "i help folks untangle stubborn knots and open into deeper intimacy with self & life through slow, gentle, playful somatic-imaginal explorations",
+        attribution: "@nowtheo on X, public profile",
+        url: "https://x.com/nowtheo",
+      },
+    },
+    sections: [
+      {
+        title: "In its own words",
+        text: "NowTheo describes itself as helping people untangle stubborn knots and open into deeper intimacy with self and life, through slow, gentle, playful somatic-imaginal explorations. That line is from the practice's public profile on X.",
+        note: "Quoted from the public profile. This portfolio does not speak for the practice.",
+      },
+      {
+        title: "What was built",
+        text: "Three strands: the website and visual identity, the writing and posts that carry the practice's voice, and the community side around TPOT, where conversations and connections happen in the open.",
+      },
+      {
+        title: "Where it lives",
+        text: "The practice is active on X as @nowtheo, and its site is untanglingself.com. Both are linked in the panel beside this text.",
+      },
+      {
+        title: "Source, role and limits",
+        text: "Roles: site and brand, content, TPOT community. This portfolio makes no therapeutic claims, shows no client material, and does not describe outcomes.",
+      },
+    ],
   },
   {
     id: "018",
@@ -402,8 +541,16 @@ export const statusLabel = (status: Transmission["status"]) =>
     published: "Published writing",
     analysis: "Field analysis",
     concept: "Self-initiated concept",
-    vault: "In restoration",
+    owned: "Owned or built by Jahan",
+    vault: "Archive, evidence being restored",
   })[status];
+/** The label shown on chips: owned channels say what the role actually was. */
+export const provenanceLabel = (t: Transmission) =>
+  t.status === "owned"
+    ? t.owned?.kind === "operator"
+      ? "Owned & operated"
+      : "Site, brand & community"
+    : statusLabel(t.status);
 export const liveTransmissions = transmissions.filter(
   (t) => t.status !== "vault",
 );

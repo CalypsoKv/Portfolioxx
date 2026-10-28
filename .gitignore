@@ -5,3 +5,6 @@ test-results/
 .env
 .env.local
 *.tsbuildinfo
+
+# owner-supplied originals (provenance in src/data/assets.json)
+art-src/owner/

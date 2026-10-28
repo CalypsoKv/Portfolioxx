@@ -1,0 +1,45 @@
+.shell { position: relative; min-height: 100vh; }
+main { position: relative; z-index: 1; outline: none; }
+
+/* the screen */
+.stage-host { position: fixed; inset: 0; z-index: 0; background: var(--black); overflow: hidden; }
+.stage-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.stage-canvas canvas { display: block; width: 100%; height: 100%; }
+.stage-static { position: absolute; inset: 0; background: var(--char) center / cover no-repeat; filter: grayscale(1) contrast(1.08); }
+.stage-static::before { content: ""; position: absolute; inset: 0; background: var(--wash, #f5efe0); mix-blend-mode: multiply; opacity: var(--wash-mix, 0); }
+.stage-static::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.24) 0 1px, transparent 1px 3px), radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.85) 100%), rgba(0, 0, 0, var(--dim, 0)); }
+
+/* fixed chrome */
+.mark { position: fixed; z-index: 90; top: 16px; left: var(--gutter); width: 52px; height: 52px; color: var(--white); mix-blend-mode: difference; filter: url(#rough); display: block; }
+.mark svg { width: 100%; height: 100%; }
+.plaque { position: fixed; z-index: 90; top: 20px; right: max(16px, env(safe-area-inset-right, 0px)); display: flex; align-items: center; gap: 16px; background: var(--white); color: var(--ink); padding: 11px 22px; font: 900 15px var(--display); letter-spacing: 0.03em; text-transform: uppercase; }
+.plaque::before { content: ""; position: absolute; inset: 0; border: 3px solid var(--ink); filter: url(#rough); pointer-events: none; }
+.plaque a { text-decoration: none; color: #5b564b; position: relative; }
+.plaque a.on, .plaque a:hover { color: var(--ink); }
+.hud-cluster { position: fixed; z-index: 90; left: var(--gutter); bottom: 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; max-width: calc(100% - 32px); }
+.hud-cluster .hud { padding: 7px 10px; font-size: 10px; }
+.hud-cluster .tier { color: var(--yellow); background: rgba(0, 0, 0, 0.6); padding: 6px 8px; font-size: 10px; }
+.shell-footer { position: relative; z-index: 2; background: var(--black); border-top: 2px solid var(--yellow); padding: 28px 0 96px; }
+.shell-footer .in { display: flex; flex-direction: column; gap: 14px; }
+.shell-footer nav { display: flex; flex-wrap: wrap; gap: 8px 22px; font: 400 11px var(--osd); text-transform: uppercase; letter-spacing: 0.06em; }
+.shell-footer a { color: var(--yellow); text-decoration: none; }
+.shell-footer a:hover { text-decoration: underline; }
+
+/* preloader */
+.preloader { position: fixed; inset: 0; z-index: 400; background: var(--black); display: grid; place-items: center; }
+.preloader-in { display: flex; flex-direction: column; align-items: center; gap: 22px; padding: 16px; text-align: center; }
+.preloader-box { position: relative; width: min(560px, 92vw); padding: 14px 18px; color: var(--yellow); font-size: 12px; }
+.preloader-box svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.preloader-box rect { fill: none; stroke: var(--yellow); stroke-width: 2; filter: drop-shadow(0 0 4px var(--glow)); stroke-dasharray: 1000; stroke-dashoffset: 1000; }
+.preloader-gate { font: 900 clamp(26px, 6vw, 56px) var(--display); text-transform: uppercase; color: #3c3c3c; min-height: 1.2em; letter-spacing: 0.02em; }
+.preloader-gate.ready { color: var(--yellow); text-shadow: 0 0 18px var(--soft); }
+.split-char { display: inline-block; white-space: pre; animation: chin 0.5s cubic-bezier(0, 0, 0, 1) both; animation-delay: calc(var(--i) * var(--stagger, 60ms)); }
+@keyframes chin { from { transform: translateX(100%); filter: blur(10px); opacity: 0; } to { transform: none; filter: none; opacity: 1; } }
+
+/* small screens: one compact control row, never covering the reading column */
+@media (max-width: 640px) {
+  .hud-cluster { left: 0; right: 0; bottom: 0; max-width: none; flex-wrap: nowrap; gap: 6px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); background: linear-gradient(to top, rgba(17, 16, 13, 0.92) 55%, rgba(17, 16, 13, 0)); }
+  .hud-cluster .hud { padding: 7px 8px; font-size: 9px; flex: 1 1 0; white-space: nowrap; }
+  .hud-cluster kbd, .hud-cluster .tier { display: none; }
+  body { padding-bottom: 64px; }
+}
