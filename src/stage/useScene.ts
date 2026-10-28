@@ -1,10 +1,9 @@
 import { useEffect } from "react";
-import type { RegId } from "./registers";
-import { requestScene } from "./state";
+import { requestScene, type SceneRequest } from "./state";
 
-/** Tunes the persistent screen to this route's plate and register. */
-export function useScene(plate: string, reg: RegId, dim = 0) {
+/** Tunes the persistent screen to this route's still or loop and its register. */
+export function useScene({ plate, video, lite, reg, dim = 0 }: SceneRequest) {
   useEffect(() => {
-    requestScene({ plate, reg, dim });
-  }, [plate, reg, dim]);
+    requestScene({ plate, video, lite, reg, dim });
+  }, [plate, video, lite, reg, dim]);
 }

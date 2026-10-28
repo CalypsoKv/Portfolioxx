@@ -5,13 +5,14 @@ void main(){ vUv = uv; gl_Position = vec4(position.xy, 0., 1.); }
 
 /**
  * The whole viewport is the screen: barrel curve with black rounded corners, stepped grain (8 steps a second),
- * scanlines, glitch bands with RGB split, and a three-tone register map over the engraved plate.
+ * scanlines, glitch bands with RGB split, and a three-tone register map over the picture.
+ * Stills drift slowly (uDrift) so the screen is never frozen; the pointer pulls the glass and splits the colour.
  */
 export const fragment = /* glsl */ `
 precision highp float;
 uniform sampler2D uTex;
-uniform vec2 uRes, uTexSize;
-uniform float uTime, uGlitch, uProg, uCRT, uQ, uDuo, uDim, uFocus;
+uniform vec2 uRes, uTexSize, uMouse;
+uniform float uTime, uGlitch, uProg, uCRT, uQ, uDuo, uDim, uFocus, uMouseV, uDrift;
 uniform vec3 uC0, uC1, uC2;
 varying vec2 vUv;
 float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
@@ -26,17 +27,24 @@ void main(){
   float inside = step(0., d.x) * step(d.x, 1.) * step(0., d.y) * step(d.y, 1.);
   vec2 e = min(d, 1. - d);
   float corner = smoothstep(0., .035, min(e.x, e.y));
+  // the pointer pulls the glass toward it and splits the colour nearby
+  float ra = uRes.x / uRes.y;
+  vec2 dm = (d - uMouse) * vec2(ra, 1.);
+  float near = exp(-dot(dm, dm) * 14.) * uMouseV * uQ;
+  d -= (d - uMouse) * near * .05;
   float ts = floor(uTime * 8.) / 8.;
   float row = floor(d.y * 48.);
   float tg = floor(uTime * 12.);
   float gate = step(.95 - .45 * uGlitch, hash(vec2(row, tg)));
   d.x += (hash(vec2(row, tg + 13.7)) - .5) * .2 * (uGlitch * 2. + .04 * uQ) * gate;
-  float eps = (.0014 + .014 * uGlitch) * uQ;
-  vec2 pan = mix(vec2(-.07, .08), vec2(.07, -.08), uProg);
-  float ra = uRes.x / uRes.y;
+  float eps = (.0014 + .014 * uGlitch + .012 * near) * uQ;
+  // Stills get the scroll-driven pan and zoom plus a slow drift; loops (uDrift = 0) are framed flat and whole.
+  vec2 pan = mix(vec2(-.07, .08), vec2(.07, -.08), uProg) * uDrift;
+  pan += uDrift * vec2(sin(uTime * .05), cos(uTime * .037)) * .03;
   float portrait = step(ra, uTexSize.x / uTexSize.y * .6);
   pan.x += portrait * (uFocus - .5);
-  vec2 p = cover(d, mix(1.2, 1.02, portrait) + .3 * uProg, pan);
+  float zoom = mix(1.0, mix(1.2, 1.02, portrait) + .3 * uProg, uDrift) * (1. + uDrift * .035 * (1. + sin(uTime * .07)));
+  vec2 p = cover(d, zoom, pan);
   vec3 col = vec3(texture2D(uTex, p + vec2(eps, 0.)).r, texture2D(uTex, p).g, texture2D(uTex, p - vec2(eps, 0.)).b);
   float lum = dot(col, vec3(.299, .587, .114));
   vec3 tri = lum < .5 ? mix(uC0, uC1, lum * 2.) : mix(uC1, uC2, (lum - .5) * 2.);

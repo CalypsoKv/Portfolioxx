@@ -1,58 +1,44 @@
 # Content readiness
 
-Source: uploaded `interdimensional_tv_portfolio_redesign_prd.md`, sections 5.1, 11.2, 12.5–12.6, 14 and 26. The PRD is supplied design input; its claims about the former deployment have not been independently reverified here. Proposed launch content must not be mistaken for existing evidence.
+Sources: Jahan's CV (2025), his Notion portfolio draft, his Drive files for the work he cleared for publication (AI essays and website copy, animation scripts and character briefs, Kink Studios and client brand work), and the public web, checked on 28 October 2026. Private material stays out: no home address or phone number, no unreleased film, no other people's details from shared documents.
 
 ## Inventory
 
-| Ch. | Title                                 | Frequency | Evidence described in PRD                                                                                                                             | Safe presentation now                                                                                                   |
-| --- | ------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| 000 | Camden Imagines                       | Research  | Context verified; June 2023 civic report by Camden Council and Moral Imaginations. No Jahan credit found; contribution unconfirmed.                   | Field analysis / systems reading. Attribute source organizations. Never claim report authorship or client engagement.   |
-| 001 | Origins                               | Studio    | Archive pending; earliest work not digitized.                                                                                                         | Signal vault.                                                                                                           |
-| 002 | Badhuche                              | Studio    | Owner-operated art studio (Jahan is the owner and operator). Works, figures and images come from the studio's own site, shown with the owner's stated permission. | Owned channel. Studio-reported figures are labelled as such; selected works link to the studio site. |
-| 003 | Reptrics                              | Product   | In preparation: content with a next action.                                                                                                           | Signal vault; no verified deliverables or outcomes supplied.                                                            |
-| 004 | CustomerSuccessBox                    | Product   | In preparation: question-to-product-intent learning path.                                                                                             | Signal vault. Any PRD sample must say illustrative / hypothetical.                                                      |
-| 005 | Urmila Ben Nu Rasodu                  | Studio    | Owner-operated Indore restaurant (Jahan is the owner and operator). Described from public listings. | Owned channel. Third-party ratings are linked, not embedded. Photos and menus arrive from the owner. |
-| 006 | Orma Health                           | Product   | In preparation: complex care journey.                                                                                                                 | Signal vault; no clinical or commercial outcome claims.                                                                 |
-| 007 | DigiStatement                         | Words     | PRD reports Jahan byline on “Cyberpunk 2077 Tapeworm Mission Guide & Walkthrough”, 17 Dec 2020. Descriptive analysis only; no article prose supplied. | Lead editorial channel; distinguish sourced project context, new editorial analysis, and any eventual original excerpt. |
-| 008 | Pepper Content                        | Words     | In preparation: multi-client writing archive.                                                                                                         | Signal vault until three cleared briefs exist.                                                                          |
-| 009 | Life Itself                           | Research  | In preparation: how groups learn to act better.                                                                                                       | Signal vault.                                                                                                           |
-| 010 | Perspectiva                           | Research  | In preparation: architecture for serious ideas.                                                                                                       | Signal vault.                                                                                                           |
-| 011 | RedOrange.ai                          | Product   | Archive pending.                                                                                                                                      | Signal vault; no AI system functionality claims.                                                                        |
-| 012 | Perfect Pixel                         | Studio    | In preparation: wireframe-to-interface decisions.                                                                                                     | Signal vault.                                                                                                           |
-| 013 | Premaculture                          | Studio    | In preparation: identity, website and words.                                                                                                          | Signal vault.                                                                                                           |
-| 014 | NowTheo                               | Studio    | Jahan built the site and brand, writes and posts the content, and runs the TPOT community side. The practice itself is not Jahan's. | Owned channel, role stated as site, brand and community. No therapeutic claims, no client material, the practice is quoted from its own public profile. |
-| 015 | MyMunshi                              | Product   | Concept: “Notice. Explain. Guide.”                                                                                                                    | Clearly labeled concept; do not claim deployed AI or client work.                                                       |
-| 016 | PARDA                                 | Words     | Concept: one performer, seven roles, a cinema’s last night.                                                                                           | Clearly labeled theatre concept; script not supplied.                                                                   |
-| 017 | Game Prototype                        | Play      | Concept: an experiment taking shape.                                                                                                                  | Clearly labeled concept; no playable-game claim without working implementation.                                         |
-| 018 | Fiction, Essays, Research & Open Mics | Words     | Anthology archive pending restoration.                                                                                                                | Signal vault.                                                                                                           |
+| Ch. | Title | Evidence | What is shown | Still needed |
+| --- | --- | --- | --- | --- |
+| 000 | Camden Imagines | Field analysis | A systems reading; no authorship claimed. | Contribution evidence, if any. |
+| 001 | Origins | Reported (CV) | Physics at St. Xavier's, Quora from 2017, MapaGuru 2019, and a timeline of every role. | None. |
+| 002 | Badhuche | Owned & operated | The studio's works, process and figures from its own site (50+ projects, 4+ countries, 440 ft, 15 tons, as shown on 28 Oct 2026), with a loop of the site. | None. |
+| 003 | Reptrics | Reported (CV) | Senior Marketing Manager, Aug 2022 – Oct 2023: the brief, the website overhaul, the content machine, four reported outcomes, six blog articles linked, a loop of reptrics.com. | Screens from the overhaul, if Reptrics clears them. |
+| 004 | CustomerSuccessBox | Reported (CV) | Content Marketer, Oct 2021 – Jul 2022: the learning curve and four reported outcomes. | Cleared article links. |
+| 005 | Urmila Ben Nu Rasodu | Family business · marketing | His mother's kitchen; he runs the marketing; ₹0 → ₹50 lakh+ reported. | Menu cards and photographs. |
+| 006 | Orma Health | Shown with permission | TealBox Digital role; the main-page storyboard with headline options, story beats, copy blocks and section order. | None. |
+| 007 | DigiStatement | Publicly verified | 20 bylines (Mar 2020 – Jan 2021) as a front page, each checked on the live site, plus the author page and a loop of it. | None. |
+| 008 | Pepper Content | Reported (CV) | Freelance writer and editor, Jun 2020 – Oct 2021; the range of briefs. | Cleared samples with client and permission. |
+| 009 | Life Itself | Field analysis | A reading of the public Collective Intelligence white paper; no authorship claimed. | Jahan's contribution, to confirm. |
+| 010 | Perspectiva | Reported (own records) | Editorial research, synthesis and publication support; a constellation of the ecosystem. | Public pieces he worked on, if any are bylined. |
+| 011 | RedOrange.AI | Reported (CV) | Seminar scripts, presentation documents and the newsletter, 2025. | Cleared excerpts. |
+| 012 | Perfect Pixel | Archive | A short description of the studio and its public site. | Jahan's role. |
+| 013 | Prem-a-Culture | Shown with permission | Homepage copy as written (testimonials, phone numbers and pricing left out). | None. |
+| 014 | NowTheo | Site, brand & community | The practice in its own public words, the three strands Jahan runs, a loop of untanglingself.com. | Screens and posts. |
+| 015 | MyMunshi | Concept | The Hindi-first desk companion for Meesho sellers; the clickable review sketch with fictional data. | None. |
+| 016 | PARDA | Concept | The one-performer memory play at Kohinoor Talkies, its form and palette. | A cleared script excerpt. |
+| 017 | The next frequency | Concept | The playable tuning experiment. | None. |
+| 018 | Fiction, essays & open mics | Shown with permission | The Indian AI stack essay, its companion corpus and the AI data-governance satire, as a draggable row. | Published links; the data-governance piece's statistics should be fact-checked before it is published anywhere. |
+| 019 | Kink Studios | Shown with permission | The identity system and its line, "We mark leather. Permanently."; the interactive guidelines with a Gemini voice generator. | Screens from the guidelines app. |
+| 020 | Animation & characters | Shown with permission | The Weight of the Ticket scripts with their animation notes; Troyfall's gods; reference sheets; motion tests. | The four Procreate clips and the Calypso and Cyclops sheets, uploaded as files. |
+| 021 | Gyara Gyara | Shown with permission | Competitor research across three tiers, the site audit and the 11:11 concept; a loop of gyaragyara.com. | Screens of the fixes and of 11:11. |
 
-There are 19 channels. Eight are on air: one published (DigiStatement), one field analysis (Camden Imagines), three owned or built by Jahan (Badhuche, Urmila Ben Nu Rasodu, NowTheo) and three concepts (MyMunshi, PARDA, Game Prototype). Eleven are archive entries whose evidence is being restored; each has a designed placeholder composition with empty, clearly labelled slots. “Six on-air verified” in the PRD was a proposed launch target, not an established count. Only mark a channel on air after its actual artifact, provenance and publication permission are present. Count concepts, field analyses and owned channels separately from commissioned work.
+Twenty-one channels are on air and one is in the archive. Reported figures come from the CV and describe team work in roles Jahan held; they are labelled as reported everywhere they appear and are not audited.
 
-## Service map
+## Owner inputs that would complete the site
 
-| Offer                                           | Ideal buyer and problem                                                      | Proposed deliverables                                                              | Relevant channels; current proof limit                                                                                  |
-| ----------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Editorial writing and search-intent guides      | Publications, agencies and founders needing useful, accurate prose.          | Guides, thought leadership, structural editing, editorial production.              | DigiStatement provides described byline evidence; Pepper Content and anthology pending.                                 |
-| Product narrative and content strategy          | SaaS / product teams whose users struggle to understand the next action.     | Messaging architecture, onboarding / lifecycle copy, product-intent content paths. | Reptrics, CustomerSuccessBox, Orma Health all pending. Do not imply cleared client case studies.                        |
-| Brand voice, web copy and interface systems     | Early-stage companies and studios with disconnected words and design.        | Information architecture, website / UX copy, naming and voice guidelines.          | Premaculture and Perfect Pixel pending. Badhuche and NowTheo are owned or built by Jahan, with roles stated. The portfolio itself is a demonstrable new design artifact. |
-| Research synthesis and systems / AI prototyping | Civic innovators, research groups and labs needing legible public artifacts. | Research reports, systems frameworks, visual essays, human-led workflow design.    | Camden is field analysis, not confirmed authorship; other research archives and AI concepts remain pending.             |
+1. The animation files: the four Procreate clips (2024) and the character-sheet exports. They fill the empty slots on channel 020 and can become loops on the screen.
+2. Screens from the Kink Studios guidelines app and the Gyara Gyara 11:11 concept.
+3. Photographs and menu cards for the kitchen.
+4. Confirmation of the roles for Perfect Pixel and Life Itself.
+5. Any testimonial or award, with a name, permission and a public source (`src/data/proof.ts`).
 
-Engagement lengths and availability in the PRD are suggested positioning, not confirmed commitments. Avoid promising fixed response times or availability without owner confirmation.
+## Contact
 
-## Reader structure
-
-Use a warm paper reading surface with semantic headings and real text, independent of the illustrated receiver. Start with channel / frequency / honest provenance, a title, and a three-part summary: reader question, contribution, and evidence. Make the substantive artifact the main column; use an optional commentary column that can toggle without moving the prose. Follow with source provenance, role limitations, related work, and a service-specific inquiry action.
-
-The DigiStatement page can explain the search intent, conversation-trigger structure and spoiler sensitivity described by the PRD; label this as portfolio analysis rather than Jahan’s original article. Do not manufacture a 400-word “published excerpt”. Camden needs a visible attribution note before any analysis. The PRD’s CustomerSuccessBox “presence vs. progress” passage is explicitly hypothetical: retain that label if shown. Pending work should remain in an expandable vault with useful adjacent links, rather than empty primary project pages.
-
-## Launch blockers and owner inputs
-
-1. Public inquiry email is confirmed by the user: `jahandms60@gmail.com`. An email-composer fallback needs no server endpoint. It should open the visitor’s email app with their brief and must not display “sent” or imply inbox receipt. Server delivery can be added later if desired.
-2. Supply permission-cleared prose / screenshots / URLs for DigiStatement and any additional commercial flagship projects. The target of six complete cases cannot be satisfied by invented text.
-3. Confirm Camden contribution, or keep the field-analysis classification and source attribution.
-4. Provide actual concept briefs, theatre text or playable prototypes before promoting concept channels into substantive reading experiences.
-5. Confirm engagement shape, public availability and response-time promises before displaying those as facts.
-
-Voices (testimonials) and awards are empty in `src/data/proof.ts` and stay hidden until an entry has a name, a permission note and a public source. Use `?collect=1` on any channel to see every empty slot with its file, source and permission checklist.
-
-Implementation can be reviewed before these inputs arrive. Commercial publication should distinguish working UI from completed evidence and functioning delivery.
+The public inquiry address is `jahandms60@gmail.com`. The form composes a `mailto:` draft in the visitor's email app and never claims a message was sent.

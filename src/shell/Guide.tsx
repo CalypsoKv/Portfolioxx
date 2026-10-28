@@ -30,7 +30,7 @@ export default function Guide({ open, onClose }: { open: boolean; onClose: () =>
     }
   }, [open]);
   const sorted = [...transmissions].sort((a, b) => Number(a.status === "vault") - Number(b.status === "vault") || a.id.localeCompare(b.id));
-  const items = sorted.filter((t) => `${t.title} ${t.frequency} ${t.id} ${t.tags.join(" ")}`.toLowerCase().includes(q.toLowerCase()));
+  const items = sorted.filter((t) => `${t.title} ${t.frequency} ${t.id} ${t.tags.join(" ")} ${t.subtitle}`.toLowerCase().includes(q.toLowerCase()));
   return (
     <dialog
       ref={ref}
@@ -76,7 +76,7 @@ export default function Guide({ open, onClose }: { open: boolean; onClose: () =>
               <span className="osd dim">{t.frequency} · {provenanceLabel(t)}</span>
             </button>
           ))}
-          {!items.length && <p className="guide-empty">No matching signal. Try "Words", "Research" or "Play".</p>}
+          {!items.length && <p className="guide-empty">No matching signal. Try "Words", "Animation" or "Studio".</p>}
         </div>
         <div className="guide-foot osd">
           <button type="button" onClick={() => { closeQuiet(); onClose(); navigate("/catalogue"); }}>Full programme guide</button>

@@ -6,10 +6,10 @@ const SWATCHES: [string, string][] = [["Charcoal", "#1d1d1d"], ["Black", "#03030
 
 /** A small, live reference for the visual system. */
 export default function World() {
-  useScene(HOME_PLATE, "natural", 0.35);
+  useScene({ plate: HOME_PLATE, reg: "natural", dim: 0.35 });
   return (
     <section className="page-hero">
-      <title>World and motion · Interdimensional TV</title>
+      <title>World and motion · Jahan Patel</title>
       <div className="in">
         <span className="osd yel">World and motion</span>
         <h1 className="disp" tabIndex={-1}>One world, one HUD.</h1>
@@ -17,7 +17,7 @@ export default function World() {
         <div className="swatches">{SWATCHES.map(([n, c]) => <div key={n} className="swatch" style={{ background: c, color: n === "Paper" || n === "HUD" ? "#030300" : "#fbf8ef" }}><span className="osd">{n}<br />{c}</span></div>)}</div>
         <h2 className="disp">Three stations</h2>
         <div className="swatches">{(["red", "turmeric", "blue"] as const).map((k) => <div key={k} className="swatch" style={{ background: `linear-gradient(90deg, ${REGISTERS[k].c.join(", ")})` }}><span className="osd" style={{ background: "#030300", color: "#ffea63", padding: "3px 6px" }}>{k}</span></div>)}</div>
-        <p className="fine">Motion: hand-inked borders step eight times a second; letters blur in; the screen glitches between channels; reduced motion switches all of it off and keeps the state changes.</p>
+        <p className="fine">Motion: hand-inked borders step eight times a second; headings wipe in, in six hard steps; the screen glitches between channels and switches off like a CRT between pages; stills drift and loops play behind their channels. Reduced motion switches all of it off and keeps the state changes.</p>
       </div>
     </section>
   );

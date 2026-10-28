@@ -337,5 +337,122 @@ const scenes = {
     s += figure(1380, 780, 160) + lantern(500, 120, 120, 18).replace("<circle", "<circle").replace(new RegExp(PAPER, "g"), PAPER);
     return s;
   },
+  // 019 Kink Studios: a hide stretched on a frame, a branding iron leaving its mark, smoke rising
+  "019-kink-studios": () => {
+    let s = `<rect width="${W}" height="${H}" fill="${INK}"/>`;
+    const q = rng(190);
+    // pegboard of leather tools
+    for (let i = 0; i < 9; i++) for (let j = 0; j < 4; j++) s += circle(70 + i * 42, 90 + j * 46, 3, PAPER, PAPER, 1);
+    for (let i = 0; i < 7; i++) {
+      const x = 92 + i * 48, y = 110 + (i % 2) * 40, l = 90 + q() * 70;
+      s += line(x, y, x, y + l, 3, PAPER) + (i % 3 === 0 ? circle(x, y + l + 10, 12, PAPER, PAPER, 1) : i % 3 === 1 ? poly([[x - 9, y + l], [x + 9, y + l], [x, y + l + 26]], PAPER, PAPER, 1) : `<rect x="${x - 14}" y="${y + l - 6}" width="28" height="22" fill="${PAPER}"/>`);
+    }
+    // the frame
+    const fx0 = 330, fy0 = 210, fx1 = 1150, fy1 = 760;
+    for (const r of [[fx0 - 28, fy0 - 28, fx1 - fx0 + 56, 28], [fx0 - 28, fy1, fx1 - fx0 + 56, 28], [fx0 - 28, fy0, 28, fy1 - fy0], [fx1, fy0, 28, fy1 - fy0]]) {
+      const pg = [[r[0], r[1]], [r[0] + r[2], r[1]], [r[0] + r[2], r[1] + r[3]], [r[0], r[1] + r[3]]];
+      s += poly(pg, PAPER, INK, 2.4) + hatch(pg, { angle: r[2] > r[3] ? 2 : 88, gap: 5, w0: 0.6, w1: 1.4 });
+    }
+    // the hide, laced to the frame
+    const hide = blob(740, 485, 330, 215, 191, 22, 0.22);
+    for (const [hx, hy] of hide) {
+      const tx = hx < 740 ? fx0 : fx1, ty = hy < 485 ? fy0 : fy1;
+      const nearX = Math.abs(hx - tx) < Math.abs(hy - ty);
+      s += line(hx, hy, nearX ? tx : hx, nearX ? hy : ty, 1.6, PAPER);
+    }
+    s += poly(hide, PAPER, INK, 3) + hatch(hide, { angle: 60, gap: 7, w0: 0.5, w1: 1.3, opacity: 0.55 });
+    // the burned mark: a ring and a cross-stitch, no letters
+    const mx = 700, my = 470;
+    s += `<circle cx="${mx}" cy="${my}" r="96" fill="none" stroke="${INK}" stroke-width="16"/>` + `<circle cx="${mx}" cy="${my}" r="60" fill="none" stroke="${INK}" stroke-width="6"/>`;
+    s += path(`M${mx - 36} ${my - 36} L${mx + 36} ${my + 36} M${mx + 36} ${my - 36} L${mx - 36} ${my + 36}`, 12, INK);
+    // scorch rays around the mark
+    for (let i = 0; i < 40; i++) { const a = (i / 40) * Math.PI * 2 + q() * 0.1, r0 = 110, r1 = 130 + q() * 40; s += line(mx + Math.cos(a) * r0, my + Math.sin(a) * r0, mx + Math.cos(a) * r1, my + Math.sin(a) * r1, 1 + q(), INK); }
+    // the iron, lifting away to the upper right: a shaft from the brand head to a wrapped grip
+    const ix = 850, iy = 314, ex = 1420, ey = -46, len = Math.hypot(ex - ix, ey - iy), ox = (-(ey - iy) / len) * 13, oy = ((ex - ix) / len) * 13;
+    const shaft = [[ix - ox, iy - oy], [ix + ox, iy + oy], [ex + ox, ey + oy], [ex - ox, ey - oy]];
+    s += poly(shaft, PAPER, INK, 2.4) + hatch(shaft, { angle: 58, gap: 4, w0: 0.6, w1: 1.2 });
+    s += `<circle cx="${ix - 6}" cy="${iy + 8}" r="46" fill="none" stroke="${PAPER}" stroke-width="12"/>` + `<circle cx="${ix - 6}" cy="${iy + 8}" r="46" fill="none" stroke="${INK}" stroke-width="3"/>`;
+    const ang = (Math.atan2(ey - iy, ex - ix) * 180) / Math.PI;
+    s += `<rect x="1230" y="0" width="170" height="48" rx="12" fill="${INK}" stroke="${PAPER}" stroke-width="3" transform="rotate(${f(ang)} 1315 24)"/>`;
+    for (let i = 0; i < 6; i++) s += `<line x1="${1250 + i * 26}" y1="2" x2="${1250 + i * 26}" y2="46" stroke="${PAPER}" stroke-width="2" transform="rotate(${f(ang)} 1315 24)"/>`;
+    // smoke
+    for (let i = 0; i < 7; i++) s += path(`M${f(mx - 60 + i * 20)} ${f(my - 110)} c ${f(-40 + q() * 20)} -60 ${f(50 + q() * 30)} -90 ${f(-10 + q() * 30)} -170 s ${f(-60)} -80 ${f(10 + q() * 30)} -150`, 1.6 + q(), PAPER, "none", `opacity="${f(0.35 + q() * 0.4)}"`);
+    s += ground(192, 790, 0, W, 80);
+    return s;
+  },
+  // 020 Animation & characters: a zoetrope, a strip of frames with a runner, a lamp
+  "020-animation": () => {
+    let s = sky(20, { swirls: 2, stars: 50, y1: 360 });
+    s += `<rect x="0" y="330" width="${W}" height="${H - 330}" fill="${INK}"/>`;
+    const runner = (x, y, k, ph) => {
+      const a = Math.sin(ph) * 0.8, b = Math.sin(ph + Math.PI) * 0.8, lean = k * 0.08;
+      const hip = [x, y - k * 0.5], neck = [x + lean, y - k * 0.86];
+      let o = line(hip[0], hip[1], neck[0], neck[1], k * 0.06, INK) + circle(neck[0] + lean * 0.4, neck[1] - k * 0.1, k * 0.085, INK, INK, 1);
+      for (const t of [a, b]) {
+        const knee = [hip[0] + Math.sin(t) * k * 0.26, hip[1] + Math.cos(t) * k * 0.24];
+        o += path(`M${f(hip[0])} ${f(hip[1])} L${f(knee[0])} ${f(knee[1])} L${f(knee[0] - Math.abs(Math.sin(t)) * k * 0.12)} ${f(knee[1] + k * 0.24)}`, k * 0.05, INK);
+      }
+      for (const t of [b, a]) o += path(`M${f(neck[0])} ${f(neck[1] + k * 0.05)} l${f(Math.sin(t) * k * 0.2)} ${f(k * 0.16)} l${f(Math.sin(t) * k * 0.1 + k * 0.08)} ${f(-k * 0.04)}`, k * 0.045, INK);
+      return o;
+    };
+    // a strip of seven frames across the sky
+    const sy = 70;
+    s += `<g transform="rotate(-3 768 200)">` + `<rect x="60" y="${sy}" width="1416" height="250" fill="${INK}" stroke="${PAPER}" stroke-width="3"/>`;
+    for (let i = 0; i < 30; i++) s += `<rect x="${78 + i * 47}" y="${sy + 10}" width="22" height="14" rx="3" fill="${PAPER}"/><rect x="${78 + i * 47}" y="${sy + 226}" width="22" height="14" rx="3" fill="${PAPER}"/>`;
+    for (let i = 0; i < 7; i++) {
+      const x = 84 + i * 198;
+      s += `<rect x="${x}" y="${sy + 34}" width="180" height="182" fill="${PAPER}"/>` + line(x + 10, sy + 196, x + 170, sy + 196, 2);
+      s += runner(x + 90, sy + 196, 150, (i / 7) * Math.PI * 2);
+    }
+    s += `</g>`;
+    // the zoetrope on its stand
+    const cx = 900, top = 470, bot = 650, rx = 280, ry = 58;
+    s += line(cx, bot + ry, cx, 790, 10, PAPER) + `<ellipse cx="${cx}" cy="800" rx="150" ry="22" fill="${PAPER}" stroke="${INK}" stroke-width="3"/>`;
+    const body = [[cx - rx, top], [cx + rx, top], [cx + rx, bot], [cx - rx, bot]];
+    s += poly(body, PAPER, INK, 3) + `<ellipse cx="${cx}" cy="${bot}" rx="${rx}" ry="${ry}" fill="${PAPER}" stroke="${INK}" stroke-width="3"/>` + hatch(body, { angle: 90, gap: 7, w0: 0.6, w1: 1.6, opacity: 0.6 });
+    for (let i = 0; i < 13; i++) {
+      const th = -Math.PI / 2 + (i / 12) * Math.PI, x = cx + Math.sin(th) * rx * 0.94, w = 16 * Math.cos(th) + 3;
+      s += `<rect x="${f(x - w / 2)}" y="${top + 16}" width="${f(w)}" height="70" fill="${INK}"/>`;
+    }
+    s += `<ellipse cx="${cx}" cy="${top}" rx="${rx}" ry="${ry}" fill="${INK}" stroke="${PAPER}" stroke-width="4"/>`;
+    for (let i = 0; i < 5; i++) s += `<g opacity="${f(0.35 + i * 0.12)}">` + runner(cx - 180 + i * 90, top + 26, 60, i * 1.2).replace(new RegExp(INK, "g"), PAPER) + `</g>`;
+    s += lantern(300, 520, 170, 21) + poly([[260, 560], [340, 560], [360, 790], [240, 790]], PAPER, INK, 2) + hatch([[260, 560], [340, 560], [360, 790], [240, 790]], { angle: 80, gap: 6, w0: 0.6, w1: 1.6 });
+    s += ground(201, 800, 0, W, 64);
+    return s;
+  },
+  // 021 Gyara Gyara: turned wooden vases on a plinth by a tall window, a tree outside
+  "021-gyaragyara": () => {
+    let s = `<rect width="${W}" height="${H}" fill="${PAPER}"/>`;
+    s += hatch([[0, 0], [W, 0], [W, 700], [0, 700]], { angle: 90, gap: 14, w0: 0.4, w1: 0.8, opacity: 0.35 });
+    // the window and the tree beyond it
+    const wx = 120, wy = 70, ww = 420, wh = 610;
+    s += `<rect x="${wx}" y="${wy}" width="${ww}" height="${wh}" fill="${INK}"/>`;
+    s += `<clipPath id="win"><rect x="${wx + 14}" y="${wy + 14}" width="${ww - 28}" height="${wh - 28}"/></clipPath><g clip-path="url(#win)">`;
+    s += `<rect x="${wx}" y="${wy}" width="${ww}" height="${wh}" fill="${PAPER}"/>` + hatch([[wx, wy], [wx + ww, wy], [wx + ww, wy + wh], [wx, wy + wh]], { angle: 0, gap: 9, w0: 0.4, w1: 0.9, opacity: 0.5 });
+    s += poly([[320, 680], [345, 380], [360, 380], [390, 680]], INK, INK, 1);
+    for (const [bx, by, br] of [[260, 300, 120], [400, 260, 130], [330, 190, 120], [470, 360, 90], [200, 400, 80]]) s += poly(blob(bx, by, br, br * 0.8, bx + by, 16, 0.3), PAPER, INK, 2.4) + hatch(blob(bx, by, br, br * 0.8, bx + by, 16, 0.3), { angle: 50, gap: 6, w0: 0.7, w1: 1.7, cross: true });
+    s += `</g>` + line(wx + ww / 2, wy, wx + ww / 2, wy + wh, 8, INK) + line(wx, wy + wh / 2, wx + ww, wy + wh / 2, 8, INK);
+    // the plinth
+    const pl = [[620, 640], [1460, 640], [1460, 720], [620, 720]];
+    s += poly(pl, PAPER, INK, 3) + hatch(pl, { angle: 2, gap: 6, w0: 0.6, w1: 1.6 });
+    s += poly([[600, 620], [1480, 620], [1460, 640], [620, 640]], PAPER, INK, 2.4);
+    // vases: a turned profile, wood grain following the curve, a sprig in two of them
+    const vase = (x, base, w, h, grain, sprig) => {
+      const L = (k) => x - w * k, R = (k) => x + w * k;
+      const d = `M${f(L(0.32))} ${base} C${f(L(0.62))} ${f(base - h * 0.08)} ${f(L(0.66))} ${f(base - h * 0.62)} ${f(L(0.2))} ${f(base - h * 0.82)} L${f(L(0.14))} ${f(base - h)} L${f(R(0.14))} ${f(base - h)} L${f(R(0.2))} ${f(base - h * 0.82)} C${f(R(0.66))} ${f(base - h * 0.62)} ${f(R(0.62))} ${f(base - h * 0.08)} ${f(R(0.32))} ${base} Z`;
+      let o = `<path d="${d}" fill="${PAPER}" stroke="${INK}" stroke-width="3"/>`;
+      for (let i = 1; i <= grain; i++) { const k = i / (grain + 1); o += path(`M${f(L(0.3 * (1 - k * 0.6)))} ${f(base - 4)} C${f(L(0.58 * (1 - k)))} ${f(base - h * 0.1)} ${f(L(0.6 * (1 - k)))} ${f(base - h * 0.6)} ${f(L(0.17 * (1 - k)))} ${f(base - h * 0.84)}`, 1.4, INK) + path(`M${f(R(0.3 * (1 - k * 0.6)))} ${f(base - 4)} C${f(R(0.58 * (1 - k)))} ${f(base - h * 0.1)} ${f(R(0.6 * (1 - k)))} ${f(base - h * 0.6)} ${f(R(0.17 * (1 - k)))} ${f(base - h * 0.84)}`, 1.4, INK); }
+      if (sprig) {
+        o += path(`M${x} ${f(base - h)} C${f(x - 10)} ${f(base - h - 80)} ${f(x + 30)} ${f(base - h - 140)} ${f(x + 10)} ${f(base - h - 210)}`, 2.4, INK);
+        for (let i = 0; i < 5; i++) { const ly = base - h - 50 - i * 34, lx = x + (i % 2 ? 18 : -14); o += `<ellipse cx="${f(lx)}" cy="${f(ly)}" rx="20" ry="9" fill="${PAPER}" stroke="${INK}" stroke-width="2" transform="rotate(${i % 2 ? -30 : 30} ${f(lx)} ${f(ly)})"/>`; }
+      }
+      return o;
+    };
+    s += vase(720, 622, 150, 240, 4, true) + vase(880, 622, 120, 170, 3, false) + vase(1040, 622, 170, 300, 5, true) + vase(1210, 622, 110, 150, 3, false) + vase(1350, 622, 130, 210, 4, false);
+    // floor
+    const fl = [[0, 720], [W, 720], [W, H], [0, H]];
+    s += poly(fl, PAPER, INK, 2) + hatch(fl, { angle: 4, gap: 10, w0: 0.6, w1: 1.6, opacity: 0.7 });
+    return s;
+  },
 };
 export default scenes;

@@ -30,10 +30,10 @@ const blankDraft: BriefDraft = {
 };
 const services = [
   "Words & editorial",
-  "Product & narrative",
+  "Product & websites",
   "Research & systems",
-  "Brand & web systems",
-  "Play & possibilities",
+  "Brand & design",
+  "Animation & AI",
   "Something else entirely",
 ];
 
@@ -124,7 +124,7 @@ export default function ContactDialog({
       `Frequency: ${draft.service || "Let’s find the right frequency"}`,
       ...(draft.budget ? [`Budget: ${draft.budget}`] : []),
       "",
-      "Sent from the Interdimensional TV inquiry console.",
+      "Sent from the inquiry form on Jahan Patel's portfolio.",
     ].join("\n");
     const link = document.createElement("a");
     link.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -171,8 +171,8 @@ export default function ContactDialog({
           Have something on your <em>wavelength?</em>
         </h2>
         <p id="contact-description" className="contact-intro">
-          A clearer story, a complex question, a world worth building. Tell me a
-          little about what you have in mind.
+          An article, a website, a brand, an animated story. Tell me a little
+          about what you have in mind.
         </p>
         <form onSubmit={composeEmail} className="contact-form">
           <div className="contact-field-row">

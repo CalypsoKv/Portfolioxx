@@ -1,8 +1,12 @@
 import gsap from "gsap";
+import { Draggable } from "gsap/Draggable";
+import { InertiaPlugin } from "gsap/InertiaPlugin";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Draggable, InertiaPlugin, SplitText, ScrambleTextPlugin);
 
 let lenis: Lenis | null = null;
 let started = false;
@@ -30,4 +34,4 @@ export function scrollToY(y: number, { immediate = false } = {}) {
   else window.scrollTo({ top: y, behavior: immediate ? "instant" : "smooth" });
 }
 
-export { gsap, ScrollTrigger };
+export { gsap, ScrollTrigger, Draggable, SplitText };

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { frequencies, provenanceLabel, transmissions, type Frequency } from "../data/transmissions";
+import { evidenceKind, frequencies, provenanceLabel, transmissions, type Frequency } from "../data/transmissions";
 import { State } from "../showcase/blocks";
 import TuneLink from "../shell/TuneLink";
 import { GUIDE_PLATE, thumbFor } from "../stage/registers";
@@ -13,15 +13,26 @@ function memory(key: string, fallback: string) {
   }
 }
 
+/** A row of text tabs: one choice at a time, no button chrome. */
+function Tabs<T extends string>({ label, options, value, onChange }: { label: string; options: readonly T[]; value: T; onChange: (v: T) => void }) {
+  return (
+    <div className="tabs" role="group" aria-label={label}>
+      {options.map((o) => (
+        <button key={o} type="button" className="tab" aria-pressed={value === o} onClick={() => onChange(o)}>{o}</button>
+      ))}
+    </div>
+  );
+}
+
 export default function Catalogue() {
-  useScene(GUIDE_PLATE, "natural", 0.35);
+  useScene({ plate: GUIDE_PLATE, reg: "natural", dim: 0.35 });
   const [q, setQ] = useState("");
   const [freq, setFreq] = useState<"All" | Frequency>("All");
-  const [view, setView] = useState(() => (memory("itv_view", "guide") === "wall" ? "wall" : "guide"));
-  const setViewSaved = (v: string) => {
+  const [view, setView] = useState<"Guide" | "Wall">(() => (memory("itv_view", "guide") === "wall" ? "Wall" : "Guide"));
+  const setViewSaved = (v: "Guide" | "Wall") => {
     setView(v);
     try {
-      localStorage.setItem("itv_view", v);
+      localStorage.setItem("itv_view", v.toLowerCase());
     } catch {
       /* optional */
     }
@@ -34,36 +45,28 @@ export default function Catalogue() {
     [q, freq],
   );
   const live = transmissions.filter((t) => t.status !== "vault").length;
-  const kind = (s: string) => (s === "published" || s === "owned" ? "vf" : s === "vault" ? "ph" : "dr");
 
   return (
     <section className="page-hero catalogue">
-      <title>Programme guide · Interdimensional TV</title>
-      <meta name="description" content="Every channel on Interdimensional TV, with honest provenance: published work, owned work, field analysis, concepts and the archive being restored." />
+      <title>Programme guide · Jahan Patel</title>
+      <meta name="description" content="Every channel of Jahan Patel's work, with honest provenance: published, reported, shown with permission, owned, read, self-initiated, or still in the archive." />
       <div className="in">
         <span className="osd yel">The programme guide · {live} on air · {transmissions.length - live} in the archive</span>
         <h1 className="disp" tabIndex={-1}>The work. Not the noise.</h1>
-        <p className="narr ink"><b className="osd">Narrator</b>Each signal says where it comes from. Archive channels show how the work will be shown; nothing there is an outcome.</p>
+        <p className="narr ink"><b className="osd">Narrator</b>Every channel says what kind of evidence stands behind it: published, reported, shown with permission, owned, or self-initiated.</p>
         <div className="catalogue-tools">
           <label className="search"><span className="sr-only">Search the programme guide</span><input placeholder="Search a project, a discipline, a number…" value={q} onChange={(e) => setQ(e.target.value)} /></label>
-          <div className="chips" role="group" aria-label="Filter by frequency">
-            {(["All", ...frequencies.map((f) => f.name)] as const).map((f) => (
-              <button key={f} type="button" className="hud" aria-pressed={freq === f} onClick={() => setFreq(f)}>{f}</button>
-            ))}
-          </div>
-          <div className="chips" role="group" aria-label="View">
-            <button type="button" className="hud" aria-pressed={view === "guide"} onClick={() => setViewSaved("guide")}>Guide</button>
-            <button type="button" className="hud" aria-pressed={view === "wall"} onClick={() => setViewSaved("wall")}>Wall</button>
-          </div>
+          <Tabs label="Filter by frequency" options={["All", ...frequencies.map((f) => f.name)] as const} value={freq} onChange={setFreq} />
+          <Tabs label="View" options={["Guide", "Wall"] as const} value={view} onChange={setViewSaved} />
         </div>
 
-        {view === "guide" ? (
+        {view === "Guide" ? (
           <div className="epg" aria-live="polite">
             {items.map((t) => (
               <TuneLink key={t.id} to={`/work/${t.slug}`} className="row">
                 <span className="n">{t.id}</span>
                 <span className="tt disp">{t.title}</span>
-                <span className="p"><State kind={kind(t.status)}>{provenanceLabel(t)}</State></span>
+                <span className="p"><State kind={evidenceKind(t)}>{provenanceLabel(t)}</State></span>
                 <span className="d">{t.subtitle}</span>
               </TuneLink>
             ))}
@@ -74,14 +77,14 @@ export default function Catalogue() {
               <li key={t.id}>
                 <TuneLink to={`/work/${t.slug}`} className="card-tv">
                   <span className="card-shot"><img src={thumbFor(t.id)} alt="" loading="lazy" decoding="async" width="640" height="360" /></span>
-                  <span className="card-cap"><span className="osd yel">CH {t.id}</span><strong className="disp">{t.title}</strong><State kind={kind(t.status)}>{provenanceLabel(t)}</State></span>
+                  <span className="card-cap"><span className="osd yel">CH {t.id}</span><strong className="disp">{t.title}</strong><State kind={evidenceKind(t)}>{provenanceLabel(t)}</State></span>
                 </TuneLink>
               </li>
             ))}
           </ul>
         )}
         {!items.length && (
-          <div className="note"><strong className="osd">No matching signal</strong><button type="button" className="hud" onClick={() => { setQ(""); setFreq("All"); }}>Reset filters</button></div>
+          <div className="note"><strong className="osd">No matching signal</strong><button type="button" className="inline-link" onClick={() => { setQ(""); setFreq("All"); }}>Reset filters</button></div>
         )}
       </div>
     </section>

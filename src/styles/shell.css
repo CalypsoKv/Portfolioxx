@@ -12,13 +12,24 @@ main { position: relative; z-index: 1; outline: none; }
 /* fixed chrome */
 .mark { position: fixed; z-index: 90; top: 16px; left: var(--gutter); width: 52px; height: 52px; color: var(--white); mix-blend-mode: difference; filter: url(#rough); display: block; }
 .mark svg { width: 100%; height: 100%; }
-.plaque { position: fixed; z-index: 90; top: 20px; right: max(16px, env(safe-area-inset-right, 0px)); display: flex; align-items: center; gap: 16px; background: var(--white); color: var(--ink); padding: 11px 22px; font: 900 15px var(--display); letter-spacing: 0.03em; text-transform: uppercase; }
+.plaque { position: fixed; z-index: 90; top: 20px; right: max(16px, env(safe-area-inset-right, 0px)); display: flex; align-items: center; gap: 14px; background: var(--white); color: var(--ink); padding: 8px 14px 8px 20px; font: 900 15px var(--display); letter-spacing: 0.03em; text-transform: uppercase; }
 .plaque::before { content: ""; position: absolute; inset: 0; border: 3px solid var(--ink); filter: url(#rough); pointer-events: none; }
+.plaque nav { display: flex; align-items: center; gap: 14px; }
 .plaque a { text-decoration: none; color: #5b564b; position: relative; }
 .plaque a.on, .plaque a:hover { color: var(--ink); }
-.hud-cluster { position: fixed; z-index: 90; left: var(--gutter); bottom: 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; max-width: calc(100% - 32px); }
-.hud-cluster .hud { padding: 7px 10px; font-size: 10px; }
-.hud-cluster .tier { color: var(--yellow); background: rgba(0, 0, 0, 0.6); padding: 6px 8px; font-size: 10px; }
+.plaque-rule { width: 2px; align-self: stretch; background: var(--ink); opacity: 0.3; }
+.plaque-icon, .plaque-contact { background: none; border: 0; padding: 4px; color: var(--ink); cursor: pointer; font: inherit; text-transform: uppercase; display: inline-grid; place-items: center; }
+.plaque-icon[aria-pressed="false"] { color: #6b6559; }
+.plaque-contact { padding: 4px 2px; border-bottom: 3px solid var(--red); line-height: 1; }
+.plaque-contact:hover, .plaque-icon:hover { color: var(--red); }
+.knob-wrap { position: relative; display: inline-grid; }
+.knob { width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; background: none; color: var(--ink); cursor: grab; touch-action: none; }
+.knob svg { width: 100%; height: 100%; overflow: visible; }
+.knob circle { fill: var(--paper); stroke: var(--ink); stroke-width: 2.4; }
+.knob circle.tick { fill: var(--ink); stroke: none; }
+.knob path { stroke: var(--red); stroke-width: 3; stroke-linecap: round; }
+.knob:hover circle:first-child { fill: var(--yellow); }
+.knob-label { position: absolute; top: calc(100% + 14px); right: -40px; white-space: nowrap; background: var(--black); color: var(--yellow); padding: 6px 8px; box-shadow: 0 0 12px var(--soft); pointer-events: none; }
 .shell-footer { position: relative; z-index: 2; background: var(--black); border-top: 2px solid var(--yellow); padding: 28px 0 96px; }
 .shell-footer .in { display: flex; flex-direction: column; gap: 14px; }
 .shell-footer nav { display: flex; flex-wrap: wrap; gap: 8px 22px; font: 400 11px var(--osd); text-transform: uppercase; letter-spacing: 0.06em; }
@@ -36,10 +47,22 @@ main { position: relative; z-index: 1; outline: none; }
 .split-char { display: inline-block; white-space: pre; animation: chin 0.5s cubic-bezier(0, 0, 0, 1) both; animation-delay: calc(var(--i) * var(--stagger, 60ms)); }
 @keyframes chin { from { transform: translateX(100%); filter: blur(10px); opacity: 0; } to { transform: none; filter: none; opacity: 1; } }
 
-/* small screens: one compact control row, never covering the reading column */
+/* small screens: the plaque tightens; links stay readable */
 @media (max-width: 640px) {
-  .hud-cluster { left: 0; right: 0; bottom: 0; max-width: none; flex-wrap: nowrap; gap: 6px; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); background: linear-gradient(to top, rgba(17, 16, 13, 0.92) 55%, rgba(17, 16, 13, 0)); }
-  .hud-cluster .hud { padding: 7px 8px; font-size: 9px; flex: 1 1 0; white-space: nowrap; }
-  .hud-cluster kbd, .hud-cluster .tier { display: none; }
-  body { padding-bottom: 64px; }
+  .plaque { gap: 10px; padding: 7px 10px 7px 14px; font-size: 13px; top: 14px; }
+  .plaque nav { gap: 8px; }
+  .plaque nav svg { display: none; }
+  .mark { width: 44px; height: 44px; top: 14px; }
 }
+@media (max-width: 380px) {
+  .plaque-rule { display: none; }
+}
+
+/* the power cut: two black shutters close on a bright line, the line shrinks to a dot and goes out */
+.powercut { position: fixed; inset: 0; z-index: 350; pointer-events: none; visibility: hidden; opacity: 0; }
+.powercut i { position: absolute; left: 0; right: 0; display: block; }
+.pc-top, .pc-bot { height: 50.5%; background: #000; transform: scaleY(0); }
+.pc-top { top: 0; transform-origin: 50% 0; }
+.pc-bot { bottom: 0; transform-origin: 50% 100%; }
+.pc-line { top: calc(50% - 1.5px); height: 3px; background: #fbf8ef; box-shadow: 0 0 14px 4px rgba(251, 248, 239, 0.85), 0 0 60px 10px rgba(255, 234, 99, 0.35); opacity: 0; }
+.preloader-name { color: var(--dim); }

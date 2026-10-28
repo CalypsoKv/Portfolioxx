@@ -1,22 +1,22 @@
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { useLocation } from "react-router-dom";
 import { awards, voices } from "../data/proof";
-import { provenanceLabel, transmissions, type Transmission } from "../data/transmissions";
+import { contactEmail, evidenceKind, provenanceLabel, transmissions, type Transmission } from "../data/transmissions";
 import { setSound, soundOn, tick } from "../motion/audio";
+import { prefersReducedMotion } from "../motion/capability";
+import { ScrollTrigger } from "../motion/clock";
 import { compositions, type Block, type Slot as SlotKind } from "./compositions";
 import { useShell } from "../shell/context";
+import TuneLink from "../shell/TuneLink";
+import { sceneFor } from "../stage/registers";
+import { requestScene } from "../stage/state";
+import { CopySpecimen, Flow, Metrics, Newspaper, Script, Slider, Statement } from "./features";
+import { State } from "./StateChip";
 
 /** ?collect=1 shows what each empty slot still needs (file, source, permission). Visitors see a calm "being restored" line. */
 export const useCollect = () => new URLSearchParams(useLocation().search).has("collect");
 
-export function State({ kind, children }: { kind: "ph" | "dr" | "vf"; children: ReactNode }) {
-  return (
-    <span className={`state ${kind}`}>
-      <i aria-hidden="true" />
-      {children}
-    </span>
-  );
-}
+export { State };
 
 export function Slot({ slot = "16:9", label, n = 1 }: { slot?: SlotKind; label: string; n?: number }) {
   const collect = useCollect();
@@ -61,20 +61,18 @@ export function ArtifactFrame(p: { src?: string; alt?: string; caption: string; 
 }
 
 export function Banner({ t }: { t: Transmission }) {
-  const note =
-    t.status === "published"
-      ? "The supplied brief identifies Jahan's published byline. The text below is new portfolio commentary, not the original article."
-      : t.status === "analysis"
-        ? "Contextual field analysis. Jahan's contribution to the original report is unconfirmed; no authorship is claimed."
-        : t.status === "concept"
-          ? "Self-initiated concept. An illustrative exploration, not paid client work or a shipped product."
-          : t.status === "owned"
-            ? t.owned?.disclosure
-            : "Archive, evidence being restored. The structure below shows how this work will be shown. Nothing here is an artifact or an outcome.";
-  const kind = t.status === "published" || t.status === "owned" ? "vf" : t.status === "vault" ? "ph" : "dr";
+  const note = {
+    published: "Publicly verified: every byline or URL on this page was checked on the live site. The commentary is new; the articles remain the source of record.",
+    reported: "Role and results as reported on Jahan’s CV. Figures are not audited, and they describe team work in roles he held.",
+    cleared: "Jahan’s own work, shown from his files with his permission. Other people’s details in those files are left out.",
+    analysis: "Contextual field analysis. Jahan's contribution to the original work is unconfirmed; no authorship is claimed.",
+    concept: "Self-initiated concept. An illustrative exploration, not paid client work or a shipped product.",
+    owned: t.owned?.disclosure,
+    vault: "Archive, evidence being restored. The structure below shows how this work will be shown. Nothing here is an artifact or an outcome.",
+  }[t.status];
   return (
     <aside className="banner ink" aria-label="Provenance">
-      <State kind={kind}>{provenanceLabel(t)}</State>
+      <State kind={evidenceKind(t)}>{provenanceLabel(t)}</State>
       {t.owned && <span className="osd">Role · {t.owned.roles.join(" · ")}</span>}
       <p>{note}</p>
     </aside>
@@ -82,21 +80,17 @@ export function Banner({ t }: { t: Transmission }) {
 }
 
 export function Reader({ t }: { t: Transmission }) {
-  const [notes, setNotes] = useState(true);
   if (!t.sections?.length) return null;
   return (
-    <div className={`reader-wrap ${notes ? "has-notes" : ""}`}>
-      <div className="tools">
-        <button type="button" className="hud" aria-pressed={notes} onClick={() => setNotes(!notes)}>Strategic notes</button>
-      </div>
+    <div className="reader-wrap has-notes">
       <article className="paper ink">
-        <h2 className="disp">The reading</h2>
+        <h2 className="disp" data-reveal>The reading</h2>
         {t.sections.map((s, i) => (
           <section key={s.title} id={`chapter-${i}`} className="chapter">
             <span className="osd">{String(i + 1).padStart(2, "0")} /</span>
             <h3 className="disp">{s.title}</h3>
             <p className={i === 0 ? "dropcap" : ""}>{s.text}</p>
-            {notes && s.note && (
+            {s.note && (
               <aside className="narr-note ink thin">
                 <b className="osd">Narrator · note {i + 1}</b>
                 {s.note}
@@ -104,106 +98,67 @@ export function Reader({ t }: { t: Transmission }) {
             )}
           </section>
         ))}
-        {t.source && (
-          <a className="hud" href={t.source} target="_blank" rel="noreferrer">Locate the original publication ↗</a>
-        )}
       </article>
     </div>
   );
 }
 
-type Rail = Extract<Block, { kind: "rail" }>;
-export function StepRail({ block, note }: { block: Rail; note?: string }) {
-  const [i, setI] = useState(0);
-  const [open, setOpen] = useState(false);
-  const s = block.steps[i];
-  const gated = block.variant === "levels" && i === block.steps.length - 1 && !open;
-  return (
-    <section className={`rail rail-${block.variant}`} aria-label={block.title}>
-      <header className="block-head">
-        <h2 className="disp">{block.title}</h2>
-        <p>{block.intro}</p>
-      </header>
-      <ol className="rail-steps">
-        {block.steps.map((st, k) => (
-          <li key={st.title}>
-            <button type="button" aria-pressed={k === i} aria-current={k === i ? "step" : undefined} onClick={() => { setI(k); setOpen(false); tick(); }}>
-              <span className="osd">{String(k + 1).padStart(2, "0")}</span>
-              {st.title}
-            </button>
-          </li>
-        ))}
-      </ol>
-      <div className="rail-panel" aria-live="polite">
-        <div className="rail-copy">
-          <h3 className="disp">{s.title}</h3>
-          <p>{s.text}</p>
-          {!block.real && <State kind="ph">Placeholder · {note ?? "describes what will be shown here"}</State>}
-        </div>
-        {s.slot &&
-          (gated ? (
-            <div className="gatebox ink thin">
-              <span className="osd">Deeper detail contains spoilers</span>
-              <button type="button" className="hud" onClick={() => setOpen(true)}>Show deeper detail</button>
-            </div>
-          ) : (
-            <ArtifactFrame slot={s.slot} label={s.title} n={i + 1} caption={`Reserved for the real ${s.title.toLowerCase()} artifact.`} />
-          ))}
-      </div>
-    </section>
-  );
-}
-
 type Net = Extract<Block, { kind: "network" }>;
 export function Network({ block }: { block: Net }) {
-  const [sel, setSel] = useState(block.nodes[0].id);
+  const all = useMemo(() => (block.center ? [{ id: "c", ...block.center }, ...block.nodes] : block.nodes), [block]);
+  const [sel, setSel] = useState(all[0].id);
   const pos = useMemo(() => {
     const n = block.nodes.length;
-    return Object.fromEntries(
+    const p: Record<string, { x: number; y: number }> = Object.fromEntries(
       block.nodes.map((nd, k) => {
         const a = (k / n) * Math.PI * 2 - Math.PI / 2;
         return [nd.id, { x: 450 + Math.cos(a) * 330, y: 180 + Math.sin(a) * 125 }];
       }),
     );
-  }, [block.nodes]);
-  const cur = block.nodes.find((n) => n.id === sel)!;
-  const near = block.edges.filter((e) => e[0] === sel || e[1] === sel);
-  const label = (id: string) => block.nodes.find((n) => n.id === id)!.label;
+    if (block.center) p.c = { x: 450, y: 180 };
+    return p;
+  }, [block.nodes, block.center]);
+  const edges: [string, string, string][] = block.center ? block.nodes.map((n) => ["c", n.id, ""]) : block.edges;
+  const cur = all.find((n) => n.id === sel)!;
+  const near = edges.filter((e) => (e[0] === sel || e[1] === sel) && e[2]);
+  const label = (id: string) => all.find((n) => n.id === id)!.label;
   return (
     <section className="network" aria-label={block.title}>
       <header className="block-head">
-        <h2 className="disp">{block.title}</h2>
+        <h2 className="disp" data-reveal>{block.title}</h2>
         <p>{block.intro}</p>
       </header>
       <div className="network-grid">
         <svg viewBox="0 0 900 360" role="group" aria-label="Relationship map">
-          {block.edges.map(([a, b, rel], k) => (
+          {edges.map(([a, b, rel], k) => (
             <g key={k} className={a === sel || b === sel ? "edge on" : "edge"}>
               <line x1={pos[a].x} y1={pos[a].y} x2={pos[b].x} y2={pos[b].y} />
-              <text x={(pos[a].x + pos[b].x) / 2} y={(pos[a].y + pos[b].y) / 2 - 6}>{rel}</text>
+              {rel && <text x={(pos[a].x + pos[b].x) / 2} y={(pos[a].y + pos[b].y) / 2 - 6}>{rel}</text>}
             </g>
           ))}
-          {block.nodes.map((n) => (
-            <g key={n.id} className={n.id === sel ? "node on" : "node"} tabIndex={0} role="button" aria-pressed={n.id === sel} aria-label={n.label} onClick={() => setSel(n.id)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), setSel(n.id))}>
-              <circle cx={pos[n.id].x} cy={pos[n.id].y} r="30" />
-              <text x={pos[n.id].x} y={pos[n.id].y + 52} textAnchor="middle">{n.label}</text>
+          {all.map((n) => (
+            <g key={n.id} className={`node ${n.id === sel ? "on" : ""} ${n.id === "c" ? "center" : ""}`} tabIndex={0} role="button" aria-pressed={n.id === sel} aria-label={n.label} onClick={() => setSel(n.id)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), setSel(n.id))}>
+              <circle cx={pos[n.id].x} cy={pos[n.id].y} r={n.id === "c" ? 44 : 30} />
+              <text x={pos[n.id].x} y={pos[n.id].y + (n.id === "c" ? 70 : 52)} textAnchor="middle">{n.label}</text>
             </g>
           ))}
         </svg>
         <div className="network-detail" aria-live="polite">
           <h3 className="disp">{cur.label}</h3>
           <p>{cur.note}</p>
-          <State kind="ph">Placeholder · awaiting a source</State>
-          <ul>{near.map(([a, b, rel], k) => <li key={k}>{label(a)} <em>{rel}</em> {label(b)}</li>)}</ul>
+          {block.real ? <State kind="dr">{block.real}</State> : <State kind="ph">Placeholder · awaiting a source</State>}
+          {near.length > 0 && <ul>{near.map(([a, b, rel], k) => <li key={k}>{label(a)} <em>{rel}</em> {label(b)}</li>)}</ul>}
         </div>
       </div>
-      <details className="twin">
-        <summary className="osd">List version of the map</summary>
-        <table>
-          <thead><tr><th scope="col">From</th><th scope="col">Relationship</th><th scope="col">To</th><th scope="col">State</th></tr></thead>
-          <tbody>{block.edges.map(([a, b, rel], k) => <tr key={k}><td>{label(a)}</td><td>{rel}</td><td>{label(b)}</td><td><State kind="ph">Placeholder</State></td></tr>)}</tbody>
-        </table>
-      </details>
+      {edges.some((e) => e[2]) && (
+        <details className="twin">
+          <summary className="osd">List version of the map</summary>
+          <table>
+            <thead><tr><th scope="col">From</th><th scope="col">Relationship</th><th scope="col">To</th><th scope="col">State</th></tr></thead>
+            <tbody>{edges.map(([a, b, rel], k) => <tr key={k}><td>{label(a)}</td><td>{rel}</td><td>{label(b)}</td><td><State kind={block.real ? "dr" : "ph"}>{block.real ? "Reading" : "Placeholder"}</State></td></tr>)}</tbody>
+          </table>
+        </details>
+      )}
     </section>
   );
 }
@@ -216,7 +171,7 @@ export function Ledger({ t, title, intro }: { t: Transmission; title: string; in
       : [{ metric: "Outcome 1", source: "—", date: "—", state: "ph" }, { metric: "Outcome 2", source: "—", date: "—", state: "ph" }];
   return (
     <section className="ledger" aria-label={title}>
-      <header className="block-head"><h2 className="disp">{title}</h2><p>{intro}</p></header>
+      <header className="block-head"><h2 className="disp" data-reveal>{title}</h2><p>{intro}</p></header>
       <div className="crt-t"><div className="scroll"><table>
         <thead><tr><th scope="col">Metric</th><th scope="col">Value</th><th scope="col">Source</th><th scope="col">Date</th><th scope="col">State</th></tr></thead>
         <tbody>
@@ -225,7 +180,7 @@ export function Ledger({ t, title, intro }: { t: Transmission; title: string; in
               <td>{r.metric}</td>
               <td>{r.value ?? <span className="leader">not yet measured</span>}</td>
               <td>{r.source}</td><td>{r.date}</td>
-              <td><State kind={r.state}>{r.state === "dr" ? (t.owned ? "Studio-reported" : "Draft") : "Placeholder"}</State></td>
+              <td><State kind={r.state}>{r.state === "dr" ? (t.owned ? "Studio-reported" : "Unconfirmed") : "Placeholder"}</State></td>
             </tr>
           ))}
         </tbody>
@@ -239,7 +194,7 @@ export function Works({ t }: { t: Transmission }) {
   if (!t.owned?.works) return null;
   return (
     <section className="works" aria-label="Selected works">
-      <header className="block-head"><h2 className="disp">Selected works</h2><p>As listed on the studio's own site. Each opens that commission there.</p></header>
+      <header className="block-head"><h2 className="disp" data-reveal>Selected works</h2><p>As listed on the studio's own site. Each opens that commission there.</p></header>
       <ul className="work-cards">
         {t.owned.works.map((w) => (
           <li key={w.title}>
@@ -262,7 +217,7 @@ export function Strands({ t }: { t: Transmission }) {
   ];
   return (
     <section className="strands" aria-label="What was built">
-      <header className="block-head"><h2 className="disp">Three strands</h2><p>What Jahan built and runs for the practice. Screens and posts arrive from the owner.</p></header>
+      <header className="block-head"><h2 className="disp" data-reveal>Three strands</h2><p>What Jahan built and runs for the practice. Screens and posts arrive from the owner.</p></header>
       <div className="strand-grid">
         {items.map(([name, text], i) => (
           <div key={name} className="strand">
@@ -283,11 +238,12 @@ export function Strands({ t }: { t: Transmission }) {
 }
 
 export function Links({ t }: { t: Transmission }) {
-  const links = t.owned?.links ?? (t.source ? [{ label: "Original publication", url: t.source }] : []);
+  const links = t.owned?.links ?? t.links ?? (t.source ? [{ label: "Original publication", url: t.source }] : []);
   if (!links.length) return null;
   return (
     <nav className="links" aria-label="Where to find it">
-      {links.map((l) => <a key={l.url} className="hud" href={l.url} target="_blank" rel="noreferrer">{l.label} ↗</a>)}
+      <span className="osd">Where to find it</span>
+      <ul>{links.map((l) => <li key={l.url}><a className="inline-link" href={l.url} target="_blank" rel="noreferrer">{l.label} ↗</a></li>)}</ul>
     </nav>
   );
 }
@@ -417,28 +373,73 @@ export function Proof() {
 }
 
 export function Credits({ t }: { t: Transmission }) {
+  const role = t.owned ? t.owned.roles.join(" · ") : t.role ?? (t.status === "vault" ? "To be confirmed with the evidence" : t.status === "analysis" ? "Unconfirmed; no authorship claimed" : "Self-initiated");
   return (
     <section className="credits ink thin" aria-label="Credits">
       <h2 className="osd">Credits and provenance</h2>
       <dl>
-        <dt>Role</dt><dd>{t.owned ? t.owned.roles.join(" · ") : t.status === "vault" ? "To be confirmed with the evidence" : t.status === "analysis" ? "Unconfirmed; no authorship claimed" : t.status === "published" ? "Byline reported" : "Self-initiated"}</dd>
-        <dt>Status</dt><dd>{provenanceLabel(t)}</dd>
+        <dt>Role</dt><dd>{role}</dd>
+        {t.context && <><dt>Context</dt><dd>{t.context}</dd></>}
+        <dt>Evidence</dt><dd>{provenanceLabel(t)}</dd>
         <dt>Year</dt><dd>{t.year}</dd>
         <dt>Format</dt><dd>{t.tags.join(" · ")}</dd>
+        {t.media && <><dt>On the screen</dt><dd>{t.media.source}</dd></>}
       </dl>
     </section>
   );
 }
 
-export function NextSignal({ t }: { t: Transmission }) {
-  const { tune } = useShell();
+/** The next channel follows on: its picture takes the screen as you arrive, and holding at the end tunes straight in. */
+export function FollowOn({ t }: { t: Transmission }) {
+  const { tune, tier, openContact } = useShell();
+  const root = useRef<HTMLElement>(null);
   const order = [...transmissions].sort((a, b) => a.id.localeCompare(b.id));
   const next = order[(order.findIndex((x) => x.id === t.id) + 1) % order.length];
+  const live = tier !== "static" && !prefersReducedMotion();
+  useEffect(() => {
+    const el = root.current;
+    if (!el || !live) return;
+    let fired = false;
+    const meter = el.querySelector<HTMLElement>(".follow-meter");
+    const preview = ScrollTrigger.create({ trigger: el, start: "top 40%", onEnter: () => requestScene(sceneFor(next)), onLeaveBack: () => requestScene(sceneFor(t)) });
+    const run = ScrollTrigger.create({
+      trigger: el,
+      start: "top top",
+      end: "bottom bottom",
+      onUpdate: (self) => {
+        meter?.style.setProperty("--p", self.progress.toFixed(3));
+        if (self.progress > 0.985 && !fired) {
+          fired = true;
+          tune(`/work/${next.slug}`);
+        }
+      },
+    });
+    return () => {
+      preview.kill();
+      run.kill();
+    };
+  }, [live, next, t, tune]);
   return (
-    <nav className="next-signal" aria-label="Next channel">
-      <span className="osd">Next signal</span>
-      <button type="button" className="hud" onClick={() => tune(`/work/${next.slug}`)}>CH {next.id} · {next.title} →</button>
-    </nav>
+    <section className={`follow-on ${live ? "live" : ""}`} ref={root} aria-label="Next channel">
+      <div className="follow-sticky">
+        <span className="osd yel">Up next · CH {next.id} · {next.frequency}</span>
+        <TuneLink to={`/work/${next.slug}`} className="follow-title disp" style={{ "--lw": Math.max(...next.title.split(" ").map((w) => w.length)) } as CSSProperties}>{next.title}</TuneLink>
+        <p className="follow-sub">{next.subtitle}</p>
+        {live && (
+          <div className="follow-meter" aria-hidden="true">
+            <i />
+            <span className="osd">Keep scrolling to tune in</span>
+          </div>
+        )}
+        <p className="follow-foot osd">
+          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+          <span aria-hidden="true"> · </span>
+          <button type="button" className="inline-link" onClick={() => openContact(t.frequency)}>Discuss a brief</button>
+          <span aria-hidden="true"> · </span>
+          <TuneLink to="/catalogue">Programme guide</TuneLink>
+        </p>
+      </div>
+    </section>
   );
 }
 
@@ -449,19 +450,25 @@ export function Blocks({ t }: { t: Transmission }) {
       {blocks.map((b, i) => {
         switch (b.kind) {
           case "reader": return <Reader key={i} t={t} />;
-          case "rail": return <StepRail key={i} block={b} />;
           case "network": return <Network key={i} block={b} />;
           case "works": return <Works key={i} t={t} />;
           case "process":
-            return t.owned?.process ? <StepRail key={i} block={{ kind: "rail", variant: "timeline", title: "How a commission moves", intro: "As the studio describes its own process.", real: true, steps: t.owned.process.map((p) => ({ title: `${p.title} · ${p.time}`, text: p.text })) }} /> : null;
+            return t.owned?.process ? <Flow key={i} timeline title="How a commission moves" intro="As the studio describes its own process." steps={t.owned.process.map((p) => ({ label: p.time, note: `${p.title}: ${p.text}` }))} /> : null;
           case "ledger": return <Ledger key={i} t={t} title={b.title} intro={b.intro} />;
           case "strands": return <Strands key={i} t={t} />;
           case "links": return <Links key={i} t={t} />;
           case "prototype": return <Prototype key={i} which={b.which} />;
+          case "metrics": return <Metrics key={i} t={t} title={b.title} intro={b.intro} />;
+          case "newspaper": return <Newspaper key={i} t={t} />;
+          case "slider": return t.pieces?.length ? <Slider key={i} items={t.pieces} title={b.title} intro={b.intro} /> : null;
+          case "copy": return <CopySpecimen key={i} t={t} />;
+          case "flow": return <Flow key={i} title={b.title} intro={b.intro} steps={b.steps} timeline={b.timeline} />;
+          case "script": return <Script key={i} t={t} />;
+          case "statement": return <Statement key={i} text={b.text} sub={b.sub} />;
           case "artifacts":
             return (
               <section key={i} className="artifacts" aria-label={b.title}>
-                <header className="block-head"><h2 className="disp">{b.title}</h2><p>{b.intro}</p></header>
+                <header className="block-head"><h2 className="disp" data-reveal>{b.title}</h2><p>{b.intro}</p></header>
                 <div className="artifact-grid">{b.slots.map((s, k) => <ArtifactFrame key={k} slot={s.slot} label={s.label} n={k + 1} caption={`Reserved for the real ${s.label.toLowerCase()}.`} />)}</div>
               </section>
             );

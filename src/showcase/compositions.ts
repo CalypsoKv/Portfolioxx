@@ -6,17 +6,32 @@
 export type Slot = "16:9" | "4:5" | "1:1";
 export type Step = { title: string; text: string; slot?: Slot };
 export type RailVariant = "pipeline" | "timeline" | "strata" | "stepper" | "lenses" | "branches" | "reels" | "voices" | "levels" | "shelf";
+export type FlowStep = { label: string; note?: string };
 export type Block =
   | { kind: "reader" }
   | { kind: "rail"; variant: RailVariant; title: string; intro: string; steps: Step[]; real?: boolean }
-  | { kind: "network"; title: string; intro: string; nodes: { id: string; label: string; note: string }[]; edges: [string, string, string][] }
+  | { kind: "network"; title: string; intro: string; nodes: { id: string; label: string; note: string }[]; edges: [string, string, string][]; center?: { label: string; note: string }; real?: string }
   | { kind: "works" }
   | { kind: "process" }
   | { kind: "ledger"; title: string; intro: string }
   | { kind: "strands" }
   | { kind: "links" }
   | { kind: "prototype"; which: "dial" | "copilot" | "workbench" }
-  | { kind: "artifacts"; title: string; intro: string; slots: { slot: Slot; label: string }[] };
+  | { kind: "artifacts"; title: string; intro: string; slots: { slot: Slot; label: string }[] }
+  /** Big numbers that count up, each with where it comes from. */
+  | { kind: "metrics"; title: string; intro: string }
+  /** Public bylines set as a broadsheet front page. */
+  | { kind: "newspaper" }
+  /** The channel's pieces as a draggable row with momentum. */
+  | { kind: "slider"; title: string; intro: string }
+  /** Website copy as written, with its headline options typed in and out. */
+  | { kind: "copy" }
+  /** A chain of steps that draws itself as you scroll. */
+  | { kind: "flow"; title: string; intro: string; steps: FlowStep[]; timeline?: boolean }
+  /** A script page: scenes, lines and the animation notes beside them. */
+  | { kind: "script" }
+  /** One line, set very large, burned in. */
+  | { kind: "statement"; text: string; sub: string };
 
 const net = (labels: [string, string][]) => labels.map(([label, note], i) => ({ id: `n${i}`, label, note }));
 
@@ -34,147 +49,107 @@ export const compositions: Record<string, Block[]> = {
     { kind: "ledger", title: "What is known and unknown", intro: "Role and source facts in one table." },
   ],
   origins: [
+    { kind: "reader" },
     {
-      kind: "rail", variant: "strata", title: "An excavation, layer by layer", intro: "Each layer holds one dated artifact and a note on what it changed. Layers appear only when the artifact exists.",
+      kind: "flow", timeline: true, title: "Ten years, one habit", intro: "From a physics lab to a brand studio. Every stop is on the CV; the habit is the same at each one.",
       steps: [
-        { title: "Earliest verified artifact", text: "The first dated notebook, draft or experiment, with the date shown beside it.", slot: "16:9" },
-        { title: "A turning point", text: "The moment one discipline met another, shown through the thing that was made.", slot: "16:9" },
-        { title: "Two disciplines that seemed separate", text: "A pair of artifacts side by side that now belong to one practice.", slot: "16:9" },
-        { title: "The pattern now", text: "The thread connecting the layers, written once the layers are real.", slot: "16:9" },
+        { label: "2016", note: "BSc Physics (Hons.), St. Xavier’s College, Mumbai" },
+        { label: "2017", note: "Answers on Quora, a first public writing habit" },
+        { label: "2019", note: "Content writer, MapaGuru, Delhi" },
+        { label: "2019", note: "TealBox Digital: Orma Health, Performance Medstop, Dekorio" },
+        { label: "2020", note: "DigiStatement: 200+ games and tech articles" },
+        { label: "2020", note: "Pepper Content: healthcare, SaaS, EdTech, airlines" },
+        { label: "2021", note: "Content Marketer, CustomerSuccessBox" },
+        { label: "2022", note: "Senior Marketing Manager, Reptrics" },
+        { label: "2023", note: "Documentation In-charge, Civilization Research Institute" },
+        { label: "2025", note: "RedOrange.AI, brand systems and AI-assisted animation" },
       ],
     },
   ],
   badhuche: [{ kind: "reader" }, { kind: "works" }, { kind: "process" }, { kind: "ledger", title: "Studio-reported figures", intro: "The studio's own statements, labelled as such." }, { kind: "links" }],
   reptrics: [
+    { kind: "reader" },
+    { kind: "metrics", title: "Reported outcomes", intro: "Four numbers from the role, as Jahan’s CV reports them." },
     {
-      kind: "rail", variant: "pipeline", title: "From a wall of features to one customer question", intro: "Four stages carry a feature to a benefit. Each opens a real artifact once it is supplied.",
-      steps: [
-        { title: "Input", text: "The crowded list of product terms and capabilities the team started with.", slot: "16:9" },
-        { title: "Interpret", text: "The feature-to-benefit logic and the message hierarchy it produced.", slot: "16:9" },
-        { title: "Review", text: "How the messaging was checked against what the product actually does.", slot: "16:9" },
-        { title: "Output", text: "A landing-page, email or funnel excerpt that carries the final story.", slot: "16:9" },
-      ],
+      kind: "flow", title: "The content machine", intro: "One programme, eight stages. Each piece of content knows which stage it serves and what the next step is.",
+      steps: [{ label: "Category education" }, { label: "Problem diagnosis" }, { label: "Product explanation" }, { label: "Proof" }, { label: "Conversion" }, { label: "Sales enablement" }, { label: "Distribution" }, { label: "Measurement" }],
     },
+    { kind: "slider", title: "From the content programme", intro: "Articles on the Reptrics blog from this period. Drag the row, or use the arrow keys." },
+    { kind: "links" },
   ],
   customersuccessbox: [
+    { kind: "reader" },
+    { kind: "metrics", title: "Reported outcomes", intro: "As Jahan’s CV reports them for the period." },
     {
-      kind: "rail", variant: "timeline", title: "A customer lifecycle as signals and next actions", intro: "Each stage shows the trigger, the message and the next customer action as three separate beats.",
-      steps: [
-        { title: "Onboarding", text: "The first message after sign-up and what it asks the customer to do next.", slot: "16:9" },
-        { title: "Adoption", text: "A trigger from product use and the message it sends.", slot: "16:9" },
-        { title: "Expansion", text: "The moment a customer is ready for more, and how the content meets it.", slot: "16:9" },
-        { title: "Renewal", text: "The reminder and the reasons shown to stay.", slot: "16:9" },
-      ],
+      kind: "flow", title: "The learning curve", intro: "Content set out like a curriculum: each piece moves a reader one step closer to product intent.",
+      steps: [{ label: "Search question" }, { label: "Diagnosis" }, { label: "Framework" }, { label: "Content" }, { label: "Lead magnet" }, { label: "Product intent" }],
     },
-    { kind: "ledger", title: "How effectiveness was measured", intro: "Only measured results appear here." },
   ],
   "urmila-ben-nu-rasodu": [
     { kind: "reader" },
+    { kind: "metrics", title: "From zero", intro: "The one number Jahan reports for the kitchen’s marketing." },
     { kind: "artifacts", title: "Menu cards and the kitchen", intro: "Photographs and menu cards arrive from the owner and are logged with their sources.", slots: [{ slot: "4:5", label: "Menu card" }, { slot: "4:5", label: "Dish" }, { slot: "4:5", label: "Takeaway menu" }] },
     { kind: "links" },
   ],
-  "orma-health": [
-    {
-      kind: "rail", variant: "stepper", title: "A calm pathway, one clear step at a time", intro: "Each step shows the actual copy or document and the question it answers. No clinical claims are made.",
-      steps: [
-        { title: "Where the person starts", text: "The uncertainty the journey begins with, in the person's own terms.", slot: "16:9" },
-        { title: "The next clear step", text: "The information or decision that comes first.", slot: "16:9" },
-        { title: "A touchpoint", text: "A brochure, email or screen with the copy as written.", slot: "16:9" },
-        { title: "Review and approval", text: "How the material was source-checked before it was used.", slot: "16:9" },
-      ],
-    },
-    { kind: "ledger", title: "What improved and what remains unknown", intro: "Stated plainly, with sources." },
-  ],
+  "orma-health": [{ kind: "reader" }, { kind: "copy" }],
   digistatement: [
+    { kind: "newspaper" },
+    { kind: "metrics", title: "By the numbers", intro: "One number reported, one checked." },
     { kind: "reader" },
-    {
-      kind: "rail", variant: "levels", title: "A mission map with a spoiler gate", intro: "Three levels, from where you are to what to do next. The deeper level stays closed until you ask for it.",
-      steps: [
-        { title: "Where you are", text: "The point in the game the reader has reached, in their words.", slot: "16:9" },
-        { title: "What triggers the next conversation", text: "The conditions that start it, kept apart from the walkthrough.", slot: "16:9" },
-        { title: "What to do next", text: "The step the reader came for, behind the spoiler gate.", slot: "16:9" },
-      ],
-    },
     { kind: "links" },
   ],
   "pepper-content": [
-    {
-      kind: "rail", variant: "voices", title: "An anthology of three voices", intro: "A brief card, an opening sample and the editorial decision, side by side for each voice. Ghostwriting and confidentiality terms stay explicit.",
-      steps: [
-        { title: "A technical guide", text: "Constraints, audience and the structure chosen for depth.", slot: "16:9" },
-        { title: "A founder voice", text: "How tone changes when someone's own story is the point.", slot: "16:9" },
-        { title: "An explainer", text: "How a complex idea is made short without losing it.", slot: "16:9" },
-      ],
-    },
+    { kind: "reader" },
+    { kind: "artifacts", title: "Cleared samples", intro: "Each sample arrives with the client named and the permission noted.", slots: [{ slot: "4:5", label: "SaaS brief" }, { slot: "4:5", label: "Healthcare brief" }, { slot: "4:5", label: "EdTech brief" }] },
   ],
   "life-itself": [
+    { kind: "reader" },
     {
-      kind: "network", title: "Separate parts, one living system", intro: "Choose an element to see what connects to it and why. Nodes are structure; each waits on a source.",
-      nodes: net([["The question", "What the research asks."], ["Corpus", "The sources read."], ["Pattern", "What repeats across them."], ["Relationship", "How two parts depend on each other."], ["Limit", "What the evidence cannot say."], ["Implication", "What follows, stated carefully."]]),
-      edges: [["n0", "n1", "asks of"], ["n1", "n2", "reveals"], ["n2", "n3", "links"], ["n3", "n5", "suggests"], ["n2", "n4", "stops at"], ["n4", "n5", "bounds"]],
+      kind: "network", real: "Field reading of the public paper", title: "Four layers of a group mind", intro: "How the paper’s argument stacks up, as this reading maps it. Choose a layer to see what it depends on.",
+      nodes: net([["Individual minds", "What each person knows, notices and wants."], ["Social process", "How people talk, decide and disagree."], ["Information technology", "The tools that carry the process further than a room."], ["Collective action", "What the group actually does."], ["Learning", "What changes the next time round."]]),
+      edges: [["n0", "n1", "meet in"], ["n1", "n2", "is carried by"], ["n2", "n3", "enables"], ["n3", "n4", "feeds"], ["n4", "n0", "changes"]],
     },
-    { kind: "ledger", title: "Role and uncertainty", intro: "What is confirmed and what is not." },
+    { kind: "links" },
   ],
   perspectiva: [
+    { kind: "reader" },
     {
-      kind: "rail", variant: "lenses", title: "The same question through three lenses", intro: "Initial framing, counter-reading, synthesis. Every view cites its source; none is invented to balance another.",
-      steps: [
-        { title: "Initial framing", text: "The thesis as first stated.", slot: "16:9" },
-        { title: "Counter-reading", text: "Evidence from another view, with citations.", slot: "16:9" },
-        { title: "Synthesis", text: "What holds once both are read, and its limits.", slot: "16:9" },
-      ],
+      kind: "network", real: "From Jahan’s own map of the work", title: "A constellation, one centre", intro: "The subjects the ecosystem holds together, all turning on one practice.",
+      center: { label: "Sensemaking", note: "The practice the other subjects turn on: making a complex situation legible enough to act in." },
+      nodes: net([["Systems", "How parts depend on each other."], ["Souls", "Inner life and meaning."], ["Society", "Institutions and culture."], ["Technology", "What tools make possible, and costly."], ["Education", "How people learn to think together."], ["Politics", "How power decides."], ["Ecology", "The living systems underneath."], ["Meaning", "Why any of it matters."]]),
+      edges: [],
     },
+    { kind: "links" },
   ],
   "redorange-ai": [
-    {
-      kind: "rail", variant: "pipeline", title: "An auditable pipeline, not a magic box", intro: "Input, interpretation, human review, approved output. Illustrative examples are marked; nothing here is a deployed system.",
-      steps: [
-        { title: "Input", text: "A source document and the requirement it must meet.", slot: "16:9" },
-        { title: "Interpret", text: "The rule or model reading, with its evidence and uncertainty.", slot: "16:9" },
-        { title: "Human review", text: "The decision a person makes at the gate, and the guardrail behind it.", slot: "16:9" },
-        { title: "Approved output", text: "The deliverable that passes, clearly marked as approved.", slot: "16:9" },
-      ],
-    },
-    { kind: "ledger", title: "Requirement, evidence, owner, state", intro: "A compliance matrix once the source data exists." },
+    { kind: "reader" },
+    { kind: "flow", title: "One subject, three readers", intro: "The same material, written three ways.", steps: [{ label: "Seminar script", note: "For a live audience" }, { label: "Presentation document", note: "For a technical evaluator" }, { label: "Newsletter", note: "For a subscriber deciding whether to keep reading" }] },
   ],
   "perfect-pixel": [{ kind: "prototype", which: "workbench" }, { kind: "artifacts", title: "Real screens and copy", intro: "Wireframes and final copy are shown as they shipped, with the rationale.", slots: [{ slot: "16:9", label: "Wireframe" }, { slot: "16:9", label: "Final screen" }] }],
-  premaculture: [
-    {
-      kind: "rail", variant: "branches", title: "A seed grows into a brand ecosystem", intro: "Select a branch to see the real piece and how it connects to the others.",
-      steps: [
-        { title: "The central idea", text: "The brand thesis in a sentence.", slot: "1:1" },
-        { title: "Identity", text: "The marks, colour and type that carry it.", slot: "1:1" },
-        { title: "Messaging and voice", text: "How the brand speaks.", slot: "1:1" },
-        { title: "Web and content", text: "The site and the pieces that keep it alive.", slot: "1:1" },
-      ],
-    },
-  ],
+  premaculture: [{ kind: "reader" }, { kind: "copy" }],
   nowtheo: [{ kind: "reader" }, { kind: "strands" }, { kind: "links" }],
   mymunshi: [{ kind: "reader" }, { kind: "prototype", which: "copilot" }],
   parda: [
+    { kind: "statement", text: "Parda", sub: "The screen. The veil. One performer, seven roles, a cinema’s last night." },
     { kind: "reader" },
-    {
-      kind: "rail", variant: "reels", title: "A six-reel score for one performer", intro: "Choose a reel for its stage direction and excerpt. Nothing here claims a production, a date or a recording.",
-      steps: [
-        { title: "Reel one", text: "Premise and the opening light.", slot: "16:9" },
-        { title: "Reel two", text: "The first role.", slot: "16:9" },
-        { title: "Reel three", text: "A change of voice.", slot: "16:9" },
-        { title: "Reel four", text: "The turn.", slot: "16:9" },
-        { title: "Reel five", text: "What the audience knows that the character does not.", slot: "16:9" },
-        { title: "Reel six", text: "The last light.", slot: "16:9" },
-      ],
-    },
+    { kind: "artifacts", title: "Reel I", intro: "A cleared script excerpt appears here.", slots: [{ slot: "16:9", label: "Script excerpt" }] },
   ],
   "game-prototype": [{ kind: "reader" }, { kind: "prototype", which: "dial" }],
-  "fiction-essays": [
-    {
-      kind: "rail", variant: "shelf", title: "A literary anthology with a listening booth", intro: "Browse by category, open a piece in a calm reader, and listen only where a cleared recording exists. Unpublished work stays separate from published work.",
-      steps: [
-        { title: "Fiction", text: "Stories, each with date, genre and context.", slot: "4:5" },
-        { title: "Essays", text: "Pieces with the original link when published.", slot: "4:5" },
-        { title: "Research", text: "Longer analysis, labelled as such.", slot: "4:5" },
-        { title: "Spoken word", text: "Open-mic performances where a recording is cleared.", slot: "4:5" },
-      ],
-    },
+  "fiction-essays": [{ kind: "slider", title: "The essays", intro: "Drag the row, or use the arrow keys. Quotes are from the pieces themselves." }, { kind: "reader" }],
+  "kink-studios": [
+    { kind: "statement", text: "We mark leather. Permanently.", sub: "The line the identity system opens with." },
+    { kind: "reader" },
+    { kind: "artifacts", title: "The guidelines app", intro: "Screens from the interactive guidelines appear here.", slots: [{ slot: "16:9", label: "Brand philosophy" }, { slot: "16:9", label: "Voice generator" }] },
+  ],
+  animation: [
+    { kind: "reader" },
+    { kind: "script" },
+    { kind: "slider", title: "Characters", intro: "Troyfall’s gods as briefed for an illustrator, and the reference sheets. Drag the row, or use the arrow keys." },
+    { kind: "artifacts", title: "Motion tests", intro: "Procreate animation tests and character sheets play here as they are uploaded.", slots: [{ slot: "1:1", label: "Motion test 01" }, { slot: "1:1", label: "Motion test 02" }, { slot: "1:1", label: "Motion test 03" }, { slot: "1:1", label: "Motion test 04" }] },
+  ],
+  gyaragyara: [
+    { kind: "reader" },
+    { kind: "flow", title: "Research first, then the site", intro: "The order the work went in.", steps: [{ label: "Competitor map", note: "Three market tiers" }, { label: "Positioning", note: "Artisanal storytelling, Japandi-meets-nature" }, { label: "Site audit", note: "UI and UX problems on gyaragyara.com" }, { label: "Fixes", note: "Prototyped" }, { label: "11:11", note: "A quiet-luxury landing concept" }] },
+    { kind: "links" },
   ],
 };

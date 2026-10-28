@@ -1,17 +1,22 @@
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Volume2, VolumeX } from "lucide-react";
 import { contactEmail } from "../data/transmissions";
 import { detectTier, prefersReducedMotion } from "../motion/capability";
 import { pauseScroll, resumeScroll, scrollToY, startClock } from "../motion/clock";
 import { onSound, setSound, soundOn, staticBurst, tick } from "../motion/audio";
+import { useReveals } from "../motion/useReveals";
 import StageHost from "../stage/StageHost";
-import { S, getTick, outPhase, setCrt, subscribe } from "../stage/state";
+import { S, outPhase } from "../stage/state";
 import ContactDialog from "./ContactDialog";
+import Dial from "./Dial";
 import Guide from "./Guide";
 import InkDefs from "./InkDefs";
+import PowerCut from "./PowerCut";
 import Preloader from "./Preloader";
 import TuneLink from "./TuneLink";
 import { ShellContext } from "./context";
+import { powerOff, powerOn } from "./power";
 
 const seen = () => {
   try {
@@ -23,7 +28,7 @@ const seen = () => {
 
 function Mark() {
   return (
-    <TuneLink to="/" className="mark" aria-label="Interdimensional TV, home">
+    <TuneLink to="/" className="mark" aria-label="Jahan Patel, home">
       <svg viewBox="0 0 52 52" aria-hidden="true">
         <g fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
           <path d="M14 22 L24 8 M30 22 L22 8" />
@@ -41,18 +46,17 @@ export default function TvShell() {
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
+  const isWork = location.pathname.startsWith("/work/");
   const mainRef = useRef<HTMLElement>(null);
   const busy = useRef(false);
   const [contact, setContact] = useState(false);
   const [service, setService] = useState("");
   const [guide, setGuide] = useState(false);
   const [sound, setSoundState] = useState(soundOn);
-  const [crt, setCrtState] = useState(true);
   const [frame, setFrame] = useState(false);
   const [fonts, setFonts] = useState(false);
   const [entered, setEntered] = useState(() => location.pathname !== "/" || seen() || tier === "static");
   const [announce, setAnnounce] = useState("");
-  useSyncExternalStore(subscribe, getTick);
 
   // One clock for scroll, ScrollTrigger and the render.
   useEffect(() => {
@@ -96,6 +100,7 @@ export default function TvShell() {
   }, []);
   const openGuide = useCallback(() => setGuide(true), []);
 
+  // Changing channel: the screen glitches and the set switches off; the next page switches on (see the effect below).
   const tune = useCallback(
     (to: string) => {
       if (busy.current || prefersReducedMotion() || S.mode === "static") {
@@ -105,7 +110,7 @@ export default function TvShell() {
       busy.current = true;
       tick();
       staticBurst();
-      void outPhase().then(() => {
+      void Promise.all([outPhase(), powerOff()]).then(() => {
         navigate(to);
         busy.current = false;
       });
@@ -113,7 +118,7 @@ export default function TvShell() {
     [navigate],
   );
 
-  // After a route change: scroll to the anchor or the top, focus the new heading, announce the title.
+  // After a route change: scroll to the anchor or the top, switch the set back on, focus the new heading, announce the title.
   // The first load keeps the browser's own focus start so the skip link stays the first Tab stop.
   useEffect(() => {
     if (location.hash) {
@@ -122,6 +127,7 @@ export default function TvShell() {
         if (el) scrollToY(el.getBoundingClientRect().top + window.scrollY - 24, { immediate: true });
       });
     } else scrollToY(0, { immediate: true });
+    requestAnimationFrame(() => void powerOn());
     if (location.key === "default") return;
     const t = window.setTimeout(() => {
       const h1 = mainRef.current?.querySelector<HTMLElement>("h1");
@@ -130,6 +136,8 @@ export default function TvShell() {
     }, 80);
     return () => clearTimeout(t);
   }, [location.pathname, location.hash]);
+
+  useReveals(mainRef, location.pathname, tier !== "static");
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -156,7 +164,7 @@ export default function TvShell() {
   }, [openContact]);
 
   const ctx = useMemo(() => ({ tier, openContact, openGuide, tune }), [tier, openContact, openGuide, tune]);
-  const workActive = location.pathname.startsWith("/catalogue") || location.pathname.startsWith("/work");
+  const workActive = location.pathname.startsWith("/catalogue") || isWork;
 
   return (
     <ShellContext.Provider value={ctx}>
@@ -165,18 +173,26 @@ export default function TvShell() {
         <a className="skip-link" href="#main">Skip to content</a>
         <StageHost mode={tier} onFirstFrame={onFirstFrame} />
         <Mark />
-        <nav className="plaque" aria-label="Primary">
-          <TuneLink to="/" className={isHome ? "on" : ""} aria-current={isHome ? "page" : undefined}>Room</TuneLink>
-          <svg width="22" height="10" viewBox="0 0 22 10" aria-hidden="true"><path d="M1 6 C 5 1, 8 9, 11 5 S 17 1, 21 5" fill="none" stroke="#c82924" strokeWidth="2.6" strokeLinecap="round" /></svg>
-          <TuneLink to="/catalogue" className={workActive ? "on" : ""} aria-current={workActive ? "page" : undefined}>Work</TuneLink>
-        </nav>
+        <header className="plaque">
+          <nav aria-label="Primary">
+            <TuneLink to="/" className={isHome ? "on" : ""} aria-current={isHome ? "page" : undefined}>Room</TuneLink>
+            <svg width="22" height="10" viewBox="0 0 22 10" aria-hidden="true"><path d="M1 6 C 5 1, 8 9, 11 5 S 17 1, 21 5" fill="none" stroke="#c82924" strokeWidth="2.6" strokeLinecap="round" /></svg>
+            <TuneLink to="/catalogue" className={workActive ? "on" : ""} aria-current={workActive ? "page" : undefined}>Work</TuneLink>
+          </nav>
+          <span className="plaque-rule" aria-hidden="true" />
+          <Dial />
+          <button type="button" className="plaque-icon" aria-pressed={sound} aria-label="Sound (M)" onClick={() => setSound(!soundOn())}>
+            {sound ? <Volume2 aria-hidden="true" size={18} strokeWidth={2.4} /> : <VolumeX aria-hidden="true" size={18} strokeWidth={2.4} />}
+          </button>
+          <button type="button" className="plaque-contact" onClick={() => openContact()}>Contact</button>
+        </header>
         <main id="main" ref={mainRef} tabIndex={-1}>
           <Outlet />
         </main>
-        {!isHome && (
+        {!isHome && !isWork && (
           <footer className="shell-footer">
             <div className="in">
-              <span className="osd">An independent frequency · One person. Many frequencies.</span>
+              <span className="osd">Jahan Patel · An independent frequency · Writing, websites, design and animation</span>
               <nav aria-label="Footer">
                 <TuneLink to="/catalogue">Programme guide</TuneLink>
                 <TuneLink to="/services">Services</TuneLink>
@@ -186,16 +202,10 @@ export default function TvShell() {
             </div>
           </footer>
         )}
-        <div className="hud-cluster" role="group" aria-label="Controls">
-          <button type="button" className="hud" aria-pressed={crt} onClick={() => { setCrtState(!crt); setCrt(!crt); }}>CRT {crt ? "on" : "off"}</button>
-          <button type="button" className="hud" aria-pressed={sound} onClick={() => setSound(!soundOn())}>Sound {sound ? "on" : "off"} <kbd>M</kbd></button>
-          <button type="button" className="hud" onClick={openGuide}>Guide <kbd>G</kbd></button>
-          <button type="button" className="hud" onClick={() => openContact()}>Contact <kbd>C</kbd></button>
-          <span className="osd tier" role="status">{tier === "static" ? "Static screen" : `Screen · ${S.quality}`}</span>
-        </div>
         <ContactDialog open={contact} onClose={() => setContact(false)} initialService={service} />
         <Guide open={guide} onClose={() => setGuide(false)} />
         {showPre && <Preloader progress={progress} onEnter={enter} />}
+        <PowerCut />
         <div className="sr-only" role="status" aria-live="polite">{announce}</div>
       </div>
     </ShellContext.Provider>

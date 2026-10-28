@@ -8,3 +8,6 @@ test-results/
 
 # owner-supplied originals (provenance in src/data/assets.json)
 art-src/owner/
+
+# live-site captures for the screen loops (regenerate with scripts/video/capture.mjs)
+art-src/video/

@@ -3,7 +3,7 @@ import { gsap } from "../motion/clock";
 import SplitChars from "../motion/SplitChars";
 import { prefersReducedMotion } from "../motion/capability";
 
-/** The border fills with real progress (first frame of the screen + fonts). Any key, click, or 2.6s after ready lets you in. */
+/** The border fills with real progress (first frame of the screen + fonts). Any key, click, or 1.8s after ready lets you in. */
 export default function Preloader({ progress, onEnter }: { progress: number; onEnter: () => void }) {
   const rect = useRef<SVGRectElement>(null);
   const done = useRef(false);
@@ -20,7 +20,7 @@ export default function Preloader({ progress, onEnter }: { progress: number; onE
       done.current = true;
       onEnter();
     };
-    const t = window.setTimeout(go, prefersReducedMotion() ? 0 : 2600);
+    const t = window.setTimeout(go, prefersReducedMotion() ? 0 : 1800);
     window.addEventListener("keydown", go);
     window.addEventListener("pointerdown", go);
     return () => {
@@ -33,6 +33,7 @@ export default function Preloader({ progress, onEnter }: { progress: number; onE
   return (
     <div className="preloader" role="dialog" aria-label="Loading the broadcast" aria-modal="true">
       <div className="preloader-in">
+        <span className="osd preloader-name">Jahan Patel · An independent frequency</span>
         <div className="preloader-box">
           <svg viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
             <rect ref={rect} x="1.5" y="1.5" width="397" height="57" rx="9" pathLength="1000" />
