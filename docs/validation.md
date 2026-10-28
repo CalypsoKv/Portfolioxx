@@ -1,30 +1,47 @@
-# Browser validation
+# Validation
 
-The reference-style redesign is covered by **12 Playwright workflow checks**, using the installed `/usr/bin/chromium` against the actual Vite app on port 5173.
+Last full run: 28 October 2026, against the Vite dev server on port 5173 with Chromium under software WebGL (SwiftShader).
 
-The full redesign run completed with 11 passing checks and one stale-selector failure after the archive title was moved from a caption into the large accessible hero heading during the run. That selector was updated to the new semantic heading; the affected carousel check then passed in its targeted rerun. No checks were skipped, disabled, or marked expected-failure. The initial blank-page failures were diagnosed as Vite's outdated dependency cache and resolved by restarting the dev server with forced dependency optimization.
+| Check | Result |
+| --- | --- |
+| `tsc` strict type-check | clean |
+| `npm run build` | passes; main chunk 647 kB (213 kB gzip), lazy `Stage` chunk 932 kB (252 kB gzip). Screen loops: 5 × 0.5–0.8 MB (desktop) and 0.3–0.4 MB (lite), loaded only for the channel on screen |
+| `npm test` (12 node tests) | passing: 22 channels (the original 19 kept, three added), 21 live and 1 archive entry, each evidence status kept distinct, owned and family roles, role and context on every reported channel, 20 dated public bylines, every composition block has its data, https links, empty-by-default proof, no phone number, street address or old name in anything shipped, manifest entries with files on disk (plates, portrait, loops), robots and sitemap |
+| `npm run test:e2e` (37 Playwright tests) | passing |
 
-Verified workflows:
+## What the browser suite covers
 
-- Frequency selection updates the fullscreen tuner and survives reload; the fixed Archive link routes directly to the catalogue.
-- Keyboard `G` opens the searchable programme guide; selecting a transmission navigates to it; Escape closes the dialog.
-- Archive search, frequency filter, empty-state reset, grid/schedule preference, and 14 non-clickable restoration entries.
-- The featured archive carousel changes the visible project heading, the correct reader destination, and selection through previous/next and direct pagination controls.
-- Editorial provenance disclosures, strategic note switch, and original-publication link.
-- Inquiry required-field validation, public email, encoded email subject/body, browser-tab draft restore, and clearing the draft.
-- The experiment locks its signal at 104 MHz and returns to static at another value.
-- Mobile navigation, Escape, and modal keyboard focus: background controls remain outside the modal tab sequence (Chromium may briefly focus its browser chrome/body between cycles).
-- Primary routes `/`, `/catalogue`, `/services`, `/about`, `/work/digistatement`, and `/work/game-prototype` do not overflow horizontally at 390px or 1440px widths.
-- The cinematic hero, ink artwork, and original comic-panel artwork load, and the visible Explore the work control opens the actual guide.
-- Hero title line bounds remain inside the first viewport at 1440×1000, 1280×800, and 390×844.
+- Home: scrolling changes the featured channel (no dots or chips exist), only the active layer is interactive, the close layer is reachable, the portrait renders.
+- First-visit preloader and keyboard entry.
+- The plaque is the only control surface: Room, Work, the dial (opens the guide), sound, Contact. The old bottom bar is gone.
+- Programme guide: `G` opens, search, navigate, Escape closes, reopens after a navigation.
+- Catalogue: frequency tabs, search, empty state and reset, Guide and Wall views, saved view, archive last.
+- All 22 channels render, state their evidence and have no horizontal overflow at 390px.
+- The record under each title (role, context, evidence, link).
+- Placeholder slots on the archive channel, and `?collect=1` showing the evidence checklist.
+- Owned channels state the real role and link out; the kitchen is described as Jahan's mother's; NowTheo is never called his own practice.
+- Reader notes in view without a toggle; Camden states that no authorship is claimed.
+- DigiStatement front page: 20 checked bylines linking to the live articles.
+- Article slider moves with the arrow keys; its links go to the published pieces.
+- Press passes turn over to their proof and back.
+- Every channel hands over to the next one; on the full screen a channel change runs the power cut and the overlay is hidden again afterwards.
+- Inquiry: required-field validation, encoded `mailto:` subject and body, session draft restored after reload. The `mailto:` navigation is intercepted; no email is sent.
+- The tuning game locks at 104 MHz and restarts.
+- Static tier and reduced motion: no canvas, no Lenis, every Home layer visible.
+- Full tier mounts exactly one canvas without page errors.
+- Primary routes fit at 390px and 1440px.
+- Share tags, robots.txt and the sitemap are served.
+- axe-core (WCAG 2 A and AA, 2.1 AA) finds no serious or critical violations on thirteen routes in the static tier. It reports on the DOM, not on the canvas.
 
-Review screenshots:
+## Checked by eye
 
-- `/tmp/itv-redesign-desktop.png` and `/tmp/itv-redesign-mobile.png` (full homepage).
-- `/tmp/itv-redesign-desktop-top.png`, `/tmp/itv-redesign-laptop-top.png`, `/tmp/itv-redesign-mobile-top.png` (first viewport).
+Screenshots at 1440×900 (full tier) and 390×844 (lite and static) of every home layer, the newspaper, the proof strip, the flow, the slider, the copy specimen, the script page, the statement, the wallet and the follow-on. Text over the bright website loops was too weak at first; the screen now dims under type (0.38 on channel pages, 0.42 on the home channel layer).
 
-The email test replaces only the generated anchor's `click` method to capture the mailto URI. No email is sent and delivery is not claimed. These checks demonstrate the implemented client-side workflow; they do not establish permission for historical writing excerpts, public production deployment, mail-client availability on every device, or actual email delivery.
+## Not verified
 
-Final integrated redesign verification: a single complete browser run passed **12/12** tests with zero failures or skips; `npm test` passed **4/4** content checks. The production build passes. Final visual review also corrected the mobile mode switch, red ornament rendering, and monochrome header contrast.
-
-Project-world expansion: **15/15 browser tests** pass, including traversal of all nineteen treatment routes, three chapters and six evidence slots per project, reference links, director notes, the native structure control, next-project navigation, the design-system guide and mobile width checks. Four content-invariant tests and the production build also pass. The remaining asset-dependent choreography is specified as proposed direction rather than claimed as finished client work.
+- **Frame rate and video decoding on real hardware.** All rendering here ran on a software rasteriser. Adaptive quality is implemented but its thresholds are untuned against a real GPU.
+- **Autoplay on iOS in Low Power Mode.** A loop that refuses to play falls back to the channel's still; this path is implemented but was not exercised on a device.
+- **Contrast over the live canvas.** axe runs in the static tier; text over the moving screen was checked by eye in screenshots only.
+- **Screen readers.** Focus management and the live-region title announcement are implemented and checked in the browser, not tried with a screen reader.
+- **Safari and Firefox.** Only Chromium was run.
+- **Production behaviour of `?tier=`.** The override is stripped from production builds by design, so the tiers are tested on the dev server.

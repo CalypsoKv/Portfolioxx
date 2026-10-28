@@ -1,44 +1,78 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
+import { transmissions } from "../src/data/transmissions";
 
-test("room tunes its frequency and offers direct routes", async ({ page }) => {
+const seen = (page: Page) => page.addInitScript(() => sessionStorage.setItem("itv_seen", "1"));
+const trackErrors = (page: Page) => {
   const errors: string[] = [];
-  page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Interdimensional",
-  );
-  await page
-    .locator(".hero-services")
-    .getByRole("button", { name: /Research/ })
-    .click();
-  await expect(page.locator(".scene-footnote")).toContainText(
-    "RECEIVING RESEARCH SIGNAL",
-  );
-  await expect
-    .poll(() => page.evaluate(() => localStorage.getItem("itv_frequency")))
-    .toBe("Research");
-  await page.reload();
-  await expect(page.locator(".scene-footnote")).toContainText(
-    "RECEIVING RESEARCH SIGNAL",
-  );
-  await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: /Archive/ }).click();
-  await expect(page).toHaveURL(/\/catalogue$/);
+  page.on("pageerror", (e) => errors.push(e.message));
+  return errors;
+};
+const noOverflow = (page: Page) =>
+  page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1);
+const scrollVh = (page: Page, vh: number) => page.evaluate((v) => window.scrollTo(0, window.innerHeight * v), vh);
+
+test("home tunes through the featured channels as you scroll, with no dots or chips to press", async ({ page }) => {
+  const errors = trackErrors(page);
+  await seen(page);
+  await page.goto("/?tier=lite");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Jahan");
+  await expect(page.locator(".dots")).toHaveCount(0);
+  await expect(page.getByRole("group", { name: "Featured channels" })).toHaveCount(0);
+  await scrollVh(page, 2.0);
+  await expect(page.locator("#l2")).not.toHaveAttribute("inert", "");
+  await expect(page.locator("#l0")).toHaveAttribute("inert", "");
+  await expect(page.locator("#l2 h2")).toHaveText("DigiStatement");
+  await scrollVh(page, 1.8 + 2.5 * 0.62);
+  await expect(page.locator("#l2 h2")).toHaveText("Reptrics");
+  await expect(page.locator("#l2").getByRole("link", { name: /open the channel/i })).toHaveAttribute("href", "/work/reptrics");
+  await scrollVh(page, 7.6);
+  await expect(page.locator("#l4")).not.toHaveAttribute("inert", "");
+  await expect(page.locator("#l4").getByRole("link", { name: "jahandms60@gmail.com" })).toBeVisible();
   expect(errors).toEqual([]);
 });
 
-test("programme guide is searchable, navigable and closes with Escape", async ({
-  page,
-}) => {
-  await page.goto("/");
+test("the broadcaster layer shows Jahan's portrait", async ({ page }) => {
+  await seen(page);
+  await page.goto("/?tier=static");
+  await expect(page.getByRole("img", { name: /portrait of Jahan Patel/i })).toBeVisible();
+});
+
+test("first visit shows the tuning preloader and can be skipped from the keyboard", async ({ page }) => {
+  await page.goto("/?tier=lite");
+  const pre = page.getByRole("dialog", { name: "Loading the broadcast" });
+  await expect(pre).toBeVisible();
+  await expect(page.locator(".preloader-gate.ready")).toBeVisible();
+  await page.keyboard.press("Space");
+  await expect(pre).toHaveCount(0);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Jahan");
+});
+
+test("the plaque holds the only controls: Room, Work, the dial, sound and Contact", async ({ page }) => {
+  await seen(page);
+  await page.goto("/?tier=static");
+  await expect(page.locator(".hud-cluster")).toHaveCount(0);
+  const plaque = page.locator(".plaque");
+  await expect(plaque.getByRole("link", { name: "Room" })).toBeVisible();
+  await expect(plaque.getByRole("link", { name: "Work" })).toBeVisible();
+  const sound = plaque.getByRole("button", { name: /sound/i });
+  await expect(sound).toHaveAttribute("aria-pressed", "false");
+  await plaque.getByRole("button", { name: /programme guide/i }).click();
+  await expect(page.getByRole("dialog", { name: /find your signal/i })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await plaque.getByRole("button", { name: "Contact" }).click();
+  await expect(page.getByRole("dialog", { name: /wavelength/i })).toBeVisible();
+});
+
+test("programme guide opens with G, searches, navigates and closes with Escape", async ({ page }) => {
+  await seen(page);
+  await page.goto("/?tier=static");
   await page.keyboard.press("g");
-  const dialog = page.getByRole("dialog", { name: /Find your signal/ });
+  const dialog = page.getByRole("dialog", { name: /find your signal|programme guide/i });
   await expect(dialog).toBeVisible();
-  await dialog
-    .getByRole("textbox", { name: "Search programme guide" })
-    .fill("DigiStatement");
-  await expect(dialog.locator(".guide-results > button")).toHaveCount(1);
-  await dialog.getByRole("button", { name: /DigiStatement/ }).click();
-  await expect(page).toHaveURL(/\/work\/digistatement$/);
+  await dialog.getByRole("textbox").fill("Badhuche");
+  await dialog.getByRole("button", { name: /Badhuche/ }).first().click();
+  await expect(page).toHaveURL(/\/work\/badhuche$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Badhuche");
   await expect(dialog).not.toBeVisible();
   await page.keyboard.press("g");
   await expect(dialog).toBeVisible();
@@ -46,230 +80,217 @@ test("programme guide is searchable, navigable and closes with Escape", async ({
   await expect(dialog).not.toBeVisible();
 });
 
-test("archive filters, searches, resets and preserves schedule preference", async ({
-  page,
-}) => {
-  await page.goto("/catalogue");
-  await expect(page.locator(".archive-grid > a")).toHaveCount(5);
-  await page.getByRole("button", { name: "Research", exact: true }).click();
-  await expect(page.locator(".archive-grid > a")).toHaveCount(1);
-  await expect(page.locator(".archive-grid")).toContainText("Camden Imagines");
-  await page
-    .getByRole("textbox", { name: "Search transmissions" })
-    .fill("zzz-no-transmission");
-  await expect(
-    page.getByRole("heading", { name: "No signal on this frequency." }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Reset the receiver" }).click();
-  await expect(page.locator(".archive-grid > a")).toHaveCount(5);
-  await page.getByRole("button", { name: "Schedule view" }).click();
-  await expect(page.locator(".schedule-list > a")).toHaveCount(5);
+test("catalogue filters with text tabs, searches, resets, switches view and keeps the archive last", async ({ page }) => {
+  await seen(page);
+  await page.goto("/catalogue?tier=static");
+  await expect(page.locator(".epg .row")).toHaveCount(22);
+  const titles = await page.locator(".epg .row .tt").allTextContents();
+  expect(titles[0]).toMatch(/camden/i);
+  expect(titles[titles.length - 1]).toMatch(/perfect pixel/i);
+  await page.getByRole("group", { name: "Filter by frequency" }).getByRole("button", { name: "Research", exact: true }).click();
+  await expect(page.locator(".epg .row")).toHaveCount(3);
+  await page.getByRole("textbox", { name: /search/i }).fill("zzz-no-signal");
+  await expect(page.getByText("No matching signal")).toBeVisible();
+  await page.getByRole("button", { name: "Reset filters" }).click();
+  await expect(page.locator(".epg .row")).toHaveCount(22);
+  await page.getByRole("group", { name: "View" }).getByRole("button", { name: "Wall" }).click();
+  await expect(page.locator(".wall li")).toHaveCount(22);
   await page.reload();
-  await expect(page.locator(".schedule-list > a")).toHaveCount(5);
-  await page.locator(".signal-vault > summary").click();
-  await expect(page.locator(".vault-table > div")).toHaveCount(14);
-  await expect(page.locator(".vault-table a")).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Wall" })).toHaveAttribute("aria-pressed", "true");
 });
 
-test("editorial reader distinguishes provenance and toggles strategic notes", async ({
-  page,
-}) => {
-  await page.goto("/work/digistatement");
-  await expect(page.locator(".source-disclosure")).toContainText(
-    "new portfolio commentary, not the original article",
-  );
-  await expect(page.locator(".inline-note")).toHaveCount(3);
-  await page.locator(".annotation-toggle").click();
-  await expect(page.locator(".inline-note")).toHaveCount(0);
-  await page.locator(".annotation-toggle").click();
-  await expect(page.locator(".inline-note")).toHaveCount(3);
-  await expect(
-    page.getByRole("link", { name: "Locate original publication" }),
-  ).toHaveAttribute("href", /digistatement.com/);
-  await page.goto("/work/camden-imagines");
-  await expect(page.locator(".source-disclosure")).toContainText(
-    "no authorship is claimed",
-  );
+test("every channel renders, states its evidence and fits mobile width", async ({ page }) => {
+  test.setTimeout(150_000);
+  const errors = trackErrors(page);
+  await seen(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const t of transmissions) {
+    await page.goto(`/work/${t.slug}?tier=static`);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(t.title.split(" ")[0]);
+    await expect(page.locator("main")).toContainText(/owned|operated|field analysis|concept|publicly verified|archive, evidence being restored|site, brand|reported|shown with permission|family business/i);
+    expect(await noOverflow(page), `${t.slug} overflows at 390px`).toBe(true);
+  }
+  expect(errors).toEqual([]);
 });
 
-test("inquiry validates, composes encoded email, and retains a local draft", async ({
-  page,
-}) => {
-  await page.goto("/");
-  await page.getByRole("button", { name: "Transmit a brief" }).click();
-  const dialog = page.getByRole("dialog", {
-    name: /Have something on your wavelength/,
-  });
+test("the record under each title gives role, context, evidence and a link", async ({ page }) => {
+  await seen(page);
+  await page.goto("/work/reptrics?tier=static");
+  const record = page.getByRole("definition").first();
+  await expect(record).toBeVisible();
+  await expect(page.locator(".record")).toContainText("Senior Marketing Manager");
+  await expect(page.locator(".record")).toContainText("Aug 2022");
+  await expect(page.locator(".record")).toContainText(/results reported/i);
+  await expect(page.locator(".record a")).toHaveAttribute("href", "https://www.reptrics.com/");
+});
+
+test("archive channels show clearly marked placeholder slots, and ?collect=1 adds the evidence checklist", async ({ page }) => {
+  await seen(page);
+  await page.goto("/work/perfect-pixel?tier=static");
+  await expect(page.getByRole("img", { name: /Empty .* slot/ }).first()).toBeVisible();
+  await expect(page.getByText("Archive, evidence being restored").first()).toBeVisible();
+  await expect(page.getByText("File", { exact: false }).filter({ hasText: "Permission" })).toHaveCount(0);
+  await page.goto("/work/perfect-pixel?tier=static&collect=1");
+  await expect(page.getByText(/File\s+□ Source\s+□ Permission/).first()).toBeVisible();
+});
+
+test("owned channels state the real role and link out to the live sites", async ({ page }) => {
+  await seen(page);
+  await page.goto("/work/badhuche?tier=static");
+  await expect(page.locator("main")).toContainText("Owned & operated");
+  await expect(page.getByRole("link", { name: /visit live/i }).first()).toHaveAttribute("href", /^https:\/\//);
+  await page.goto("/work/urmila-ben-nu-rasodu?tier=static");
+  await expect(page.locator("main")).toContainText("Family business · marketing");
+  await expect(page.locator("main")).toContainText(/mother/i);
+  await page.goto("/work/nowtheo?tier=static");
+  await expect(page.locator("main")).toContainText("Site, brand & community");
+  await expect(page.locator("main")).not.toContainText(/my own practice/i);
+});
+
+test("the reader keeps its notes in view and states provenance", async ({ page }) => {
+  await seen(page);
+  await page.goto("/work/camden-imagines?tier=static");
+  await expect(page.locator("main")).toContainText(/no authorship is claimed/i);
+  await expect(page.getByRole("button", { name: "Strategic notes" })).toHaveCount(0);
+  await expect(page.locator(".narr-note").first()).toBeVisible();
+});
+
+test("the DigiStatement front page prints 20 checked bylines", async ({ page }) => {
+  await seen(page);
+  await page.goto("/work/digistatement?tier=static");
+  const paper = page.getByRole("region", { name: /front page/i });
+  await expect(paper.getByRole("heading", { name: "The DigiStatement Bylines" })).toBeVisible();
+  await expect(paper.locator('a[href^="https://digistatement.com/"][href*="-"]').filter({ hasNotText: /read on/i })).toHaveCount(21);
+  await expect(paper).toContainText("17 Dec 2020");
+});
+
+test("the article slider moves with the arrow keys", async ({ page }) => {
+  await seen(page);
+  await page.setViewportSize({ width: 1000, height: 900 });
+  await page.goto("/work/reptrics?tier=static");
+  const track = page.getByRole("region", { name: /from the content programme, 6 items/i });
+  await track.scrollIntoViewIfNeeded();
+  await track.focus();
+  const before = await track.evaluate((el) => el.scrollLeft);
+  await page.keyboard.press("ArrowRight");
+  await expect.poll(() => track.evaluate((el) => el.scrollLeft)).toBeGreaterThan(before);
+  await expect(track.getByRole("link", { name: /read it/i })).toHaveCount(6);
+});
+
+test("a press pass turns over to show its proof, and turns back", async ({ page }) => {
+  await seen(page);
+  await page.goto("/about?tier=static");
+  await page.getByRole("button", { name: "Turn over the Reptrics pass" }).click();
+  const pass = page.locator(".pass.flipped");
+  await expect(pass).toContainText("+35% marketing-qualified leads");
+  await expect(pass.getByRole("link", { name: /open the channel/i })).toHaveAttribute("href", "/work/reptrics");
+  await pass.getByRole("button", { name: "Turn back" }).click();
+  await expect(page.locator(".pass.flipped")).toHaveCount(0);
+});
+
+test("every channel ends by handing over to the next one", async ({ page }) => {
+  await seen(page);
+  await page.goto("/work/reptrics?tier=static");
+  const next = page.getByRole("region", { name: "Next channel" });
+  await expect(next).toContainText("CH 004");
+  await next.getByRole("link", { name: "CustomerSuccessBox" }).click();
+  await expect(page).toHaveURL(/\/work\/customersuccessbox$/);
+});
+
+test("changing channel on the full screen switches the set off and back on", async ({ page }) => {
+  const errors = trackErrors(page);
+  await seen(page);
+  await page.goto("/catalogue?tier=full");
+  await page.locator(".epg .row").first().click();
+  await expect(page).toHaveURL(/\/work\/camden-imagines$/);
+  await expect(page.locator(".powercut")).toHaveCSS("visibility", "hidden");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Camden Imagines");
+  expect(errors).toEqual([]);
+});
+
+test("inquiry validates, composes an encoded mailto and keeps the draft", async ({ page }) => {
+  await seen(page);
+  await page.goto("/?tier=static");
+  await page.keyboard.press("c");
+  const dialog = page.getByRole("dialog", { name: /wavelength/i });
   await expect(dialog).toBeVisible();
-  await expect(
-    dialog.getByRole("link", { name: "jahandms60@gmail.com" }),
-  ).toHaveAttribute("href", "mailto:jahandms60@gmail.com");
-  await dialog.getByRole("button", { name: "Compose email" }).click();
-  await expect(dialog.locator(".contact-status")).toHaveCount(0);
-  expect(
-    await dialog
-      .locator('input[name="name"]')
-      .evaluate((el: HTMLInputElement) => el.validity.valueMissing),
-  ).toBe(true);
-  await dialog.getByRole("textbox", { name: "Your name" }).fill("Test Client");
-  await dialog
-    .getByRole("textbox", { name: "Your email" })
-    .fill("client@example.com");
-  await dialog
-    .getByRole("combobox", { name: "Choose a frequency" })
-    .selectOption("Words & editorial");
-  await dialog
-    .getByRole("textbox", { name: "A short brief" })
-    .fill("Please help clarify a complex editorial story for our new product.");
-  await page.evaluate(() => {
-    (window as any).__composedEmail = "";
-    const originalClick = HTMLAnchorElement.prototype.click;
-    HTMLAnchorElement.prototype.click = function () {
-      if (this.href.startsWith("mailto:")) {
-        (window as any).__composedEmail = this.href;
-      } else originalClick.call(this);
-    };
-  });
-  await dialog.getByRole("button", { name: "Compose email" }).click();
-  await expect(dialog.getByRole("status")).toContainText(
-    "Send it in your email app",
-  );
-  const uri = await page.evaluate(
-    () => (window as any).__composedEmail as string,
-  );
-  expect(uri).toMatch(/^mailto:jahandms60@gmail.com\?/);
-  expect(decodeURIComponent(uri)).toContain("Test Client");
-  expect(decodeURIComponent(uri)).toContain("client@example.com");
-  expect(decodeURIComponent(uri)).toContain("Please help clarify");
-  expect(decodeURIComponent(uri)).toContain("Words & editorial");
-  await page.keyboard.press("Escape");
-  await expect(dialog).not.toBeVisible();
+  await dialog.getByRole("button", { name: /compose email/i }).click();
+  await expect(dialog.getByLabel(/your name/i)).toBeFocused();
+  await dialog.getByLabel(/your name/i).fill("Test Person");
+  await dialog.getByLabel(/your email/i).fill("test@example.com");
+  await dialog.getByLabel(/brief|working on/i).fill("A research & story brief");
   await page.reload();
   await page.keyboard.press("c");
-  await expect(dialog.getByRole("textbox", { name: "Your name" })).toHaveValue(
-    "Test Client",
-  );
-  await expect(dialog.locator(".contact-privacy")).toContainText("restored");
-  await dialog.getByRole("button", { name: "Clear draft" }).click();
-  await expect(dialog.getByRole("textbox", { name: "Your name" })).toHaveValue(
-    "",
-  );
-});
-
-test("frequency experiment has a real completion state", async ({ page }) => {
-  await page.goto("/work/game-prototype");
-  const slider = page.getByRole("slider", { name: /TUNE THE RECEIVER/ });
-  await slider.fill("104");
-  await expect(page.locator(".frequency-game")).toContainText(
-    "Signal locked. You found the next frequency.",
-  );
-  await expect(page.locator(".signal-number")).toHaveClass(/locked/);
-  await slider.fill("90");
-  await expect(page.locator(".frequency-game")).toContainText(
-    "Mostly static. Keep tuning.",
-  );
-});
-
-test("mobile navigation and modal focus remain usable", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
-  await page.getByRole("button", { name: "Open navigation" }).click();
-  await page
-    .getByRole("navigation", { name: "Main navigation" })
-    .getByRole("link", { name: "Services", exact: true })
-    .click();
-  await expect(page).toHaveURL(/\/services$/);
-  await expect(
-    page.getByRole("button", { name: "Open navigation" }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Let’s talk" }).click();
-  const dialog = page.getByRole("dialog", {
-    name: /Have something on your wavelength/,
+  await expect(dialog.getByLabel(/your name/i)).toHaveValue("Test Person");
+  // The dialog composes the mailto through a detached anchor, so record it instead of leaving the page.
+  await page.evaluate(() => {
+    (window as unknown as { __mail?: string }).__mail = "";
+    HTMLAnchorElement.prototype.click = function () {
+      (window as unknown as { __mail?: string }).__mail = this.href;
+    };
   });
-  await expect(dialog).toBeVisible();
-  for (let i = 0; i < 15; i++) {
-    await page.keyboard.press("Tab");
-    expect(
-      await page.evaluate(
-        () =>
-          document.activeElement?.tagName === "BODY" ||
-          !!document.activeElement?.closest("dialog[open]"),
-      ),
-    ).toBe(true);
-  }
+  await dialog.getByRole("button", { name: /compose email/i }).click();
+  const href = await page.evaluate(() => (window as unknown as { __mail?: string }).__mail);
+  expect(href).toContain("mailto:jahandms60@gmail.com");
+  expect(href).toContain(encodeURIComponent("A research & story brief"));
   await page.keyboard.press("Escape");
   await expect(dialog).not.toBeVisible();
 });
 
-for (const width of [390, 1440])
-  test(`all primary routes fit viewport width ${width}`, async ({ page }) => {
-    await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
-    for (const route of [
-      "/",
-      "/catalogue",
-      "/services",
-      "/about",
-      "/work/digistatement",
-      "/work/game-prototype",
-    ]) {
-      await page.goto(route);
-      await page.evaluate(() => document.fonts.ready);
-      expect(
-        await page.evaluate(
-          () => document.documentElement.scrollWidth - window.innerWidth,
-        ),
-        route,
-      ).toBeLessThanOrEqual(1);
-    }
-  });
+test("the tuning game has a real completion state", async ({ page }) => {
+  await seen(page);
+  await page.goto("/work/game-prototype?tier=static");
+  const dial = page.getByLabel("Frequency in MHz");
+  await dial.fill("104");
+  await expect(page.getByText("Signal locked. You found the next frequency.")).toBeVisible();
+  await page.getByRole("button", { name: "Restart" }).click();
+  await expect(dial).toHaveValue("87");
+});
 
-test("cinematic entry exposes a real guide and loads its original illustrated world", async ({page}) => {
+test("static tier and reduced motion render no canvas and no smooth-scroll takeover", async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: "reduce", viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+  await seen(page);
   await page.goto("/");
-  await expect(page.locator(".cinema-heading h1")).toContainText("Interdimensional");
-  await expect(page.locator(".ink-wind")).toBeVisible();
-  const world=page.locator('.cinema-comic-panel > img');
-  await world.scrollIntoViewIfNeeded();
-  await expect(world).toBeVisible();
-  await expect.poll(()=>world.evaluate((image:HTMLImageElement)=>image.complete && image.naturalWidth>0)).toBe(true);
-  await page.getByRole("button",{name:"Explore the work"}).click();
-  await expect(page.getByRole("dialog",{name:/Find your signal/})).toBeVisible();
+  await expect(page.locator("canvas")).toHaveCount(0);
+  await expect(page.locator(".stage-static")).toBeVisible();
+  await expect(page.locator("html.lenis")).toHaveCount(0);
+  for (const id of ["l0", "l1", "l2", "l3", "l4"]) await expect(page.locator(`#${id}`)).toBeVisible();
+  await ctx.close();
 });
 
-test("archive carousel tunes actual transmissions and their destination", async ({page}) => {
-  await page.goto('/catalogue');
-  const stage=page.getByRole('region',{name:'Featured transmissions'});
-  await expect(stage.getByRole('heading',{name:'DigiStatement',exact:true})).toBeVisible();
-  await expect(stage.getByRole('link',{name:'OPEN TRANSMISSION'})).toHaveAttribute('href','/work/digistatement');
-  await stage.getByRole('button',{name:'Next transmission',exact:true}).click();
-  await expect(stage.getByRole('heading',{name:'Camden Imagines',exact:true})).toBeVisible();
-  await expect(stage.getByRole('link',{name:'OPEN TRANSMISSION'})).toHaveAttribute('href','/work/camden-imagines');
-  await stage.getByRole('button',{name:'Previous transmission',exact:true}).click();
-  await expect(stage.getByRole('heading',{name:'DigiStatement',exact:true})).toBeVisible();
-  await stage.getByRole('button',{name:'Show MyMunshi',exact:true}).click();
-  await expect(stage.getByRole('heading',{name:'MyMunshi',exact:true})).toBeVisible();
-  await stage.getByRole('link',{name:'OPEN TRANSMISSION'}).click();
-  await expect(page).toHaveURL(/\/work\/mymunshi$/);
+test("full tier mounts the fixed canvas", async ({ page }) => {
+  const errors = trackErrors(page);
+  await seen(page);
+  await page.goto("/?tier=full");
+  await expect(page.locator("canvas")).toHaveCount(1);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  expect(errors).toEqual([]);
 });
 
-test("redesign screenshots and first-screen title fit", async ({page}) => {
-  for (const [name,width,height] of [['desktop',1440,1000],['laptop',1280,800],['mobile',390,844]] as const) {
-    await page.setViewportSize({width,height});
-    await page.goto('/');
-    await page.evaluate(()=>document.fonts.ready);
-    const title=page.locator('.cinema-heading h1');
-    await expect(title).toBeVisible();
-    const bounds=await title.boundingBox();
-    expect(bounds).not.toBeNull();
-    expect(bounds!.x).toBeGreaterThanOrEqual(0);
-    expect(bounds!.x+bounds!.width).toBeLessThanOrEqual(width+1);
-    expect(bounds!.y).toBeGreaterThanOrEqual(0);
-    expect(bounds!.y+bounds!.height).toBeLessThan(height);
-    for (const line of ['.cinema-title-first','.cinema-title-second']) {
-      const lineBounds=await page.locator(line).boundingBox();
-      expect(lineBounds!.x,`${name} ${line} left`).toBeGreaterThanOrEqual(-1);
-      expect(lineBounds!.x+lineBounds!.width,`${name} ${line} right`).toBeLessThanOrEqual(width+1);
+test("primary routes fit the viewport at 390 and 1440", async ({ page }) => {
+  test.setTimeout(90_000);
+  await seen(page);
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const path of ["/", "/catalogue", "/services", "/about", "/work/badhuche", "/work/digistatement", "/work/animation", "/work/orma-health", "/design-system"]) {
+      await page.goto(`${path}?tier=static`);
+      expect(await noOverflow(page), `${path} @${width}`).toBe(true);
     }
-    await page.screenshot({path:`/tmp/itv-redesign-${name}-top.png`});
-    if(name!=='laptop') await page.screenshot({path:`/tmp/itv-redesign-${name}.png`,fullPage:true});
   }
+});
+
+test("share tags, robots and sitemap are in place", async ({ page, request }) => {
+  await page.goto("/?tier=static");
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /\/og\.jpg$/);
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute("content", "summary_large_image");
+  expect((await request.get("/robots.txt")).ok()).toBe(true);
+  expect(await (await request.get("/sitemap.xml")).text()).toContain("/work/digistatement");
+});
+
+test("unknown routes fail gracefully", async ({ page }) => {
+  await seen(page);
+  await page.goto("/work/not-a-real-channel?tier=static");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByRole("link", { name: /programme|guide|home|work|back/i }).first()).toBeVisible();
 });

@@ -1,0 +1,24 @@
+/* One world, one HUD: Santioni's ink-and-paper world (charcoal, cream, vermilion, hatching) under Hardik's yellow glow HUD.
+   One shared display voice: condensed Didone capitals. Pixel type only for on-screen display; Fell only for captions and reading. */
+:root {
+  --char: #1d1d1d;
+  --black: #030300;
+  --ink: #11100d;
+  --paper: #f5efe0;
+  --white: #fbf8ef;
+  --red: #c82924;
+  --yellow: #ffea63;
+  --glow: rgba(255, 234, 99, 0.7);
+  --soft: rgba(255, 234, 99, 0.3);
+  --blue: #2438c9;
+  --turmeric: #f0b21c;
+  --dim: #c9c5b8;
+  --accent: var(--red);
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --osd: "Silkscreen", "Courier New", monospace;
+  --term: "VT323", "Courier New", monospace;
+  --print: "IM Fell DW Pica", "Iowan Old Style", Georgia, serif;
+  --ui: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  color-scheme: dark;
+}

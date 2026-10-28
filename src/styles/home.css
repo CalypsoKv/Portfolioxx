@@ -1,0 +1,65 @@
+/* Home: the screen is the page. A tall track gives scroll distance (set inline); five fixed layers fade in and out over viewport-height windows. */
+.home.theatre { position: relative; }
+.home .layer { display: flex; flex-direction: column; gap: 20px; }
+.theatre .layer { position: fixed; inset: 0; z-index: 5; opacity: 0; pointer-events: none; justify-content: flex-end; padding: 96px max(16px, env(safe-area-inset-right, 0px)) 72px var(--gutter); }
+.theatre #l0 { opacity: 1; }
+.theatre .layer > * { max-width: 1280px; width: 100%; margin-inline: auto; }
+.theatre .layer button, .theatre .layer a { pointer-events: auto; }
+.theatre .layer > .narr, .theatre .layer > .meta, .theatre .layer > .chips, .theatre .layer > .desc, .theatre .layer > .hint, .theatre .layer > .inline-link, .theatre .layer > .inline-row, .theatre .layer > .contact-line, .theatre .layer > .tuner { align-self: flex-start; width: auto; margin-inline: max(0px, calc((100% - 1280px) / 2)) 0; }
+.flow .layer { position: relative; overflow-x: clip; min-height: 100vh; justify-content: flex-end; padding: 110px max(16px, env(safe-area-inset-right, 0px)) 100px var(--gutter); background: linear-gradient(180deg, rgba(3, 3, 0, 0.35), rgba(3, 3, 0, 0.72)); }
+.flow .layer > * { max-width: 1280px; width: 100%; margin-inline: auto; }
+
+.home-title { color: var(--white); text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5); }
+.home-title span { display: block; }
+.home-title .a { font-size: clamp(54px, 13vw, 200px); }
+.home-title .b { font-size: clamp(70px, 17vw, 260px); margin-left: clamp(0px, 7vw, 120px); transform: rotate(-1.4deg); }
+.home-h2 { font-size: clamp(38px, 9vw, 140px); color: var(--white); text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5); }
+#l1 .home-h2 { font-size: clamp(34px, 5.8vw, 96px); }
+.home-channel { font-size: clamp(54px, 13vw, 200px); color: var(--white); text-shadow: 7px 8px 0 var(--ink); }
+.home-channel.long { font-size: clamp(36px, 8.4vw, 128px); }
+.home .meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.home .meta .state, .home .meta .chip { background: rgba(3, 3, 0, 0.78); padding: 6px 8px; }
+.home .desc { font: 400 20px/1.3 var(--print); max-width: 46ch; background: rgba(3, 3, 0, 0.72); backdrop-filter: blur(6px); padding: 10px 14px; border-left: 4px solid var(--yellow); }
+.home .hint { animation: bob 2.4s ease-in-out infinite alternate; }
+@keyframes bob { from { transform: translateY(0); } to { transform: translateY(5px); } }
+.home .inline-link { font-size: 13px; background: rgba(3, 3, 0, 0.7); padding: 8px 10px; }
+.home .layer > .osd.yel { align-self: flex-start; width: fit-content; background: rgba(3, 3, 0, 0.78); padding: 6px 8px; margin-inline: max(0px, calc((100% - 1280px) / 2)) 0; }
+
+/* I. the broadcaster: an engraved portrait and its fainter exposures, behind the words */
+.broadcaster { position: absolute; z-index: -1; right: max(1vw, calc((100vw - 1440px) / 2)); bottom: 0; height: min(80vh, 840px); aspect-ratio: 805 / 1295; pointer-events: none; -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent 97%), linear-gradient(to right, transparent 0, #000 16%); -webkit-mask-composite: source-in; mask-image: linear-gradient(to bottom, #000 70%, transparent 97%), linear-gradient(to right, transparent 0, #000 16%); mask-composite: intersect; }
+.broadcaster img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: bottom; }
+.broadcaster .main { filter: drop-shadow(0 18px 40px rgba(0, 0, 0, 0.55)); }
+.broadcaster .exp { opacity: var(--o); filter: grayscale(1) brightness(1.25) contrast(0.8); }
+.flow .broadcaster { height: min(70vh, 720px); opacity: 0.9; }
+@media (max-width: 760px), (orientation: portrait) {
+  .broadcaster { top: 64px; bottom: auto; right: -6vw; height: 58vh; opacity: 0.85; }
+}
+
+/* II. the tuner: a frequency band with the featured channels, the needle follows the scroll */
+.tuner { --p: 0; position: relative; display: flex; flex-direction: column; gap: 8px; width: min(560px, 100%) !important; padding: 14px 14px 10px; background: rgba(3, 3, 0, 0.78); }
+.tuner .band { position: relative; display: flex; justify-content: space-between; border-top: 2px solid var(--yellow); padding-top: 6px; font: 400 11px var(--osd); color: var(--soft); box-shadow: 0 -6px 14px -10px var(--glow); }
+.tuner .band i { font-style: normal; position: relative; }
+.tuner .band i::before { content: ""; position: absolute; left: 50%; top: -14px; width: 2px; height: 8px; background: var(--yellow); }
+.tuner .band i.on { color: var(--yellow); text-shadow: 0 0 8px var(--glow); }
+.tuner .needle { position: absolute; top: 8px; left: calc(14px + var(--p) * (100% - 31px)); width: 3px; height: 22px; background: var(--red); box-shadow: 0 0 10px var(--red); }
+.tuner .keep { color: var(--dim); }
+.featured-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+.featured-list li { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; background: rgba(3, 3, 0, 0.78); border: 2px solid var(--soft); padding: 16px; }
+.featured-list h3 { font-size: 34px; }
+.featured-list p { font: 400 17px/1.35 var(--print); color: var(--dim); }
+
+/* III. programme guide rows (home layer and catalogue) */
+.epg { background: rgba(3, 6, 3, 0.84); backdrop-filter: blur(6px); border: 2px solid var(--yellow); border-radius: 8px; box-shadow: 0 0 16px var(--soft); overflow: hidden; }
+.epg.auto { max-height: min(46vh, 520px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--yellow) transparent; }
+.epg .row { display: grid; grid-template-columns: 56px minmax(150px, 280px) 210px 1fr; gap: 6px 16px; align-items: center; padding: 10px 16px; border-bottom: 1px dashed var(--soft); text-decoration: none; color: var(--white); }
+.epg .row:hover, .epg .row:focus-visible { background: rgba(255, 234, 99, 0.12); }
+.epg .n { font: 400 14px var(--osd); color: var(--yellow); }
+.epg .tt { font-size: 22px; line-height: 0.95; }
+.epg .d { color: var(--dim); font-size: 13px; }
+@media (max-width: 760px) { .epg .row { grid-template-columns: 48px 1fr; } .epg .row .p, .epg .row .d { grid-column: 2; } .theatre .layer { padding-bottom: 56px; } }
+
+/* IV. the close: one big address, two quiet links */
+.contact-line { margin: 0; }
+.home .big-mail { text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6); }
+@media (prefers-reduced-motion: reduce) { .home .hint { animation: none; } }
+.home .layer > .broadcaster { width: auto; max-width: none; margin: 0; }

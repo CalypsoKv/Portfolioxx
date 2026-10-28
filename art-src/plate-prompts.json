@@ -1,0 +1,138 @@
+{
+  "_note": "Prompts for the Z-Image-Turbo generator (resolution 1536x864, 9 steps). Plates 000-006 were generated from these (seeds below). Plates 007-018 are currently drawn in code (scripts/plates); regenerate them from these prompts when generator quota allows, drop the output into art-src/ai/<slug>.webp and run scripts/plates/process.py.",
+  "style": "Hand-engraved black and white ink illustration in the style of a vintage woodcut and etching, dense cross-hatching and fine parallel line shading, cream paper and deep black tones, cinematic wide composition, full-bleed edge to edge with no border and no frame, monochrome only, absolutely no text and no lettering anywhere.",
+  "plates": [
+    {
+      "slug": "000-camden-imagines",
+      "seed": 1000,
+      "source": "ai",
+      "subject": "An aerial view of a vast sprawling night city of terraced houses and rooftops with no single centre, thin threads of light linking small lit windows across the rooftops like constellations, tiny figures on rooftops looking up, swirling engraved sky."
+    },
+    {
+      "slug": "001-origins",
+      "seed": 1001,
+      "source": "ai",
+      "subject": "An archaeological cross-section of the earth in layered strata, each layer holding buried notebooks, folded papers, sketches and old tools, a wooden ladder descending, a tiny figure with a brush uncovering a notebook."
+    },
+    {
+      "slug": "002-badhuche",
+      "seed": 812823,
+      "source": "ai",
+      "subject": "A colossal weathered bronze figure with a calm face half-emerging from clouds beside a monumental stone archway on a floating rocky island, tiny human silhouettes on the stairs for scale, swirling engraved sky, moon."
+    },
+    {
+      "slug": "003-reptrics",
+      "seed": 1003,
+      "source": "ai",
+      "subject": "A chaotic wall of hundreds of gears, signs, pipes and machine parts funnelling through one narrow lit doorway onto a single clear stone road that leads to a distant horizon, a small figure walking the road."
+    },
+    {
+      "slug": "004-customersuccessbox",
+      "seed": 1004,
+      "source": "ai",
+      "subject": "A long winding stone path across hills with milestone lanterns at each bend, small paper boxes carried by travellers, a trail of light from a small box at the start to a lit house far away."
+    },
+    {
+      "slug": "005-urmila-ben-nu-rasodu",
+      "seed": 1005,
+      "source": "ai",
+      "subject": "A warm Indian kitchen threshold at night, large brass vessels and a wide kadhai with steam rising in curling lines, stacked steel tiffin boxes, hanging lamps, strings of dried chillies, an open wooden doorway glowing with light, a rolling pin and earthen pots."
+    },
+    {
+      "slug": "006-orma-health",
+      "seed": 1106,
+      "source": "ai",
+      "subject": "A calm winding path through a quiet garden of open doors, wooden signposts with blank arrow boards, soft light spilling from the doors, a lone figure walking toward a bright clear gate, soft clouds."
+    },
+    {
+      "slug": "007-digistatement",
+      "seed": 1007,
+      "source": "code",
+      "subject": "An enormous unrolled quest map across a wooden table lit by one lantern, winding routes and mountains drawn on it, a lone traveller figure walking across the map, a heavy curtain half lifted to reveal a hidden valley, a quill and compass."
+    },
+    {
+      "slug": "008-pepper-content",
+      "seed": 1008,
+      "source": "code",
+      "subject": "Three huge open books standing like towers on a plain, from each book a different landscape pours out: a technical city of gears, a mountain with a single speaker, and a flowing river with boats, tiny readers on the ground below."
+    },
+    {
+      "slug": "009-life-itself",
+      "seed": 1009,
+      "source": "code",
+      "subject": "A living network of roots and fungal threads connecting a great tree, small houses, stones and birds beneath and above the ground, glowing nodes where threads meet, soil in cross-section below and sky above."
+    },
+    {
+      "slug": "010-perspectiva",
+      "seed": 1010,
+      "source": "code",
+      "subject": "One tall mountain seen through three giant glass lenses standing in a row on a plain, each lens showing the mountain differently: a storm, a calm sunrise, and a clear map of its paths, a small figure examining the lenses."
+    },
+    {
+      "slug": "011-redorange-ai",
+      "seed": 1011,
+      "source": "code",
+      "subject": "A great hall with conveyor belts carrying blank sheets of paper toward a stone gate where a robed human figure holding a lantern inspects each sheet before it passes through, approved sheets leaving on a clear path."
+    },
+    {
+      "slug": "012-perfect-pixel",
+      "seed": 1012,
+      "source": "code",
+      "subject": "A drafting table with three empty interface wireframe frames drawn in ink, a blank wooden block dropping into place in one frame, rulers, a compass and a pencil, blueprint grid in the dark behind."
+    },
+    {
+      "slug": "013-premaculture",
+      "seed": 1013,
+      "source": "code",
+      "subject": "A single seed sprouting on a soil mound beside a vast engraved tree whose branches carry small houses, open books, windows and tools like fruit."
+    },
+    {
+      "slug": "014-nowtheo",
+      "seed": 1014,
+      "source": "code",
+      "subject": "A seated figure patiently untangling a giant knot of thread into clean parallel lines that run across a sunlit room to a wooden spool, light through a tall window."
+    },
+    {
+      "slug": "015-mymunshi",
+      "seed": 1015,
+      "source": "code",
+      "subject": "A large open ledger book on a desk with ruled columns, a small friendly mechanical clerk holding a quill beside it, a lantern, shelves of ledgers behind."
+    },
+    {
+      "slug": "016-parda",
+      "seed": 1016,
+      "source": "code",
+      "subject": "A theatre stage with heavy curtains and a scalloped valance, one spotlight falling on a lone performer, six film reels hanging on strings above."
+    },
+    {
+      "slug": "017-the-next-frequency",
+      "seed": 1017,
+      "source": "code",
+      "subject": "A mountain-sized radio tuning dial with tick marks and a needle, a tiny figure at its base, scattered static in the sky resolving into clean waves."
+    },
+    {
+      "slug": "018-fiction-essays",
+      "seed": 1018,
+      "source": "code",
+      "subject": "Tall library shelves of hatched book spines, a small listening booth with a microphone and headphones, loose pages flying through the air."
+    },
+    {
+      "slug": "019-kink-studios",
+      "seed": 1019,
+      "source": "code",
+      "subject": "A leather hide laced to a wooden frame, a circular mark freshly burned into it, a branding iron lifting away and smoke rising, tools on a pegboard."
+    },
+    {
+      "slug": "020-animation",
+      "seed": 1020,
+      "source": "code",
+      "subject": "A strip of seven film frames with a running figure in successive poses, a zoetrope drum on a stand below, a lamp in a dark studio."
+    },
+    {
+      "slug": "021-gyaragyara",
+      "seed": 1021,
+      "source": "code",
+      "subject": "Turned wooden vases with grain lines on a long plinth beside a tall window, a tree outside, two vases holding sprigs of leaves."
+    }
+  ]
+}

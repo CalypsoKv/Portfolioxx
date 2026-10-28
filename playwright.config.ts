@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./tests",
@@ -9,8 +10,8 @@ export default defineConfig({
     baseURL: "http://127.0.0.1:5173",
     viewport: { width: 1440, height: 1000 },
     launchOptions: {
-      executablePath: "/usr/bin/chromium",
-      args: ["--no-sandbox"],
+      executablePath: process.env.CHROMIUM_PATH ?? (existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined),
+      args: ["--no-sandbox", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"],
     },
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
