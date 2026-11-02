@@ -1074,7 +1074,7 @@ export const NoHurrySocial: React.FC = () => {
 					imgH={4000}
 					fr={[0.6, 0.48, 1.08]}
 					to={[0.6, 0.45, 1.3]}
-					diagram={{kind: 'arrive', a: [0.75, 0.78], b: [0.6, 0.47], until: 173}}
+					diagram={{kind: 'arrive', a: [0.75, 0.78], b: [0.6, 0.47], until: 149}}
 				/>
 				<Scrim name="B41 scrim" top={0.42} bottom={0} />
 				<KineticPhrase
@@ -1083,7 +1083,7 @@ export const NoHurrySocial: React.FC = () => {
 					y={150}
 					blockWidth={483}
 					align="left"
-					strike={{row: 3, word: 0, at: 161, color: '#FFB000'}}
+					strike={{row: 3, word: 0, at: 154, color: '#FFB000'}}
 					rows={[
 						{words: [{text: 'while', at: 2}, {text: 'she', at: 20}, {text: 'crosses', at: 26}, {text: 'the', at: 35}], size: 45, lh: 52, font: 'sans', weight: 700, color: '#F7F3EC', track: -0.005},
 						{words: [{text: 'distance', at: 47}], size: 120, lh: 140, font: 'sans', weight: 800, color: '#F7F3EC', key: true, track: -0.035},

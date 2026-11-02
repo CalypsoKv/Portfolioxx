@@ -7,7 +7,9 @@
   * stems: voice / music / sfx+tick / ambience re-summed from the same placements (work/social/studio_meta.json),
            with the same master gain, as 48 kHz WAV for re-mixing or replacing the draft voice
 
-Usage: master_social.py <project_root> <render.mkv> <out.mp4> [--stems <dir>]
+  * upload: optional lighter copy for posting from a phone (x264 CRF 21, same mastered audio)
+
+Usage: master_social.py <project_root> <render.mkv> <out.mp4> [--stems <dir>] [--upload <upload.mp4>]
 """
 import json, os, subprocess, sys
 
@@ -17,6 +19,7 @@ import soundfile as sf
 
 ROOT, SRC, DST = sys.argv[1], sys.argv[2], sys.argv[3]
 STEMS = sys.argv[sys.argv.index("--stems") + 1] if "--stems" in sys.argv else None
+UPLOAD = sys.argv[sys.argv.index("--upload") + 1] if "--upload" in sys.argv else None
 sys.path.insert(0, os.path.dirname(__file__))
 _argv, sys.argv = sys.argv, [sys.argv[0], ROOT]
 import sound as base  # noqa: E402  (look-ahead true-peak limiter)
@@ -85,6 +88,12 @@ def main():
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", SRC, "-i", tmp, "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy",
                     "-c:a", "aac", "-b:a", "320k", "-ar", str(SR), "-movflags", "+faststart",
                     "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", DST], check=True)
+    if UPLOAD:
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", SRC, "-i", tmp, "-map", "0:v:0", "-map", "1:a:0",
+                        "-c:v", "libx264", "-preset", "slow", "-crf", "21", "-profile:v", "high", "-pix_fmt", "yuv420p",
+                        "-g", "60", "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709",
+                        "-c:a", "aac", "-b:a", "256k", "-ar", str(SR), "-movflags", "+faststart", UPLOAD], check=True)
+        print(f"upload copy  {UPLOAD} ({os.path.getsize(UPLOAD) / 1e6:.0f} MB)")
     os.remove(tmp)
     if STEMS:
         meta = json.load(open(os.path.join(ROOT, "work", "social", "studio_meta.json")))

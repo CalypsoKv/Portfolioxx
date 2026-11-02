@@ -5,6 +5,15 @@ editable **Remotion Studio** project. Output: 1080×1920, 30 fps, H.264 + AAC, m
 
 The 3-minute film from the first pass is unchanged. This cut is a second edit, with a different rhythm and grammar.
 
+| File | What it is |
+|---|---|
+| `no_hurry_social_9x16.mp4` | the master (H.264 CRF 15, AAC 320 kb/s, −14 LUFS) |
+| `no_hurry_social_9x16_upload.mp4` | lighter copy for posting from a phone (same audio) |
+| `no_hurry_social_captions.srt` | caption file for platforms that accept one; the film itself carries the words as type |
+| `stems/social/*.wav` | voice (synthetic draft), music, sfx + tick, ambience, all at the master gain |
+| `no_hurry_social_qa_report.md` | automated checks of the encoded master |
+| storyboard sheets + HTML | private, because they contain the photographs; kept in `work/social/storyboard/` and sent separately |
+
 ## 1. Style brief (from the reference reel)
 
 The reference reel was downloaded with yt-dlp **for analysis only**. It stays in a private scratch folder and is not
@@ -95,7 +104,8 @@ All music and effects are original. They were synthesised for this film, so the 
   - The energy follows the acts: air, pulse, drive, peak.
   - In the series beat the note values literally halve until they land on "one."
   - The score leaves at "Love is not the proof." Only one chord returns, on "No hurry."
-  - Side-chain ducking under the voice is baked in: about 7 dB.
+  - Side-chain ducking under the voice is baked in: 6 dB. Under the words the score sits about 11 dB below the
+    voice; between lines it comes up to about 7 dB below.
 - **Hazard relay.** A synthesised tick (lamp on) and tock (lamp off) every 0.72 s. It is level-automated, loud in the
   cold open, on "The hazard lights ticking" and in Act V, and it stops at the cut to black. The hazard switch's glow
   follows the same clock.
@@ -103,7 +113,8 @@ All music and effects are original. They were synthesised for this film, so the 
   stutter, swell, shutter, flicker and two risers. They are placed from the storyboard, 33 hits in total.
 - **Ambience.** Authentic street sound from `VID-20261005-WA0000` sits under the real walk.
 - **Master.** The Remotion mix is set at −14 LUFS integrated, with a 4×-oversampled look-ahead limiter at −1 dBTP,
-  then AAC at 320 kb/s, encoded once.
+  then AAC at 320 kb/s, encoded once. `output/no_hurry_social_9x16.mp4` is the master. A lighter copy for posting
+  from a phone is `no_hurry_social_9x16_upload.mp4`: same audio, video at CRF 21.
 - **Stems.** Voice, music, sfx + tick and ambience are exported as WAV files with the same master gain.
 
 ## 5. The narration is still a synthetic DRAFT

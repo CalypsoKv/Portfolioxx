@@ -91,8 +91,9 @@ run_stage() {
     render)     say "Remotion render"; mkdir -p work/social/render
                 (cd studio && npx remotion render NoHurrySocial "../$RENDER" --codec=h264-mkv --audio-codec=pcm-16 --crf=15 \
                    --x264-preset=slow --color-space=bt709 --concurrency="${CONCURRENCY:-4}" --image-format=jpeg --jpeg-quality=95 --log=error) ;;
-    master)     say "master"; "$PY" tools/master_social.py "$ROOT" "$RENDER" output/no_hurry_social_9x16.mp4 --stems output/stems/social ;;
-    qa)         say "QA"; "$PY" tools/qa_social.py "$ROOT" output/no_hurry_social_9x16.mp4 ;;
+    master)     say "master"; "$PY" tools/master_social.py "$ROOT" "$RENDER" output/no_hurry_social_9x16.mp4 --stems output/stems/social \
+                  --upload output/no_hurry_social_9x16_upload.mp4 ;;
+    qa)         say "QA + captions file"; "$PY" tools/social_srt.py "$ROOT"; "$PY" tools/qa_social.py "$ROOT" output/no_hurry_social_9x16.mp4 ;;
     *) echo "unknown stage $1" >&2; exit 1 ;;
   esac
 }

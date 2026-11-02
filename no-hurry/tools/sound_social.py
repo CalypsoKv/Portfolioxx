@@ -408,8 +408,8 @@ def compose():
     ev += [("sub", t_in, "F1", 1.0), ("pad", t_in, "Fmaj9", 1.0)]
     # Act V - the practical proof: no music. One chord returns on "No hurry." and rings past the cut.
     t_nh = at("L34:No")
-    ev += [("piano", t_nh + 0.015 * i, nm, 4.5, 0.4) for i, nm in enumerate(("F2", "C3", "A3", "E4", "G4", "A4"))]
-    ev += [("pad", t_nh, "Fmaj9", 4.0)]
+    ev += [("piano", t_nh + 0.015 * i, nm, 4.5, 0.52) for i, nm in enumerate(("F2", "C3", "A3", "E4", "G4", "A4"))]
+    ev += [("pad", t_nh, "Fmaj9", 4.5), ("sub", t_nh, "F1", 3.0)]
     return ev
 
 
@@ -432,7 +432,7 @@ def vo_track():
     return vo
 
 
-def duck(vo, depth_db=-7.0, attack=0.06, release=0.35):
+def duck(vo, depth_db=-6.0, attack=0.06, release=0.35):
     win = int(0.03 * SR)
     env = np.sqrt(np.convolve(vo.astype(np.float64) ** 2, np.ones(win) / win, mode="same"))
     active = (20 * np.log10(env + 1e-9) > -45).astype(np.float64)
@@ -463,9 +463,9 @@ def tick_bed():
             place(tick, np.stack([off, off * 0.92], 1), t + BEAT / 2 + RNG.uniform(-0.002, 0.002))
         k += 1
     B = beat_start
-    pts = [(0, -15), (B("B08"), -15), (B("B08") + 0.5, -21), (B("B21") - 0.3, -21), (B("B21"), -11),
-           (B("B22") - 0.2, -11), (B("B22") + 0.4, -22), (B("B25"), -22), (B("B25") + 0.3, -17), (B("B26"), -17),
-           (B("B26") + 0.4, -25), (B("B38") - 0.6, -25), (B("B38"), -12), (CUT, -12)]
+    pts = [(0, -11), (B("B08"), -11), (B("B08") + 0.5, -20), (B("B21") - 0.3, -20), (B("B21"), -6),
+           (B("B22") - 0.2, -6), (B("B22") + 0.4, -21), (B("B25"), -21), (B("B25") + 0.3, -14), (B("B26"), -14),
+           (B("B26") + 0.4, -24), (B("B38") - 0.6, -24), (B("B38"), -7), (CUT, -7)]
     ts = np.array([p[0] for p in pts]) * SR
     g = db(np.interp(np.arange(N), ts, [p[1] for p in pts])).astype(np.float32)
     return tick * g[:, None]
@@ -519,8 +519,8 @@ def main():
     ir = base.reverb_ir(rt60=2.2, length=2.6)
     wet = fftconvolve(music, ir, axes=0)[:N] * 0.22
     music = (music + wet.astype(np.float32)) * music_out_gain()[:, None] ** 0.5
-    # level: unducked score about 4 LU under the voice, then ducked another 7 dB under speech
-    music *= db(lufs(vo) - 4.0 - lufs(music))
+    # level: unducked score about 1 LU under the voice, ducked 6 dB under speech (~11 dB under the words)
+    music *= db(lufs(vo) - 1.0 - lufs(music))
     d = duck(vo)
     music *= d[:, None]
     # the "No hurry." chord should bloom after the words, not under them: ducking already handles it

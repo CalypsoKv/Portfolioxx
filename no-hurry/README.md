@@ -49,6 +49,7 @@ voice. It is an editable **Remotion Studio** project.
 | `render_social.sh` | narration → timeline → cut-outs → assets → sound → storyboard sheets → Studio timeline → render → master |
 | `tools/*social*.py`, `tools/cutouts.py`, `tools/build_studio.py`, `tools/storyboard_sheets.py` | the stages |
 | `output/no_hurry_social_edit_decisions.md` | style brief, storyboard, picture/sound decisions, what is generated vs real, limits |
+| `output/no_hurry_social_captions.srt`, `output/no_hurry_social_qa_report.md` | caption file for upload, automated checks of the master |
 
 ```sh
 ./render_social.sh            # everything (needs the main grade; it runs it if missing)
