@@ -34,3 +34,26 @@ and the Cormorant Garamond font (both openly licensed). It runs on CPU only.
 
 To use your own voice, put `assets/voiceover/full_take.m4a` (one take of the whole script), or `L01.m4a` … `L34.m4a`,
 and re-run `./render.sh`. Every cut and caption re-times to the recording.
+
+## Social cut (Remotion Studio)
+
+There is a second edit for Reels, TikTok and Shorts: 1080×1920, 30 fps, 2:24. It uses kinetic word-by-word type,
+type set behind her, interrupt cards, a Zeno diagram over the real photos, an evidence board, a flicker count-up, a
+stop-motion collage, whips and zooms, an original score on the hazard-relay grid, and a philosophical-cadence draft
+voice. It is an editable **Remotion Studio** project.
+
+| Path | What it is |
+|---|---|
+| `edit/social/storyboard.py` | the storyboard: 43 beats, each with picture, type, transition, SFX and notes. The single source of truth |
+| `studio/` | Remotion project. `src/NoHurrySocial.tsx` is generated from the storyboard; components are in `src/nohurry/` (see `studio/README.md`) |
+| `render_social.sh` | narration → timeline → cut-outs → assets → sound → storyboard sheets → Studio timeline → render → master |
+| `tools/*social*.py`, `tools/cutouts.py`, `tools/build_studio.py`, `tools/storyboard_sheets.py` | the stages |
+| `output/no_hurry_social_edit_decisions.md` | style brief, storyboard, picture/sound decisions, what is generated vs real, limits |
+
+```sh
+./render_social.sh            # everything (needs the main grade; it runs it if missing)
+./render_social.sh --studio   # edit in Remotion Studio
+./render_social.sh --from studio
+```
+
+Node 20+ is needed for the Studio and render stages.

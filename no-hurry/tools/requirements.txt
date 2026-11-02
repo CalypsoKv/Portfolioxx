@@ -9,3 +9,4 @@ fonttools==4.67.0
 onnxruntime==1.29.0
 kokoro-onnx==0.6.1        # draft narration only (synthetic placeholder voice)
 faster-whisper==1.2.1     # word timings for captions (works on the real recording too)
+rembg==2.0.86             # social cut: her mattes (BiRefNet portrait) - an alpha channel only, pixels untouched

@@ -11,3 +11,8 @@ output/qa/
 *.m4a
 *.cube
 __pycache__/
+# Social cut (Remotion): its public/ folder holds the finished photos, cut-outs, videos and audio - private media
+studio/public/
+studio/out/
+studio/node_modules/
+studio/dist/
