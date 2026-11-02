@@ -11,8 +11,8 @@ Contact sheets of mid-beat frames are kept privately (`work/social/qa/`).
 - PASS duration 143.80s (timeline 143.79s)
 - PASS audio aac 48000 Hz 2 ch
 - PASS encoded loudness -14.0 LUFS integrated (target -14)
-- PASS encoded true peak -1.1 dBTP (ceiling -1.0)
-- INFO loudness range 2.7 LU
+- PASS encoded true peak -1.0 dBTP (ceiling -1.0)
+- INFO loudness range 2.5 LU
 - PASS black stretches only on black cards (5 found)
 - PASS picture changes across 43 beat boundaries
 
