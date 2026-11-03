@@ -2,6 +2,7 @@ import './nohurry/fonts';
 import React from 'react';
 import {Composition, Folder} from 'remotion';
 import {NoHurrySocial} from './NoHurrySocial';
+import {NoHurrySocialMotion} from './NoHurrySocialMotion';
 import {TitleCard} from './nohurry/Cards';
 
 export const RemotionRoot: React.FC = () => {
@@ -15,6 +16,16 @@ export const RemotionRoot: React.FC = () => {
 				fps={30}
 				durationInFrames={4314}
 			/>
+			<Folder name="Side-experiments">
+				<Composition
+					id="NoHurrySocialMotion"
+					component={NoHurrySocialMotion}
+					width={1080}
+					height={1920}
+					fps={30}
+					durationInFrames={4314}
+				/>
+			</Folder>
 			<Folder name="Elements">
 				<Composition
 					id="TitleCard"

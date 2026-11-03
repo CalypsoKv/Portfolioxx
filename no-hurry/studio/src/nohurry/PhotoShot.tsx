@@ -10,6 +10,7 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
+import {kickScale} from './MotionPlate';
 import {C, FAMILY, FRAME_H, FRAME_W, TICK_PERIOD, TICK_START, cover, kenBurns, type View} from './theme';
 
 type Pt = readonly number[];
@@ -334,17 +335,63 @@ type CutoutProps = {
 	readonly fr: View;
 	readonly to: View;
 	readonly glitchAt?: number;
+	/**
+	 * Motion-plate beats: her rigid move in the depth camera (tools/motion_lab.py), so the cut-out stays on her.
+	 * scale = 1 + s1 * e, translate = (x1, y1) * e about the frame centre, e = smoothstep over the clip;
+	 * blur: [frame, px] keyframes of the rack focus on her.
+	 */
+	readonly rig?: {readonly s1: number; readonly x1: number; readonly y1: number; readonly blur?: readonly (readonly number[])[]};
+	/** camera-kick frames of the motion plate underneath (the cut-out kicks with it) */
+	readonly hits?: readonly number[];
+};
+
+const smoothstep = (u: number) => {
+	const x = Math.min(1, Math.max(0, u));
+	return x * x * (3 - 2 * x);
+};
+
+const rigBlur = (keys: readonly (readonly number[])[], frame: number) => {
+	if (frame <= keys[0][0]) {
+		return keys[0][1];
+	}
+	for (let i = 1; i < keys.length; i++) {
+		if (frame <= keys[i][0]) {
+			const [f0, b0] = keys[i - 1];
+			const [f1, b1] = keys[i];
+			return b0 + ((b1 - b0) * (frame - f0)) / Math.max(1, f1 - f0);
+		}
+	}
+	return keys[keys.length - 1][1];
 };
 
 /** Her cut-out on top of the type: the plate's Ken Burns, repeated exactly, so the matte stays locked to her. */
-const CutoutLayerInner: React.FC<CutoutProps> = ({src, imgW, imgH, fr, to, glitchAt}) => {
+const CutoutLayerInner: React.FC<CutoutProps> = ({src, imgW, imgH, fr, to, glitchAt, rig, hits}) => {
 	const frame = useCurrentFrame();
 	const {durationInFrames} = useVideoConfig();
-	const view = kenBurns(fr, to, frame / Math.max(1, durationInFrames - 1));
 	const gk = glitchAt === undefined ? -1 : frame - glitchAt;
 	if (gk >= 0 && gk < GLITCH_FRAMES) {
 		return null; // the glitch frames show the whole plate scrambled; her layer rejoins after
 	}
+	if (rig) {
+		const e = smoothstep(frame / Math.max(1, durationInFrames - 1));
+		const blur = rig.blur ? rigBlur(rig.blur, frame) : 0;
+		const k = kickScale(frame, hits ?? [], 0.035);
+		return (
+			<AbsoluteFill style={{scale: String(k), transformOrigin: `${FRAME_W / 2}px ${FRAME_H / 2}px`}}>
+			<AbsoluteFill
+				style={{
+					transformOrigin: `${FRAME_W / 2}px ${FRAME_H / 2}px`,
+					scale: String(1 + rig.s1 * e),
+					translate: `${(rig.x1 * e).toFixed(2)}px ${(rig.y1 * e).toFixed(2)}px`,
+					filter: blur > 0.3 ? `blur(${blur.toFixed(2)}px)` : undefined,
+				}}
+			>
+				<Plate src={src} imgW={imgW} imgH={imgH} view={fr} />
+			</AbsoluteFill>
+			</AbsoluteFill>
+		);
+	}
+	const view = kenBurns(fr, to, frame / Math.max(1, durationInFrames - 1));
 	return <Plate src={src} imgW={imgW} imgH={imgH} view={view} />;
 };
 
