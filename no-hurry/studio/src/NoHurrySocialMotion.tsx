@@ -35,13 +35,12 @@ export const NoHurrySocialMotion: React.FC = () => {
 				<Flash name="Flash" color="#FFFFFF" />
 			</TransitionSeries.Overlay>
 			<TransitionSeries.Sequence name="B02 · A man named Zeno" durationInFrames={62}>
-				<PhotoShot
-					name="B02 plate · bust_marble.jpg"
-					src="broll/bust_marble.jpg"
-					imgW={1152}
-					imgH={2048}
-					fr={[0.5, 0.42, 1]}
-					to={[0.5, 0.4, 1.12]}
+				<MotionPlate
+					name="B02 motion plate (B02)"
+					src="motion/B02.mp4"
+					plateFrom={0}
+					hits={[20]}
+					kick={0.035}
 				/>
 				<Scrim name="B02 scrim" top={0.3} bottom={0.4} />
 				<KineticPhrase
@@ -84,13 +83,12 @@ export const NoHurrySocialMotion: React.FC = () => {
 				/>
 			</TransitionSeries.Sequence>
 			<TransitionSeries.Sequence name="B04 · Hi, I am Jahan" durationInFrames={78}>
-				<PhotoShot
-					name="B04 plate · 20261011_142333.jpg"
-					src="photos/20261011_142333.jpg"
-					imgW={1800}
-					imgH={2400}
-					fr={[0.47, 0.5, 1]}
-					to={[0.47, 0.48, 1.06]}
+				<MotionPlate
+					name="B04 motion plate (B04)"
+					src="motion/B04.mp4"
+					plateFrom={0}
+					hits={[41]}
+					kick={0.035}
 				/>
 				<Scrim name="B04 scrim" top={0.42} bottom={0} />
 				<KineticPhrase
@@ -106,14 +104,12 @@ export const NoHurrySocialMotion: React.FC = () => {
 				/>
 			</TransitionSeries.Sequence>
 			<TransitionSeries.Sequence name="B05 · Something impossible" durationInFrames={78}>
-				<PhotoShot
-					name="B05 plate · 20260828_170926.jpg"
-					src="photos/20260828_170926.jpg"
-					imgW={1800}
-					imgH={2400}
-					fr={[0.47, 0.5, 1]}
-					to={[0.5, 0.5, 1.12]}
-					glitchAt={17}
+				<MotionPlate
+					name="B05 motion plate (B05)"
+					src="motion/B05.mp4"
+					plateFrom={0}
+					hits={[17]}
+					kick={0.035}
 				/>
 				<Scrim name="B05 scrim" top={0} bottom={0.4} />
 				<KineticPhrase
@@ -251,13 +247,12 @@ export const NoHurrySocialMotion: React.FC = () => {
 				/>
 			</TransitionSeries.Sequence>
 			<TransitionSeries.Sequence name="B11 · Half of that (punch 2x)" durationInFrames={42}>
-				<PhotoShot
-					name="B11 plate · 20261012_162417.jpg"
-					src="photos/20261012_162417.jpg"
-					imgW={3000}
-					imgH={4000}
-					fr={[0.6, 0.44, 2]}
-					to={[0.6, 0.44, 2.05]}
+				<MotionPlate
+					name="B11 motion plate (B11)"
+					src="motion/B11.mp4"
+					plateFrom={0}
+					hits={[17]}
+					kick={0.035}
 				/>
 				<Scrim name="B11 scrim" top={0.42} bottom={0} />
 				<KineticPhrase
@@ -273,15 +268,12 @@ export const NoHurrySocialMotion: React.FC = () => {
 				/>
 			</TransitionSeries.Sequence>
 			<TransitionSeries.Sequence name="B12 · Never run out (stutter)" durationInFrames={67}>
-				<PhotoShot
-					name="B12 plate · 20261012_162417.jpg"
-					src="photos/20261012_162417.jpg"
-					imgW={3000}
-					imgH={4000}
-					fr={[0.6, 0.46, 3]}
-					to={[0.6, 0.46, 3.1]}
-					stutter={[3, 4, 2.4]}
-					stutterAt={19}
+				<MotionPlate
+					name="B12 motion plate (B12)"
+					src="motion/B12.mp4"
+					plateFrom={0}
+					hits={[19]}
+					kick={0.035}
 				/>
 				<Scrim name="B12 scrim" top={0} bottom={0.4} />
 				<KineticPhrase
@@ -1011,13 +1003,12 @@ export const NoHurrySocialMotion: React.FC = () => {
 				<ChapterTag name="B38 chapter" text="V · the practical proof" from={6} durationInFrames={66} />
 			</TransitionSeries.Sequence>
 			<TransitionSeries.Sequence name="B39 · The practical action" durationInFrames={150}>
-				<PhotoShot
-					name="B39 plate · 20261004_151103.jpg"
-					src="photos/20261004_151103.jpg"
-					imgW={3000}
-					imgH={4000}
-					fr={[0.53, 0.52, 1]}
-					to={[0.56, 0.49, 1.08]}
+				<MotionPlate
+					name="B39 motion plate (B39)"
+					src="motion/B39.mp4"
+					plateFrom={0}
+					hits={[115]}
+					kick={0.035}
 				/>
 				<Scrim name="B39 scrim" top={0.42} bottom={0} />
 				<KineticPhrase
@@ -1035,15 +1026,12 @@ export const NoHurrySocialMotion: React.FC = () => {
 				/>
 			</TransitionSeries.Sequence>
 			<TransitionSeries.Sequence name="B40 · Putting the hazards on" durationInFrames={79}>
-				<PhotoShot
-					name="B40 plate · hazard_button.jpg"
-					src="broll/hazard_button.jpg"
-					imgW={1152}
-					imgH={2048}
-					fr={[0.5, 0.48, 1.15]}
-					to={[0.5, 0.48, 1.25]}
-					pulseOffset={3849}
-					pulseCenter={[0.5, 0.48]}
+				<MotionPlate
+					name="B40 motion plate (B40)"
+					src="motion/B40.mp4"
+					plateFrom={0}
+					hits={[14]}
+					kick={0.035}
 				/>
 				<Scrim name="B40 scrim" top={0} bottom={0.4} />
 				<KineticPhrase
@@ -1060,14 +1048,12 @@ export const NoHurrySocialMotion: React.FC = () => {
 				/>
 			</TransitionSeries.Sequence>
 			<TransitionSeries.Sequence name="B41 · She crosses the distance" durationInFrames={169}>
-				<PhotoShot
-					name="B41 plate · 20261012_162417.jpg"
-					src="photos/20261012_162417.jpg"
-					imgW={3000}
-					imgH={4000}
-					fr={[0.6, 0.48, 1.08]}
-					to={[0.6, 0.45, 1.3]}
-					diagram={{kind: 'arrive', a: [0.75, 0.78], b: [0.6, 0.47], until: 149}}
+				<MotionPlate
+					name="B41 motion plate (B41)"
+					src="motion/B41.mp4"
+					plateFrom={0}
+					hits={[48, 111]}
+					kick={0.035}
 				/>
 				<Scrim name="B41 scrim" top={0.42} bottom={0} />
 				<KineticPhrase
@@ -1087,13 +1073,12 @@ export const NoHurrySocialMotion: React.FC = () => {
 				/>
 			</TransitionSeries.Sequence>
 			<TransitionSeries.Sequence name="B42 · I am here" durationInFrames={51}>
-				<PhotoShot
-					name="B42 plate · 20261012_162420.jpg"
-					src="photos/20261012_162420.jpg"
-					imgW={1800}
-					imgH={2400}
-					fr={[0.62, 0.42, 1.2]}
-					to={[0.62, 0.42, 1.2]}
+				<MotionPlate
+					name="B42 motion plate (B42)"
+					src="motion/B42.mp4"
+					plateFrom={0}
+					hits={[]}
+					kick={0.035}
 				/>
 				<Scrim name="B42 scrim" top={0} bottom={0.4} />
 				<KineticPhrase
@@ -1108,14 +1093,12 @@ export const NoHurrySocialMotion: React.FC = () => {
 				/>
 			</TransitionSeries.Sequence>
 			<TransitionSeries.Sequence name="B43 · No hurry (behind her)" durationInFrames={118}>
-				<PhotoShot
-					name="B43 plate · 20261012_162423.jpg"
-					src="photos/20261012_162423.jpg"
-					imgW={1800}
-					imgH={2400}
-					fr={[0.56, 0.4, 1.18]}
-					to={[0.56, 0.41, 1.14]}
-					dim={0.85}
+				<MotionPlate
+					name="B43 motion plate (B43)"
+					src="motion/B43.mp4"
+					plateFrom={0}
+					hits={[3, 16]}
+					kick={0.035}
 				/>
 				<Scrim name="B43 scrim" top={0.42} bottom={0} />
 				<KineticPhrase
@@ -1129,12 +1112,14 @@ export const NoHurrySocialMotion: React.FC = () => {
 					]}
 				/>
 				<CutoutLayer
-					name="B43 her cut-out (same move as the plate)"
+					name="B43 her cut-out (rigid, same move as the plate)"
 					src="cutouts/20261012_162423.webp"
 					imgW={1800}
 					imgH={2400}
 					fr={[0.56, 0.4, 1.18]}
-					to={[0.56, 0.41, 1.14]}
+					to={[0.56, 0.4, 1.18]}
+					rig={{s1: 0.0498, x1: 0, y1: 5.69}}
+					hits={[3, 16]}
 				/>
 			</TransitionSeries.Sequence>
 			<TransitionSeries.Sequence name="END · Black" durationInFrames={48}>
