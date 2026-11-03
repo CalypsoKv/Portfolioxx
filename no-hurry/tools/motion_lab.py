@@ -504,10 +504,13 @@ def render_shot(sid):
             nr, nd = warp(seg["near"], seg["D"], e, cam, gx)
             na = nr[..., 3:]
             nrgb = dof(nr[..., :3], nd, fo, R)
-            if sh.get("hazard"):
-                L = lamp((SEQ[first]["start"] + f) / FPS)
-                nrgb = screen(nrgb, (0.12 * L) * na * AMBER)
             img = nrgb + img * (1 - na)
+            if sh.get("hazard"):                             # a soft wash of amber over the interior, no hard edges
+                L = lamp((SEQ[first]["start"] + f) / FPS)
+                wash = cv2.GaussianBlur(na[..., 0], (0, 0), 45)[..., None]
+                if seg["dh"] is not None:                    # the light falls on the car, not on her
+                    wash = wash * (1 - cv2.dilate(hp[..., 3], np.ones((9, 9), np.uint8))[..., None])
+                img = screen(img, (0.11 * L) * wash * AMBER)
         if sh.get("lamp"):                                   # the hazard switch itself (B-roll): same relay grid
             L = lamp((SEQ[first]["start"] + f) / FPS)
             img = np.clip(img * (0.58 + 0.52 * L), 0, 1)
