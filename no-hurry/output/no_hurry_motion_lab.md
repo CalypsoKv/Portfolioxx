@@ -17,7 +17,7 @@ Studio composition, `NoHurrySocialMotion` (folder "Side-experiments"), plus a be
 | **Stop-motion from bursts** | Sequential photos are aligned on the background and cut on the beat. The world stays still while the subject jumps forward, so it reads as time passing in one shot | ✔ `162415 → 162416 → 162417` are aligned on the street. She steps forward on each "half", and the Zeno line shortens with her |
 | **One camera language** | Every shot uses the same lens and the same move speed, so the cut feels shot rather than assembled | ✔ the same eased push, the same gentle depth of field, rack focus only where the story turns ("Her.") |
 | **Light that lives on the beat** | Practical light in the scene flickers with the rhythm | ✔ the hazard lamp flashes amber on the car interior on the real relay grid (0.72 s), the same clock as the tick you hear |
-| **Camera reacting to the edit** | The frame kicks on the beat when a key word lands | ✔ a 3.5 % zoom bump on every key word, settling in a quarter second |
+| **Camera reacting to the edit** | The frame kicks on the beat when a key word lands | ✔ a 3.5 % zoom bump on every key word, settling in a quarter second; a slow handheld drift so no frame is dead still |
 | Atmosphere | Dust in sunbeams, grain | ✔ sunlit dust in the car (never over her face); the existing grain and vignette |
 
 ## Her face
@@ -32,6 +32,25 @@ Her face is preserved.
 
 **Why not AI image-to-video?** Those tools "animate" a photo by re-generating every frame, her face included. The face
 drifts from frame to frame. That breaks the one thing you asked to keep, and it would invent footage of a real person.
+
+## What changed, measured
+
+Motion was measured as optical flow over the same stretches of the film (DIS optical flow, cuts and flashes
+excluded). "Parallax" is the spread between the fastest- and slowest-moving parts of the frame.
+
+| Stretch | Motion: stills → moving plates | Parallax: stills → moving plates |
+|---|---|---|
+| B02–B06 (hook to "Her.") | 1.60 → 2.17 px/frame (1.4×) | 2.83 → 3.47 (1.2×) |
+| B08–B12 (Zeno's halves, stop-motion) | 0.50 → 1.30 px/frame (2.6×) | 0.79 → 1.86 (2.3×) |
+| B39–B43 (the practical proof to "No hurry.") | 0.75 → 1.45 px/frame (1.9×) | 1.18 → 2.17 (1.8×) |
+
+B02–B06 gains the least because the old cut already zoomed hard there.
+
+The first pass barely moved more than the old Ken Burns, so I roughly doubled the camera and used a steadier travel
+curve.
+
+The bolder camera then exposed a problem. The dashboard pulled away from the two of them and revealed legs the photo
+never captured. Anything in front of her (dashboard, door frame) now moves with her own plane, never faster.
 
 ## How it is built
 
