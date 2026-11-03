@@ -59,6 +59,13 @@ def smooth(u):
     return u * u * (3 - 2 * u)
 
 
+def travel(u):
+    """Camera travel over a shot: near-constant speed with a soft start and landing, so no cut sits on a frozen frame
+    (the same curve is used by the Remotion cut-out rig)."""
+    u = min(max(u, 0.0), 1.0)
+    return 0.8 * u + 0.2 * u * u * (3 - 2 * u)
+
+
 # ------------------------------------------------------------------ images, geometry
 def src_path(src):
     return os.path.join(PUB, src + ".jpg") if src.startswith("broll/") else os.path.join(PUB, "photos", src + ".jpg")
@@ -481,7 +488,7 @@ def render_shot(sid):
     rig_blur = []
     trail = []
     for f in range(total):
-        e = smooth(f / max(1, total - 1))
+        e = travel(f / max(1, total - 1))
         seg = [s for s in segs if s["start"] <= f][-1]
         if seg is not segs[0] and f == seg["start"] and segs.index(seg) > 0:
             pass

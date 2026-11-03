@@ -10,7 +10,7 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
-import {kickScale} from './MotionPlate';
+import {handheld, kickScale} from './MotionPlate';
 import {C, FAMILY, FRAME_H, FRAME_W, TICK_PERIOD, TICK_START, cover, kenBurns, type View} from './theme';
 
 type Pt = readonly number[];
@@ -345,9 +345,10 @@ type CutoutProps = {
 	readonly hits?: readonly number[];
 };
 
-const smoothstep = (u: number) => {
+/** Same travel curve as tools/motion_lab.py: near-constant speed with a soft start and landing. */
+const travel = (u: number) => {
 	const x = Math.min(1, Math.max(0, u));
-	return x * x * (3 - 2 * x);
+	return 0.8 * x + 0.2 * x * x * (3 - 2 * x);
 };
 
 const rigBlur = (keys: readonly (readonly number[])[], frame: number) => {
@@ -373,11 +374,19 @@ const CutoutLayerInner: React.FC<CutoutProps> = ({src, imgW, imgH, fr, to, glitc
 		return null; // the glitch frames show the whole plate scrambled; her layer rejoins after
 	}
 	if (rig) {
-		const e = smoothstep(frame / Math.max(1, durationInFrames - 1));
+		const e = travel(frame / Math.max(1, durationInFrames - 1));
 		const blur = rig.blur ? rigBlur(rig.blur, frame) : 0;
-		const k = kickScale(frame, hits ?? [], 0.035);
+		const k = kickScale(frame, hits ?? [], 0.035) * (1 + 5 / 400);
+		const h = handheld(frame, 5);
 		return (
-			<AbsoluteFill style={{scale: String(k), transformOrigin: `${FRAME_W / 2}px ${FRAME_H / 2}px`}}>
+			<AbsoluteFill
+				style={{
+					scale: String(k),
+					translate: `${h.x.toFixed(2)}px ${h.y.toFixed(2)}px`,
+					rotate: `${h.r.toFixed(3)}deg`,
+					transformOrigin: `${FRAME_W / 2}px ${FRAME_H / 2}px`,
+				}}
+			>
 			<AbsoluteFill
 				style={{
 					transformOrigin: `${FRAME_W / 2}px ${FRAME_H / 2}px`,
