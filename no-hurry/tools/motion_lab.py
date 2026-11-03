@@ -508,7 +508,10 @@ def render_shot(sid):
             if sh.get("rig") and f % 2 == 0:
                 rig_blur.append([f, round(sig if sig > 0.3 else 0.0, 2)])
         if seg["near"][..., 3].max() > 0:
-            nr, nd = warp(seg["near"], seg["D"], e, cam, gx)
+            # whatever is in front of her (dashboard, door frame) moves no faster than her own plane: otherwise it would
+            # pull away and expose parts of her the photo never saw (legs behind the dashboard, a torso behind a door)
+            nD = seg["D"] if seg["dh"] is None else np.minimum(seg["D"], seg["dh"]).astype(np.float32)
+            nr, nd = warp(seg["near"], nD, e, cam, gx)
             na = nr[..., 3:]
             nrgb = dof(nr[..., :3], nd, fo, R)
             img = nrgb + img * (1 - na)
